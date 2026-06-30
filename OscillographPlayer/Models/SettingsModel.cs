@@ -36,12 +36,12 @@ namespace OscillographPlayer.Models
             get => _heightSqueezeRate;
             set
             {
-                _heightSqueezeRate = value;
-
-                if (MaintainAspectRatio && _widthSqueezeRate != _heightSqueezeRate)
+                if(MaintainAspectRatio)
                 {
-                    _widthSqueezeRate = _heightSqueezeRate;
+                    throw new InvalidOperationException("Setting HeightSqueezeRate directly is disabled when MaintainAspectRatio is true.");
                 }
+
+                _heightSqueezeRate = value;
             }
         }
 
@@ -59,5 +59,16 @@ namespace OscillographPlayer.Models
         }
 
         public MappingMethodCollection MappingMethod { get; set; } = MappingMethodCollection.HighFrequecy;
+
+        public SettingsModel(double widthSqueezeRate,bool maintainAspectRatio,bool stretchToOriginalFrame,bool horizontalFlip,bool verticalFlip,int sampleRate,MappingMethodCollection mappingMethod)
+        {
+            WidthSqueezeRate = widthSqueezeRate;
+            MaintainAspectRatio = maintainAspectRatio;
+            StretchToOriginalFrame = stretchToOriginalFrame;
+            HorizontalFlip = horizontalFlip;
+            VerticalFlip = verticalFlip;
+            SampleRate = sampleRate;
+            MappingMethod = mappingMethod;
+        }
     }
 }
