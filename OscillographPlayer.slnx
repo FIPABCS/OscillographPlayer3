@@ -1,4 +1,10 @@
 <Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="OscillographPlayer.WaveGenerateDLL/OscillographPlayer.WaveGenerateDLL.vcxproj" Id="4d7c66d6-8095-4ee5-b320-0874c38bc843" />
   <Project Path="OscillographPlayer/OscillographPlayer.csproj" />
   <Project Path="TestProject/TestProject.csproj" />
 </Solution>
