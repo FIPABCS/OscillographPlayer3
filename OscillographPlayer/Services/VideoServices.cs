@@ -4,12 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OscillographPlayer.Services
 {
     public static class VideoServices
     {
-        public static MediaFile OpenAndDecodeVideo(ref string path)
+        public static async Task<MediaFile> LoadVideoAsync(string path)
         {
             MediaFile video;
             
