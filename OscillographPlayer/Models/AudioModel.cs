@@ -24,7 +24,17 @@ namespace OscillographPlayer.Models
 
         private readonly int _sampleRate;
 
+        public int SampleRate
+        {
+            get => _sampleRate;
+        }
+
         private readonly int _byteRate;
+
+        public int ByteRate
+        {
+            get => _byteRate;
+        }
 
         private const short _blockAlign = _numChannels * _bitsPerSample / 8;
 
@@ -35,19 +45,6 @@ namespace OscillographPlayer.Models
         private readonly int _subchunk2Size;
 
         private readonly short[] _audioData;
-
-        public AudioModel(short[] audioData,int sampleRate)
-        {
-            _audioData = audioData;
-
-            int dataSize = _audioData.Length * sizeof(short);
-            _subchunk2Size = dataSize;
-            _chunkSize = dataSize + 36;
-
-            _sampleRate = sampleRate;
-            
-            _byteRate = _sampleRate * _numChannels * _bitsPerSample / 8;
-        }
 
         public byte[] AudioFileData
         {
@@ -69,7 +66,7 @@ namespace OscillographPlayer.Models
                 writer.Write(_blockAlign);
                 writer.Write(_bitsPerSample);
                 
-                writer.Write(Encoding.ASCII.GetBytes(_subchunk2ID);
+                writer.Write(Encoding.ASCII.GetBytes(_subchunk2ID));
                 writer.Write(_subchunk2Size);
 
                 foreach (var sampleData in _audioData)
@@ -79,6 +76,26 @@ namespace OscillographPlayer.Models
 
                 return memory.ToArray();
             }
+        }
+
+        private readonly double _durationInMillisecond;
+
+        public double DurationInMillisecond
+        {
+            get => _durationInMillisecond;
+        }
+
+        public AudioModel(short[] audioData, int sampleRate)
+        {
+            _audioData = audioData;
+
+            int dataSize = _audioData.Length * sizeof(short);
+            _subchunk2Size = dataSize;
+            _chunkSize = dataSize + 36;
+            _sampleRate = sampleRate;
+            _byteRate = _sampleRate * _numChannels * _bitsPerSample / 8;
+
+            _durationInMillisecond = (_subchunk2Size / _byteRate) * 1000;
         }
     }
 }
