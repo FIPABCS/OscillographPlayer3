@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <BaseOutputPath>D:\05.Code\.Process\OscillographPlayer\bin\</BaseOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
