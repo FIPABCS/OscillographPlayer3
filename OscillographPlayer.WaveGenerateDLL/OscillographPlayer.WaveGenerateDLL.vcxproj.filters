@@ -21,12 +21,12 @@
     <ClInclude Include="SafeArray.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="NoiseReductionCore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EdgeDetaction.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SafeArray.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

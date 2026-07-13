@@ -1,17 +1,38 @@
 #pragma once
 
-#define Get(array,x,y) safe_get(&(array), x, y)
-#define Set(array,x,y,value) safeSet(&(array), x, y)
+#define Get(array,x,y) safeGet(&(array), x, y)
+#define Set(array,x,y,value) safeSet(&(array), x, y, value)
 
 typedef struct
 {
 	unsigned char* items;
 	int width;
 	int height;
-} SafeArray;
+} SafeArrayUchar;
 
-inline unsigned char safeGet(SafeArray *array, int x, int y);
+static inline unsigned char safeGet(SafeArrayUchar *array, int x, int y)
+{
+    x = x >= 0 ? x : 0;
+    x = x < array->width ? x : array->width - 1;
 
-inline void safeSet(SafeArray *array, int x, int y, unsigned char value);
+    y = y >= 0 ? y : 0;
+    y = y < array->height ? y : array->height - 1;
+
+    return array->items[y * array->width + x];
+
+}
+
+static inline void safeSet(SafeArrayUchar *array, int x, int y, unsigned char value)
+{
+    x = x >= 0 ? x : 0;
+    x = x < array->width ? x : array->width - 1;
+
+    y = y >= 0 ? y : 0;
+    y = y < array->height ? y : array->height - 1;
+
+    array->items[y * array->width + x] = value;
+
+    return;
+}
 
 

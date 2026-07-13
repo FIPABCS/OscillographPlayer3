@@ -14,12 +14,7 @@
 
 #define CallingConvertion _stdcall
 
-//定义降噪核，包括权重数组和直径
-typedef struct
-{
-	float* weight;
-	float diameter;
-} NoiseReductionCore;
+#include "NoiseReductionCore.h"
 
 HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char *grayMap, int width, int height,
 	float sigma, unsigned char lowThreshold, unsigned char highThreshold,

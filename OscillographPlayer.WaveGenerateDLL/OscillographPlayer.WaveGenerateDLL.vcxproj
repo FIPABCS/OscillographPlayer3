@@ -20,11 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EdgeDetection.h" />
+    <ClInclude Include="NoiseReductionCore.h" />
     <ClInclude Include="SafeArray.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EdgeDetaction.c" />
-    <ClCompile Include="SafeArray.c" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
