@@ -5,8 +5,11 @@
     <Platform Name="x86" />
   </Configurations>
   <Project Path="OscillographPlayer.WaveGenerateDLL/OscillographPlayer.WaveGenerateDLL.vcxproj" Id="4d7c66d6-8095-4ee5-b320-0874c38bc843" />
+  <Project Path="OscillographPlayer.WaveGenerateDLLSharp/OscillographPlayer.WaveGenerateDLLSharp.csproj" Id="35d7c873-2eda-49a2-83b6-a4dd56157375">
+    <BuildDependency Project="OscillographPlayer.WaveGenerateDLL/OscillographPlayer.WaveGenerateDLL.vcxproj" />
+  </Project>
   <Project Path="OscillographPlayer/OscillographPlayer.csproj">
-    <BuildDependency Project="TestProject/TestProject.csproj" />
+    <BuildDependency Project="OscillographPlayer.WaveGenerateDLLSharp/OscillographPlayer.WaveGenerateDLLSharp.csproj" />
   </Project>
   <Project Path="TestProject/TestProject.csproj" />
 </Solution>
