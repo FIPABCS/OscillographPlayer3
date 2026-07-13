@@ -15,12 +15,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="WaveGenerate.h">
+    <ClInclude Include="EdgeDetection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeArray.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WaveGenerate.c">
+    <ClCompile Include="EdgeDetaction.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SafeArray.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
