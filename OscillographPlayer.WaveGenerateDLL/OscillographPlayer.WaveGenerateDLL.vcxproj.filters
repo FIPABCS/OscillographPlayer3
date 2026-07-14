@@ -32,6 +32,9 @@
     <ClCompile Include="EdgeDetaction.c">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Vector.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

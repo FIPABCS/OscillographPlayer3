@@ -26,6 +26,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EdgeDetaction.c" />
+    <ClCompile Include="Vector.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

@@ -5,6 +5,7 @@
 #include <malloc.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <math.h>
 
 #include "SafeArray.h"
 DefineSafeArray(unsigned char, UChar)
@@ -80,7 +81,30 @@ static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* cor
 	return true;
 }
 
+static void CalculateGradient(SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
+{
+	int width = grayMap->width;
+	int height = grayMap->height;
 
+	int dX = 0, dY = 0;
+	Vector thisGradient = { 0,none };
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			dX = (GetUChar(grayMap, x + 1, y + 1) + 2 * GetUChar(grayMap, x + 1, y) + GetUChar(grayMap, x + 1, y - 1))
+				- (GetUChar(grayMap, x - 1, y + 1) + 2 * GetUChar(grayMap, x - 1, y) + GetUChar(grayMap, x - 1, y - 1));
+
+			dY = (GetUChar(grayMap, x + 1, y + 1) + 2 * GetUChar(grayMap, x, y + 1) + GetUChar(grayMap, x - 1, y + 1))
+				- (GetUChar(grayMap, x + 1, y - 1) + 2 * GetUChar(grayMap, x, y - 1) + GetUChar(grayMap, x - 1, y - 1));
+
+			thisGradient.value = (unsigned char)(sqrtf((dX * dX) + (dY * dY)) / 4);
+			thisGradient.direction = GetDirection(dX, dY);
+
+			SetVect(gradMap, x, y, thisGradient);
+		}
+	}
+}
 
 //HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
 //	float sigma, unsigned char lowThreshold, unsigned char highThreshold)
