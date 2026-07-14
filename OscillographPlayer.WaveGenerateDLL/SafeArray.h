@@ -31,7 +31,4 @@ static inline void Set##typeName(SafeArray##typeName *array, int x, int y, T val
     array->items[y * array->width + x] = value;                                     \
                                                                                     \
     return;                                                                         \
-}                                                                                   \
-
-DefineSafeArray(unsigned char, UChar)
-DefineSafeArray(float, Float)
+}

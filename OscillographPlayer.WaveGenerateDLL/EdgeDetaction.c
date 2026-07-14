@@ -1,10 +1,15 @@
 #include "EdgeDetection.h"
 #include "NoiseReductionCore.h"
-#include "SafeArray.h"
+#include "Vector.h"
 
 #include <malloc.h>
 #include <stdbool.h>
 #include <stdint.h>
+
+#include "SafeArray.h"
+DefineSafeArray(unsigned char, UChar)
+DefineSafeArray(float, Float)
+DefineSafeArray(Vector,	Vect)
 
 //降噪
 static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* core)
@@ -74,6 +79,8 @@ static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* cor
 
 	return true;
 }
+
+
 
 //HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
 //	float sigma, unsigned char lowThreshold, unsigned char highThreshold)
