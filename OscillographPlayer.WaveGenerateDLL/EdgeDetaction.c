@@ -88,14 +88,22 @@ static void Shrink(SafeArrayUChar* grayMap, float skip)
 	int width = grayMap->width;
 	int height = grayMap->height;
 
-	int newWidth = 1, newHeight = 1;
-	for (int xNew=0,xOld=0; xOld * skip < height; xNew++,xOld=xNew*skip)
+	int xNew = 0, yNew = 0;
+	for (int yOld = 0; yOld * skip < height; yNew++)
 	{
-		for (int yNew=0,yOld=0; xOld * skip < width; yNew++,yOld=yNew*skip)
+		yOld = (int)(yNew * skip);
+		xNew = 0;
+
+		for (int xOld = 0; xOld * skip < width; xNew++)
 		{
+			xOld = (int)(xNew * skip);
+
 			SetUChar(grayMap, xNew, yNew, GetUChar(grayMap, xOld, yOld));
 		}
 	}
+
+	grayMap->width = xNew + 1;
+	grayMap->height = yNew + 1;
 
 	return;
 }
