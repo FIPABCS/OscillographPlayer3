@@ -2,7 +2,7 @@
 
 typedef enum Direction
 {
-	right,leftup,up,rightup,none
+	right = 0, leftup, up, rightup, none
 } Direction;
 
 typedef struct
@@ -11,4 +11,4 @@ typedef struct
 	Direction direction;
 } Vector;
 
-inline Direction GetDirection(int dX, int dY);
+Direction GetDirection(int dX, int dY);

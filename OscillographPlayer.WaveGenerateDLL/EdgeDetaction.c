@@ -3,7 +3,6 @@
 #include "Vector.h"
 
 #include <malloc.h>
-#include <stdbool.h>
 #include <stdint.h>
 #include <math.h>
 
@@ -83,20 +82,20 @@ static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* cor
 }
 
 //缩小
-static void Shrink(SafeArrayUChar* grayMap, float skip)
+static void Shrink(SafeArrayUChar* grayMap, float step)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
 
 	int xNew = 0, yNew = 0;
-	for (int yOld = 0; yOld * skip < height; yNew++)
+	for (int yOld = 0; yOld * step < height; yNew++)
 	{
-		yOld = (int)(yNew * skip);
+		yOld = (int)(yNew * step);
 		xNew = 0;
 
-		for (int xOld = 0; xOld * skip < width; xNew++)
+		for (int xOld = 0; xOld * step < width; xNew++)
 		{
-			xOld = (int)(xNew * skip);
+			xOld = (int)(xNew * step);
 
 			SetUChar(grayMap, xNew, yNew, GetUChar(grayMap, xOld, yOld));
 		}
@@ -157,7 +156,7 @@ static inline bool IsMaximum(const SafeArrayVect* gradMap, int x, int y)
 			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y + 1).value;
 	}
 
-	return;
+	return none;
 }
 
 //非极值点抑制
@@ -217,10 +216,43 @@ static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, uns
 	return;
 }
 
-HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
-	float sigma, unsigned char lowThreshold, unsigned char highThreshold,
+HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
+	float shrinkRate, unsigned char lowThreshold, unsigned char highThreshold,
 	const NoiseReductionCore* noiseReductionCore)
 {
+	float sigma = shrinkRate / 2;
 
+	SafeArrayUChar grayMap = { grayImage,width,height };
+
+	if (!NoiseReduction(&grayMap, noiseReductionCore))
+	{
+		return NULL;
+	}
+
+	Shrink(&grayMap, shrinkRate);
+
+	Vector* gradArray = (Vector*)malloc((int64_t)(width * height) * sizeof(Vector));
+	if (!gradArray)
+	{
+		return NULL;
+	}
+	SafeArrayVect gradMap = { gradArray,width,height };
+
+	CalculateGradient(&grayMap, &gradMap);
+
+	NonMaximumInhibit(&gradMap, &grayMap);
+
+	free(gradArray);
+	gradArray = NULL;
+
+	bool* edgeArray = (bool*)malloc((int64_t)(width * height) * sizeof(bool));
+	if (!edgeArray)
+	{
+		return NULL;
+	}
+	SafeArrayBool edgeMap = { edgeArray,width,height };
+
+	Threshold(&grayMap, &edgeMap, highThreshold, lowThreshold);
+
+	return edgeArray;
 }
-

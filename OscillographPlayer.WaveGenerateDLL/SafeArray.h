@@ -1,7 +1,7 @@
 #pragma once
 
 #define DefineSafeArray(T,typeName)                                                 \
-typedef struct                                                                      \
+typedef struct SafeArray##typeName                                                  \
 {                                                                                   \
     T* items;                                                                       \
     int width;                                                                      \

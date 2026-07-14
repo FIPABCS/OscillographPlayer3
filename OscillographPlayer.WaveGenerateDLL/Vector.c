@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-inline Direction GetDirection(int dX, int dY)
+Direction GetDirection(int dX, int dY)
 {
     if (!(dX || dY))
     {
