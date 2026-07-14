@@ -1,35 +1,37 @@
 #pragma once
 
-typedef struct
-{
-	unsigned char* items;
-	int width;
-	int height;
-} SafeArrayUchar;
+#define DefineSafeArray(T,typeName)                                                 \
+typedef struct                                                                      \
+{                                                                                   \
+    T* items;                                                                       \
+    int width;                                                                      \
+    int height;                                                                     \
+} SafeArray##typeName;                                                              \
+                                                                                    \
+static inline T Get##typeName(const SafeArray##typeName *array, int x, int y)       \
+{                                                                                   \
+    if (x < 0) { x = 0; }                                                           \
+    if (x >= array->width) { x = array->width - 1; }                                \
+                                                                                    \
+    if (y < 0) { y = 0; }                                                           \
+    if (y >= array->width) { y = array->width - 1; }                                \
+                                                                                    \
+    return array->items[y * array->width + x];                                      \
+                                                                                    \
+}                                                                                   \
+                                                                                    \
+static inline void Set##typeName(SafeArray##typeName *array, int x, int y, T value) \
+{                                                                                   \
+    if (x < 0) { x = 0; }                                                           \
+    if (x >= array->width) { x = array->width - 1; }                                \
+                                                                                    \
+    if (y < 0) { y = 0; }                                                           \
+    if (y >= array->width) { y = array->width - 1; }                                \
+                                                                                    \
+    array->items[y * array->width + x] = value;                                     \
+                                                                                    \
+    return;                                                                         \
+}                                                                                   \
 
-static inline unsigned char Get(SafeArrayUchar *array, int x, int y)
-{
-    x = x >= 0 ? x : 0;
-    x = x < array->width ? x : array->width - 1;
-
-    y = y >= 0 ? y : 0;
-    y = y < array->height ? y : array->height - 1;
-
-    return array->items[y * array->width + x];
-
-}
-
-static inline void Set(SafeArrayUchar *array, int x, int y, unsigned char value)
-{
-    x = x >= 0 ? x : 0;
-    x = x < array->width ? x : array->width - 1;
-
-    y = y >= 0 ? y : 0;
-    y = y < array->height ? y : array->height - 1;
-
-    array->items[y * array->width + x] = value;
-
-    return;
-}
-
-
+DefineSafeArray(unsigned char, UChar)
+DefineSafeArray(float, Float)

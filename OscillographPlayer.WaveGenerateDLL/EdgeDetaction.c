@@ -1,13 +1,13 @@
 #include "EdgeDetection.h"
+#include "NoiseReductionCore.h"
 #include "SafeArray.h"
 
-#include <math.h>
-#include <stdlib.h>
+#include <malloc.h>
 #include <stdbool.h>
 #include <stdint.h>
 
 //降噪
-static bool NoiseReduction(SafeArrayUchar* grayMap,const NoiseReductionCore* core)
+static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* core)
 {
 	int radius = core->radius;
 	int diameter = radius * 2 + 1;
@@ -16,7 +16,7 @@ static bool NoiseReduction(SafeArrayUchar* grayMap,const NoiseReductionCore* cor
 	int width = grayMap->width;
 	int height = grayMap->height;
 
-	SafeArrayUchar* horizonWeight = (SafeArrayUchar*)malloc((int64_t)(width * height) * sizeof(SafeArrayUchar));
+	SafeArrayFloat* horizonWeight = (SafeArrayFloat*)malloc((int64_t)(width * height) * sizeof(SafeArrayUChar));
 	if (!horizonWeight)
 	{
 		return false;
@@ -31,7 +31,7 @@ static bool NoiseReduction(SafeArrayUchar* grayMap,const NoiseReductionCore* cor
 		{
 			for (int xTP = 0; xTP < diameter; xTP++)
 			{
-				tempGray += Get(grayMap, x - radius + xTP, y) * weight[xTP];
+				tempGray += GetUChar(grayMap, x - radius + xTP, y) * weight[xTP];
 			}
 
 			if (tempGray < 0)
@@ -43,7 +43,7 @@ static bool NoiseReduction(SafeArrayUchar* grayMap,const NoiseReductionCore* cor
 				tempGray = 255;
 			}
 
-			Set(horizonWeight, x, y, (unsigned char)tempGray);
+			SetFloat(horizonWeight, x, y, tempGray);
 		}
 	}
 	for (int y = 0; y < height; y++)
@@ -52,7 +52,7 @@ static bool NoiseReduction(SafeArrayUchar* grayMap,const NoiseReductionCore* cor
 		{
 			for (int yTP = 0; yTP < diameter; yTP++)
 			{
-				tempGray += Get(grayMap, x , y - radius + yTP) * weight[yTP];
+				tempGray += GetFloat(horizonWeight, x , y - radius + yTP) * weight[yTP];
 			}
 
 			if (tempGray < 0)
@@ -64,7 +64,7 @@ static bool NoiseReduction(SafeArrayUchar* grayMap,const NoiseReductionCore* cor
 				tempGray = 255;
 			}
 
-			Set(grayMap, x, y, (unsigned char)tempGray);
+			SetUChar(grayMap, x, y, (unsigned char)tempGray);
 		}
 	}
 
