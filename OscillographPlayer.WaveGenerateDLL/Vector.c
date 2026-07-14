@@ -24,7 +24,7 @@ inline Direction GetDirection(int dX, int dY)
     }
     else if (dX * dY < 0)
     {
-        return rightdown;
+        return leftup;
     }
     else
     {

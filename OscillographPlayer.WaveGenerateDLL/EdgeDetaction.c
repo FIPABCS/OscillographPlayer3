@@ -11,6 +11,7 @@
 DefineSafeArray(unsigned char, UChar)
 DefineSafeArray(float, Float)
 DefineSafeArray(Vector,	Vect)
+DefineSafeArray(bool, Bool)
 
 //降噪
 static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* core)
@@ -81,6 +82,7 @@ static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* cor
 	return true;
 }
 
+//计算灰度梯度
 static void CalculateGradient(SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
 {
 	int width = grayMap->width;
@@ -104,6 +106,52 @@ static void CalculateGradient(SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
 			SetVect(gradMap, x, y, thisGradient);
 		}
 	}
+}
+
+//确认极值点
+static inline bool IsMaximum(SafeArrayVect* gradMap, int x, int y)
+{
+	switch (GetVect(gradMap, x, y).direction)
+	{
+	case none:
+		return false;
+	case right:
+		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y).value
+			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y).value;
+	case rightup:
+		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y - 1).value
+			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y + 1).value;
+	case up:
+		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x, y + 1).value
+			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x, y - 1).value;
+	case leftup:
+		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y - 1).value
+			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y + 1).value;
+	}
+}
+
+//非极值点抑制
+static void NonMaximumInhibit(SafeArrayVect* gradMap, SafeArrayUChar* grayMap)
+{
+	int width = grayMap->width;
+	int height = grayMap->height;
+
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			if (!IsMaximum(gradMap, x, y))
+			{
+				SetUChar(grayMap, x, y, 0);
+			}
+		}
+	}
+}
+
+//双阈值及非孤立弱边缘抑制
+static void Threshold(SafeArrayUChar grayMap, SafeArrayBool edgeMap, unsigned char highThreshold, unsigned char lowThreshold)
+{
+
 }
 
 //HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
