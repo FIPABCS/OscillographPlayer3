@@ -16,6 +16,6 @@
 
 #include "NoiseReductionCore.h"
 
-//HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char *grayMap, int width, int height,
-//	float sigma, unsigned char lowThreshold, unsigned char highThreshold,
-//	const NoiseReductionCore* noiseReductionCore);
+HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char *grayMap, int width, int height,
+	float sigma, unsigned char lowThreshold, unsigned char highThreshold,
+	const NoiseReductionCore* noiseReductionCore);

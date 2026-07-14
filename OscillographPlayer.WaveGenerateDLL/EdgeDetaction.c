@@ -183,9 +183,10 @@ static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, uns
 	}
 }
 
-//HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
-//	float sigma, unsigned char lowThreshold, unsigned char highThreshold)
-//{
-//
-//}
+HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
+	float sigma, unsigned char lowThreshold, unsigned char highThreshold,
+	const NoiseReductionCore* noiseReductionCore)
+{
+
+}
 
