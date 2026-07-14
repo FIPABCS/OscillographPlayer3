@@ -82,6 +82,24 @@ static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* cor
 	return true;
 }
 
+//缩小
+static void Shrink(SafeArrayUChar* grayMap, float skip)
+{
+	int width = grayMap->width;
+	int height = grayMap->height;
+
+	int newWidth = 1, newHeight = 1;
+	for (int xNew=0,xOld=0; xOld * skip < height; xNew++,xOld=xNew*skip)
+	{
+		for (int yNew=0,yOld=0; xOld * skip < width; yNew++,yOld=yNew*skip)
+		{
+			SetUChar(grayMap, xNew, yNew, GetUChar(grayMap, xOld, yOld));
+		}
+	}
+
+	return;
+}
+
 //计算灰度梯度
 static void CalculateGradient(const SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
 {
@@ -106,6 +124,8 @@ static void CalculateGradient(const SafeArrayUChar* grayMap,SafeArrayVect* gradM
 			SetVect(gradMap, x, y, thisGradient);
 		}
 	}
+
+	return;
 }
 
 //确认极值点
@@ -128,6 +148,8 @@ static inline bool IsMaximum(const SafeArrayVect* gradMap, int x, int y)
 		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y - 1).value
 			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y + 1).value;
 	}
+
+	return;
 }
 
 //非极值点抑制
@@ -146,6 +168,8 @@ static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUChar* gray
 			}
 		}
 	}
+
+	return;
 }
 
 //双阈值及非孤立弱边缘抑制
@@ -181,6 +205,8 @@ static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, uns
 			}
 		}
 	}
+
+	return;
 }
 
 HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
