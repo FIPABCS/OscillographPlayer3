@@ -83,7 +83,7 @@ static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* cor
 }
 
 //计算灰度梯度
-static void CalculateGradient(SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
+static void CalculateGradient(const SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
@@ -109,7 +109,7 @@ static void CalculateGradient(SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
 }
 
 //确认极值点
-static inline bool IsMaximum(SafeArrayVect* gradMap, int x, int y)
+static inline bool IsMaximum(const SafeArrayVect* gradMap, int x, int y)
 {
 	switch (GetVect(gradMap, x, y).direction)
 	{
@@ -131,7 +131,7 @@ static inline bool IsMaximum(SafeArrayVect* gradMap, int x, int y)
 }
 
 //非极值点抑制
-static void NonMaximumInhibit(SafeArrayVect* gradMap, SafeArrayUChar* grayMap)
+static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUChar* grayMap)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
@@ -149,9 +149,38 @@ static void NonMaximumInhibit(SafeArrayVect* gradMap, SafeArrayUChar* grayMap)
 }
 
 //双阈值及非孤立弱边缘抑制
-static void Threshold(SafeArrayUChar grayMap, SafeArrayBool edgeMap, unsigned char highThreshold, unsigned char lowThreshold)
+static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, unsigned char highThreshold, unsigned char lowThreshold)
 {
+	int width = grayMap->width;
+	int height = grayMap->height;
 
+	unsigned char thisGray = 0;
+	unsigned char xTP[8] = { 0,1,1,1,0,-1,-1,-1 };
+	unsigned char yTP[8] = { 1,1,0,-1,-1,-1,0,1 };
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			thisGray = GetUChar(grayMap, x, y);
+
+			if (thisGray >= highThreshold) { SetBool(edgeMap, x, y, true); }
+			else if (thisGray <= lowThreshold) { SetBool(edgeMap, x, y, true); }
+			else
+			{
+				for (int i = 0; i < 8; i++)
+				{
+					if (GetUChar(grayMap, x + xTP[i], y + yTP[i]) >= highThreshold)
+					{
+						SetBool(edgeMap, x, y, false);
+					}
+					else
+					{
+						SetBool(edgeMap, x, y, true);
+					}
+				}
+			}
+		}
+	}
 }
 
 //HEAD unsigned char* CallingConvertion EdgeDetection(unsigned char* grayMap, int width, int height,
