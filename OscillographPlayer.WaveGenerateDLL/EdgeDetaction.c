@@ -98,7 +98,7 @@ static void CalculateGradient(SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
 			dY = (GetUChar(grayMap, x + 1, y + 1) + 2 * GetUChar(grayMap, x, y + 1) + GetUChar(grayMap, x - 1, y + 1))
 				- (GetUChar(grayMap, x + 1, y - 1) + 2 * GetUChar(grayMap, x, y - 1) + GetUChar(grayMap, x - 1, y - 1));
 
-			thisGradient.value = (unsigned char)(sqrtf((dX * dX) + (dY * dY)) / 4);
+			thisGradient.value = (unsigned char)(sqrtf((float)((dX * dX) + (dY * dY))) / 4);
 			thisGradient.direction = GetDirection(dX, dY);
 
 			SetVect(gradMap, x, y, thisGradient);
