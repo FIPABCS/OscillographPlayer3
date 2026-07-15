@@ -1,4 +1,4 @@
-﻿namespace OscillographPlayer.WaveGenerateDLLSharp
+﻿namespace OscillographPlayer.WaveGenerateLib
 {
     public class WaveGenerate
     {
