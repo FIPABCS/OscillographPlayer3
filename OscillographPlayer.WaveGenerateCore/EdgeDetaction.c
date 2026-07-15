@@ -1,12 +1,13 @@
 #include "EdgeDetection.h"
 #include "NoiseReductionCore.h"
 #include "Vector.h"
+#include "SafeArray.h"
 
 #include <malloc.h>
 #include <stdint.h>
 #include <math.h>
+#include <stdbool.h>
 
-#include "SafeArray.h"
 DefineSafeArray(unsigned char, UChar)
 DefineSafeArray(float, Float)
 DefineSafeArray(Vector,	Vect)
