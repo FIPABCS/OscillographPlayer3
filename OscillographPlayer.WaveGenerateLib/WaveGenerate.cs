@@ -24,6 +24,26 @@ namespace OscillographPlayer.WaveGenerateLib
             bool[] edgeImageFlat = new bool[width * height];
 
             EdgeDetectionUnsafe(FlatMap<byte>(ref grayImage), width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
+            if (edgeImageFlat == null)
+            {
+                throw new Exception("Fail to get new map.");
+            }
+
+            return BulidMap<bool>(ref edgeImageFlat, widthNew, heightNew);
+        }
+
+        public static bool[,] EdgeDetectionImage(byte[] grayImageFlat, int width,int height, float stepLength, byte lowThreshold, byte highThreshold)
+        {
+            int widthNew = (int)(width / stepLength) + 1,
+                heightNew = (int)(height / stepLength) + 1;
+
+            bool[] edgeImageFlat = new bool[width * height];
+
+            EdgeDetectionUnsafe(grayImageFlat, width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
+            if(edgeImageFlat==null)
+            {
+                throw new Exception("Fail to get new map.");
+            }
 
             return BulidMap<bool>(ref edgeImageFlat, widthNew, heightNew);
         }

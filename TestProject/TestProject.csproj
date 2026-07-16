@@ -12,4 +12,8 @@
     <PackageReference Include="FFMediaToolkit" Version="4.8.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OscillographPlayer.WaveGenerateLib\OscillographPlayer.WaveGenerateLib.csproj" />
+  </ItemGroup>
+
 </Project>

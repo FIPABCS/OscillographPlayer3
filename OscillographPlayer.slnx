@@ -11,5 +11,7 @@
   <Project Path="OscillographPlayer/OscillographPlayer.csproj">
     <BuildDependency Project="OscillographPlayer.WaveGenerateLib/OscillographPlayer.WaveGenerateLib.csproj" />
   </Project>
-  <Project Path="TestProject/TestProject.csproj" />
+  <Project Path="TestProject/TestProject.csproj">
+    <BuildDependency Project="OscillographPlayer.WaveGenerateLib/OscillographPlayer.WaveGenerateLib.csproj" />
+  </Project>
 </Solution>
