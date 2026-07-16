@@ -1,12 +1,15 @@
 ﻿using FFMediaToolkit;
-using FFMediaToolkit.Graphics;
 using FFMediaToolkit.Decoding;
+using FFMediaToolkit.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace TestProject
 {
-    internal class VideoReadTest
+    internal class VideoLoadTest
     {
-        static void Main()
+        internal static void LoadAndPrintVideoFrames()
         {
             FFmpegLoader.FFmpegPath = @"D:\05.Code\.Process\OscillographPlayer\ffmpeg\bin\";
             var mediaOption = new MediaOptions() { VideoPixelFormat = ImagePixelFormat.Gray8 };
@@ -16,11 +19,17 @@ namespace TestProject
             Console.WriteLine(string.Join(Environment.NewLine, Directory.GetFiles(FFmpegLoader.FFmpegPath, "*.dll")));
 
             var testVideo = MediaFile.Open(videoPath, mediaOption);
-
-            for (int second = 0; second!=-1;)
+            int second;
+            string? buffer;
+            while (true)
             {
                 Console.WriteLine("Enter the second:");
-                second = int.Parse(Console.ReadLine());
+                buffer=Console.ReadLine();
+                if(buffer == null)
+                {
+                    break;
+                }
+                second = int.Parse(buffer);
 
                 ImageData frame = testVideo.Video.GetFrame(TimeSpan.FromSeconds(second));
 
@@ -33,20 +42,20 @@ namespace TestProject
 
                 for (int y = 0; y < height; y++)
                 {
-                    for(int x=0;x<width;x++)
+                    for (int x = 0; x < width; x++)
                     {
-                        byte buf = 0;
+                        byte buf;
                         buf = pixData[y * width + x];
 
                         grayMap[y, x] = buf > 128;
                     }
                 }
 
-                for(int y=0;y<height;y++)
+                for (int y = 0; y < height; y++)
                 {
-                    for(int x=0;x<width;x++)
+                    for (int x = 0; x < width; x++)
                     {
-                        Console.Write("{0}{1}", grayMap[y,x]?'1':'0',x==width-1?'\n':' ');
+                        Console.Write("{0}{1}", grayMap[y, x] ? '1' : '0', x == width - 1 ? '\n' : ' ');
                     }
                 }
             }
