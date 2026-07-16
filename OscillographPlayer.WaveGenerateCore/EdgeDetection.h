@@ -17,4 +17,4 @@
 #include <stdbool.h>
 
 HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
-	float skip, unsigned char lowThreshold, unsigned char highThreshold);
+	float stepLength, unsigned char lowThreshold, unsigned char highThreshold);

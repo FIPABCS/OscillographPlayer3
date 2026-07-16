@@ -1,5 +1,4 @@
 #include "EdgeDetection.h"
-#include "NoiseReductionCore.h"
 #include "Vector.h"
 #include "SafeArray.h"
 
@@ -171,20 +170,20 @@ static bool NoiseReductionTriangle(SafeArrayUChar* grayMap, int radius)
 }
 
 //缩小
-static void Shrink(SafeArrayUChar* grayMap, float step)
+static void Shrink(SafeArrayUChar* grayMap, float stepLength)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
 
 	int xNew = 0, yNew = 0;
-	for (int yOld = 0; yOld * step < height; yNew++)
+	for (int yOld = 0; yOld * stepLength < height; yNew++)
 	{
-		yOld = (int)(yNew * step);
+		yOld = (int)(yNew * stepLength);
 		xNew = 0;
 
-		for (int xOld = 0; xOld * step < width; xNew++)
+		for (int xOld = 0; xOld * stepLength < width; xNew++)
 		{
-			xOld = (int)(xNew * step);
+			xOld = (int)(xNew * stepLength);
 
 			SetUChar(grayMap, xNew, yNew, GetUChar(grayMap, xOld, yOld));
 		}
@@ -306,18 +305,18 @@ static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, uns
 }
 
 HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
-	float shrinkRate, unsigned char lowThreshold, unsigned char highThreshold)
+	float stepLength, unsigned char lowThreshold, unsigned char highThreshold)
 {
-	float sigma = shrinkRate / 2;
+	//float sigma = shrinkRate / 2;
 
 	SafeArrayUChar grayMap = { grayImage,width,height };
 
-	if (!NoiseReductionTriangle(&grayMap, (int)(3 * shrinkRate / 2)))
+	if (!NoiseReductionTriangle(&grayMap, (int)(stepLength * 3 / 2)))
 	{
 		return NULL;
 	}
 
-	Shrink(&grayMap, shrinkRate);
+	Shrink(&grayMap, stepLength);
 
 	Vector* gradArray = (Vector*)malloc((int64_t)(width * height) * sizeof(Vector));
 	if (!gradArray)

@@ -9,18 +9,61 @@ namespace OscillographPlayer.WaveGenerateLib
         private static partial void EdgeDetectionUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] grayImage, 
-            int width, int height, float skip, byte lowThreshold, byte highThreshold,
+            int width, int height, float stepLength, byte lowThreshold, byte highThreshold,
             [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             bool[] edgeMap
         );
 
-        public static bool[,] EdgeDetectionImage(byte[,] grayImage,float skip,byte lowThreshold,byte highThreshold)
+        public static bool[,] EdgeDetectionImage(byte[,] grayImage,float stepLength,byte lowThreshold,byte highThreshold)
         {
-            throw new NotImplementedException();
+            int width = grayImage.GetLength(1),
+                height = grayImage.GetLength(0),
+                widthNew = (int)(width / stepLength) + 1,
+                heightNew = (int)(height / stepLength) + 1;
 
-            int width = grayImage.GetLength(0), height = grayImage.GetLength(1);
+            bool[] edgeImageFlat = new bool[width * height];
 
+            EdgeDetectionUnsafe(FlatMap<byte>(ref grayImage), width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
 
+            return BulidMap<bool>(ref edgeImageFlat, widthNew, heightNew);
+        }
+
+        private static T[] FlatMap<T>(ref T[,] map)
+        {
+            int width = map.GetLength(1),
+                height = map.GetLength(0);
+
+            T[] flatMap = new T[width * height];
+
+            for(int y=0,i=0;y<height;y++)
+            {
+                for(int x=0;x<width;x++,i++)
+                {
+                    flatMap[i] = map[y, x];
+                }
+            }
+
+            return flatMap;
+        }
+
+        private static T[,] BulidMap<T>(ref T[] flatMap,int  width,int height)
+        {
+            if(flatMap.Length!=width*height)
+            {
+                throw new Exception("Can not build map int this size.");
+            }
+
+            T[,] map = new T[height, width];
+
+            for (int y = 0, i = 0; y < height; y++)
+            {
+                for (int x = 0; x < width; x++, i++)
+                {
+                    map[y, x] = flatMap[i];
+                }
+            }
+
+            return map;
         }
     }
 }
