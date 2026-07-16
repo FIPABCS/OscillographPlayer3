@@ -12,14 +12,23 @@ namespace OscillographPlayer.WaveGenerateLib
             private int radius;
         };
 
-        [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "EdgeDetection")]
+        [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "EdgeDetectionImage")]
         private static partial void EdgeDetectionUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] grayImage, 
             int width, int height,
             float skip, byte lowThreshold, byte highThreshold,
             [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
-            byte[] edgeMap
+            bool[] edgeMap
         );
+
+        public static bool[,] EdgeDetectionImage(byte[,] grayImage,float skip,byte lowThreshold,byte highThreshold)
+        {
+            throw new NotImplementedException();
+
+            int width = grayImage.GetLength(0), height = grayImage.GetLength(1);
+
+
+        }
     }
 }
