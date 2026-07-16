@@ -13,71 +13,159 @@ DefineSafeArray(float, Float)
 DefineSafeArray(Vector,	Vect)
 DefineSafeArray(bool, Bool)
 
-//降噪
-static bool NoiseReduction(SafeArrayUChar* grayMap,const NoiseReductionCore* core)
-{
-	int radius = core->radius;
-	int diameter = radius * 2 + 1;
-	float* weight = core->weight;
+//降噪（高斯模糊）
+//static bool NoiseReductionGaussian(SafeArrayUChar* grayMap,const NoiseReductionCore* core)
+//{
+//	int radius = core->radius;
+//	int diameter = radius * 2 + 1;
+//	float* weight = core->weight;
+//
+//	int width = grayMap->width;
+//	int height = grayMap->height;
+//
+//	SafeArrayFloat* horizonWeight = (SafeArrayFloat*)malloc((int64_t)(width * height) * sizeof(SafeArrayUChar));
+//	if (!horizonWeight)
+//	{
+//		return false;
+//	}
+//	horizonWeight->width = width;
+//	horizonWeight->height = height;
+//
+//	float tempGray = 0;
+//	for (int y = 0; y < height; y++)
+//	{
+//		for (int x = 0; x < width; x++)
+//		{
+//			for (int xTP = 0; xTP < diameter; xTP++)
+//			{
+//				tempGray += GetUChar(grayMap, x - radius + xTP, y) * weight[xTP];
+//			}
+//
+//			if (tempGray < 0)
+//			{
+//				tempGray = 0;
+//			}
+//			else if(tempGray > 255)
+//			{
+//				tempGray = 255;
+//			}
+//
+//			SetFloat(horizonWeight, x, y, tempGray);
+//		}
+//	}
+//	for (int y = 0; y < height; y++)
+//	{
+//		for (int x = 0; x < width; x++)
+//		{
+//			for (int yTP = 0; yTP < diameter; yTP++)
+//			{
+//				tempGray += GetFloat(horizonWeight, x , y - radius + yTP) * weight[yTP];
+//			}
+//
+//			if (tempGray < 0)
+//			{
+//				tempGray = 0;
+//			}
+//			else if (tempGray > 255)
+//			{
+//				tempGray = 255;
+//			}
+//
+//			SetUChar(grayMap, x, y, (unsigned char)tempGray);
+//		}
+//	}
+//
+//	free(horizonWeight);
+//	horizonWeight = NULL;
+//	weight = NULL;
+//
+//	return true;
+//}
 
+//降噪（三角模糊）
+static bool NoiseReductionTriangle(SafeArrayUChar* grayMap, int radius)
+{
 	int width = grayMap->width;
 	int height = grayMap->height;
 
-	SafeArrayFloat* horizonWeight = (SafeArrayFloat*)malloc((int64_t)(width * height) * sizeof(SafeArrayUChar));
-	if (!horizonWeight)
+	const int maxRadius = 2895;
+	radius = radius <= maxRadius ? radius : maxRadius;
+	int maxPixelNum = (radius + 1) * (radius + 1);
+
+	int weightSum = 0, outSum = 0, inSum = 0;
+	unsigned char* horizonWeightArray = (unsigned char*)malloc((int64_t)(width * height) * sizeof(unsigned char));
+	if (!horizonWeightArray)
 	{
 		return false;
 	}
-	horizonWeight->width = width;
-	horizonWeight->height = height;
 
-	float tempGray = 0;
+	SafeArrayUChar horizonWeight = { horizonWeightArray,width,height };
 	for (int y = 0; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		weightSum = outSum = inSum = 0;
+		for (int xTP = -radius; xTP <= radius; xTP++)
 		{
-			for (int xTP = 0; xTP < diameter; xTP++)
+			weightSum += GetUChar(grayMap,xTP,y) * (radius - abs(xTP) + 1);
+			if (xTP <= 0)
 			{
-				tempGray += GetUChar(grayMap, x - radius + xTP, y) * weight[xTP];
+				outSum += GetUChar(grayMap, xTP, y);
 			}
-
-			if (tempGray < 0)
+			else
 			{
-				tempGray = 0;
+				inSum += GetUChar(grayMap, xTP, y);
 			}
-			else if(tempGray > 255)
-			{
-				tempGray = 255;
-			}
-
-			SetFloat(horizonWeight, x, y, tempGray);
 		}
-	}
-	for (int y = 0; y < height; y++)
-	{
+
 		for (int x = 0; x < width; x++)
 		{
-			for (int yTP = 0; yTP < diameter; yTP++)
-			{
-				tempGray += GetFloat(horizonWeight, x , y - radius + yTP) * weight[yTP];
-			}
+			SetUChar(&horizonWeight, x, y, weightSum / maxPixelNum);
 
-			if (tempGray < 0)
-			{
-				tempGray = 0;
-			}
-			else if (tempGray > 255)
-			{
-				tempGray = 255;
-			}
+			inSum += GetUChar(grayMap, x + radius + 1, y);
 
-			SetUChar(grayMap, x, y, (unsigned char)tempGray);
+			weightSum -= outSum;
+			weightSum += inSum;
+
+			outSum += GetUChar(grayMap, x + 1, y);
+
+			outSum -= GetUChar(grayMap, x - radius, y);
+			inSum -= GetUChar(grayMap, x + 1, y);
 		}
 	}
 
-	free(horizonWeight);
-	horizonWeight = NULL;
-	weight = NULL;
+	for (int x = 0; x < width; x++)
+	{
+		weightSum = outSum = inSum = 0;
+		for (int yTP = -radius; yTP <= radius; yTP++)
+		{
+			weightSum += GetUChar(&horizonWeight, x, yTP) * (radius - abs(yTP) + 1);
+			if (yTP <= 0)
+			{
+				outSum += GetUChar(&horizonWeight, x, yTP);
+			}
+			else
+			{
+				inSum += GetUChar(&horizonWeight, x, yTP);
+			}
+		}
+
+		for (int y = 0; y < height; y++)
+		{
+			SetUChar(grayMap, x, y, weightSum / maxPixelNum);
+
+			inSum += GetUChar(&horizonWeight, x, y + radius + 1);
+
+			weightSum -= outSum;
+			weightSum += inSum;
+
+			outSum += GetUChar(&horizonWeight, x, y + 1);
+
+			outSum -= GetUChar(&horizonWeight, x, y - radius);
+			inSum -= GetUChar(&horizonWeight, x, y + 1);
+		}
+	}
+
+	free(horizonWeightArray);
+	horizonWeightArray = NULL;
 
 	return true;
 }
@@ -218,14 +306,13 @@ static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, uns
 }
 
 HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
-	float shrinkRate, unsigned char lowThreshold, unsigned char highThreshold,
-	const NoiseReductionCore* noiseReductionCore)
+	float shrinkRate, unsigned char lowThreshold, unsigned char highThreshold)
 {
 	float sigma = shrinkRate / 2;
 
 	SafeArrayUChar grayMap = { grayImage,width,height };
 
-	if (!NoiseReduction(&grayMap, noiseReductionCore))
+	if (!NoiseReductionTriangle(&grayMap, (int)(3 * shrinkRate / 2)))
 	{
 		return NULL;
 	}

@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="EdgeDetection.h" />
-    <ClInclude Include="NoiseReductionCore.h" />
     <ClInclude Include="SafeArray.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>

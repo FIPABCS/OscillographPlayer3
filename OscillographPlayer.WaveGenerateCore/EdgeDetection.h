@@ -14,9 +14,7 @@
 
 #define CallingConvertion _stdcall
 
-#include "NoiseReductionCore.h"
 #include <stdbool.h>
 
 HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
-	float skip, unsigned char lowThreshold, unsigned char highThreshold,
-	const NoiseReductionCore* noiseReductionCore);
+	float skip, unsigned char lowThreshold, unsigned char highThreshold);
