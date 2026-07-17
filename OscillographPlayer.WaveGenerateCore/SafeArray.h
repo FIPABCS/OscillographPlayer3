@@ -14,7 +14,7 @@ static inline T Get##typeName(const SafeArray##typeName *array, int x, int y)   
     if (x >= array->width) { x = array->width - 1; }                                \
                                                                                     \
     if (y < 0) { y = 0; }                                                           \
-    if (y >= array->width) { y = array->width - 1; }                                \
+    if (y >= array->height) { y = array->height - 1; }                              \
                                                                                     \
     return array->items[y * array->width + x];                                      \
                                                                                     \
@@ -26,7 +26,7 @@ static inline void Set##typeName(SafeArray##typeName *array, int x, int y, T val
     if (x >= array->width) { x = array->width - 1; }                                \
                                                                                     \
     if (y < 0) { y = 0; }                                                           \
-    if (y >= array->width) { y = array->width - 1; }                                \
+    if (y >= array->height) { y = array->height - 1; }                              \
                                                                                     \
     array->items[y * array->width + x] = value;                                     \
                                                                                     \

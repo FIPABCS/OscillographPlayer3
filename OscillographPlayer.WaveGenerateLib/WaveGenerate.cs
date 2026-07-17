@@ -1,27 +1,29 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace OscillographPlayer.WaveGenerateLib
 {
     public partial class WaveGenerate
     {
-        [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "EdgeDetectionImage")]
+        [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvStdcall) })]
+        [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "EdgeDetection")]
         private static partial void EdgeDetectionUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] grayImage, 
             int width, int height, float stepLength, byte lowThreshold, byte highThreshold,
             [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
-            bool[] edgeMap
+            byte[] edgeMap
         );
 
-        public static bool[,] EdgeDetectionImage(byte[,] grayImage,float stepLength,byte lowThreshold,byte highThreshold)
+        public static byte[,] EdgeDetectionImage(byte[,] grayImage,float stepLength,byte lowThreshold,byte highThreshold)
         {
             int width = grayImage.GetLength(1),
                 height = grayImage.GetLength(0),
-                widthNew = (int)(width / stepLength) + 1,
-                heightNew = (int)(height / stepLength) + 1;
+                widthNew = (int)(width / stepLength),
+                heightNew = (int)(height / stepLength);
 
-            bool[] edgeImageFlat = new bool[width * height];
+            byte[] edgeImageFlat = new byte[widthNew * heightNew];
 
             EdgeDetectionUnsafe(FlatMap<byte>(ref grayImage), width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
             if (edgeImageFlat == null)
@@ -29,23 +31,19 @@ namespace OscillographPlayer.WaveGenerateLib
                 throw new Exception("Fail to get new map.");
             }
 
-            return BulidMap<bool>(ref edgeImageFlat, widthNew, heightNew);
+            return BulidMap<byte>(ref edgeImageFlat, widthNew, heightNew);
         }
 
-        public static bool[,] EdgeDetectionImage(byte[] grayImageFlat, int width,int height, float stepLength, byte lowThreshold, byte highThreshold)
+        public static byte[,] EdgeDetectionImage(byte[] grayImageFlat, int width,int height, float stepLength, byte lowThreshold, byte highThreshold)
         {
-            int widthNew = (int)(width / stepLength) + 1,
-                heightNew = (int)(height / stepLength) + 1;
+            int widthNew = (int)(width / stepLength),
+                heightNew = (int)(height / stepLength);
 
-            bool[] edgeImageFlat = new bool[width * height];
+            byte[] edgeImageFlat = new byte[widthNew * heightNew];
 
             EdgeDetectionUnsafe(grayImageFlat, width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
-            if(edgeImageFlat==null)
-            {
-                throw new Exception("Fail to get new map.");
-            }
 
-            return BulidMap<bool>(ref edgeImageFlat, widthNew, heightNew);
+            return BulidMap<byte>(ref edgeImageFlat, widthNew, heightNew);
         }
 
         private static T[] FlatMap<T>(ref T[,] map)

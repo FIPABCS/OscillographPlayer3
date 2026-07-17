@@ -26,7 +26,7 @@ namespace TestProject.WaveGenerateLibTest
             {
                 Console.WriteLine("Enter the second:");
                 buffer = Console.ReadLine();
-                if (buffer == null)
+                if (string.IsNullOrWhiteSpace(buffer))
                 {
                     break;
                 }
@@ -37,18 +37,25 @@ namespace TestProject.WaveGenerateLibTest
                 int width = frame.ImageSize.Width;
 
                 //在此处获取帧像素数据
-                byte[] pixData = frame.Data.ToArray();
+                byte[] pixDataBuf = frame.Data.ToArray();
+                byte[] pixData = new byte[width * height];
+                for(int i=0;i<width*height;i++)
+                {
+                    pixData[i] = pixDataBuf[i];
+                }
 
-                var edgeMap = WaveGenerate.EdgeDetectionImage(pixData, width, height, 1, 32, 128);
+                var edgeMap = WaveGenerate.EdgeDetectionImage(pixData, width, height, 1.0f, 32, 128);
 
                 for (int y = 0; y < edgeMap.GetLength(0); y++)
                 {
                     for(int x=0;x<edgeMap.GetLength(1);x++)
                     {
-                        Console.Write("{0}{1}", edgeMap[y, x] ? '1' : '0', x == width - 1 ? '\n' : ' ');
+                        Console.Write("{0}{1}", edgeMap[y, x] == 255 ? 'X' : '-', x == edgeMap.GetLength(1) - 1 ? '\n' : ' ');
                     }
                 }
             }
+
+            return;
         }
     }
 }

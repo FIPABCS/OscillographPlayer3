@@ -15,6 +15,7 @@
 #define CallingConvertion _stdcall
 
 #include <stdbool.h>
+#include <stdint.h>
 
-HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
-	float stepLength, unsigned char lowThreshold, unsigned char highThreshold);
+HEAD void CallingConvertion EdgeDetection(uint8_t* grayImage, int width, int height,
+	float stepLength, uint8_t lowThreshold, uint8_t highThreshold, uint8_t* edgeArray);

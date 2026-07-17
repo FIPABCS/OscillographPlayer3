@@ -7,13 +7,20 @@
 #include <math.h>
 #include <stdbool.h>
 
-DefineSafeArray(unsigned char, UChar)
+//Debug
+#include <stdio.h>
+//Debug/
+
+#define LowGray 0
+#define HighGray 255
+
+DefineSafeArray(uint8_t, UInt8)
 DefineSafeArray(float, Float)
 DefineSafeArray(Vector,	Vect)
 DefineSafeArray(bool, Bool)
 
 //降噪（高斯模糊）
-//static bool NoiseReductionGaussian(SafeArrayUChar* grayMap,const NoiseReductionCore* core)
+//static bool NoiseReductionGaussian(SafeArrayUInt8* grayMap,const NoiseReductionCore* core)
 //{
 //	int radius = core->radius;
 //	int diameter = radius * 2 + 1;
@@ -22,7 +29,7 @@ DefineSafeArray(bool, Bool)
 //	int width = grayMap->width;
 //	int height = grayMap->height;
 //
-//	SafeArrayFloat* horizonWeight = (SafeArrayFloat*)malloc((int64_t)(width * height) * sizeof(SafeArrayUChar));
+//	SafeArrayFloat* horizonWeight = (SafeArrayFloat*)malloc((int64_t)(width * height) * sizeof(SafeArrayUInt8));
 //	if (!horizonWeight)
 //	{
 //		return false;
@@ -37,7 +44,7 @@ DefineSafeArray(bool, Bool)
 //		{
 //			for (int xTP = 0; xTP < diameter; xTP++)
 //			{
-//				tempGray += GetUChar(grayMap, x - radius + xTP, y) * weight[xTP];
+//				tempGray += GetUInt8(grayMap, x - radius + xTP, y) * weight[xTP];
 //			}
 //
 //			if (tempGray < 0)
@@ -70,7 +77,7 @@ DefineSafeArray(bool, Bool)
 //				tempGray = 255;
 //			}
 //
-//			SetUChar(grayMap, x, y, (unsigned char)tempGray);
+//			SetUInt8(grayMap, x, y, (uint8_t)tempGray);
 //		}
 //	}
 //
@@ -82,7 +89,7 @@ DefineSafeArray(bool, Bool)
 //}
 
 //降噪（三角模糊）
-static bool NoiseReductionTriangle(SafeArrayUChar* grayMap, int radius)
+static bool NoiseReductionTriangle(SafeArrayUInt8* grayMap, int radius)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
@@ -92,42 +99,42 @@ static bool NoiseReductionTriangle(SafeArrayUChar* grayMap, int radius)
 	int maxPixelNum = (radius + 1) * (radius + 1);
 
 	int weightSum = 0, outSum = 0, inSum = 0;
-	unsigned char* horizonWeightArray = (unsigned char*)malloc((int64_t)(width * height) * sizeof(unsigned char));
+	float* horizonWeightArray = (float*)malloc((int64_t)(width * height) * sizeof(float));
 	if (!horizonWeightArray)
 	{
 		return false;
 	}
 
-	SafeArrayUChar horizonWeight = { horizonWeightArray,width,height };
+	SafeArrayFloat horizonWeight = { horizonWeightArray,width,height };
 	for (int y = 0; y < height; y++)
 	{
 		weightSum = outSum = inSum = 0;
 		for (int xTP = -radius; xTP <= radius; xTP++)
 		{
-			weightSum += GetUChar(grayMap,xTP,y) * (radius - abs(xTP) + 1);
+			weightSum += GetUInt8(grayMap,xTP,y) * (radius - abs(xTP) + 1);
 			if (xTP <= 0)
 			{
-				outSum += GetUChar(grayMap, xTP, y);
+				outSum += GetUInt8(grayMap, xTP, y);
 			}
 			else
 			{
-				inSum += GetUChar(grayMap, xTP, y);
+				inSum += GetUInt8(grayMap, xTP, y);
 			}
 		}
 
 		for (int x = 0; x < width; x++)
 		{
-			SetUChar(&horizonWeight, x, y, weightSum / maxPixelNum);
+			SetFloat(&horizonWeight, x, y, (float)weightSum / (float)maxPixelNum);
 
-			inSum += GetUChar(grayMap, x + radius + 1, y);
+			inSum += GetUInt8(grayMap, x + radius + 1, y);
 
 			weightSum -= outSum;
 			weightSum += inSum;
 
-			outSum += GetUChar(grayMap, x + 1, y);
+			outSum += GetUInt8(grayMap, x + 1, y);
 
-			outSum -= GetUChar(grayMap, x - radius, y);
-			inSum -= GetUChar(grayMap, x + 1, y);
+			outSum -= GetUInt8(grayMap, x - radius, y);
+			inSum -= GetUInt8(grayMap, x + 1, y);
 		}
 	}
 
@@ -136,30 +143,30 @@ static bool NoiseReductionTriangle(SafeArrayUChar* grayMap, int radius)
 		weightSum = outSum = inSum = 0;
 		for (int yTP = -radius; yTP <= radius; yTP++)
 		{
-			weightSum += GetUChar(&horizonWeight, x, yTP) * (radius - abs(yTP) + 1);
+			weightSum += (int)GetFloat(&horizonWeight, x, yTP) * (radius - abs(yTP) + 1);
 			if (yTP <= 0)
 			{
-				outSum += GetUChar(&horizonWeight, x, yTP);
+				outSum += (int)GetFloat(&horizonWeight, x, yTP);
 			}
 			else
 			{
-				inSum += GetUChar(&horizonWeight, x, yTP);
+				inSum += (int)GetFloat(&horizonWeight, x, yTP);
 			}
 		}
 
 		for (int y = 0; y < height; y++)
 		{
-			SetUChar(grayMap, x, y, weightSum / maxPixelNum);
+			SetUInt8(grayMap, x, y, weightSum / maxPixelNum);
 
-			inSum += GetUChar(&horizonWeight, x, y + radius + 1);
+			inSum += (int)GetFloat(&horizonWeight, x, y + radius + 1);
 
 			weightSum -= outSum;
 			weightSum += inSum;
 
-			outSum += GetUChar(&horizonWeight, x, y + 1);
+			outSum += (int)GetFloat(&horizonWeight, x, y + 1);
 
-			outSum -= GetUChar(&horizonWeight, x, y - radius);
-			inSum -= GetUChar(&horizonWeight, x, y + 1);
+			outSum -= (int)GetFloat(&horizonWeight, x, y - radius);
+			inSum -= (int)GetFloat(&horizonWeight, x, y + 1);
 		}
 	}
 
@@ -169,34 +176,36 @@ static bool NoiseReductionTriangle(SafeArrayUChar* grayMap, int radius)
 	return true;
 }
 
-//缩小
-static void Shrink(SafeArrayUChar* grayMap, float stepLength)
+//采样
+static void Sample(SafeArrayUInt8* grayMap, float stepLength)
 {
-	int width = grayMap->width;
-	int height = grayMap->height;
+	if (stepLength < 1) { stepLength = 1; }
+
+	int width = grayMap->width,
+		height = grayMap->height,
+		widthNew = (int)(width / stepLength);
+	uint8_t* grayArray = grayMap->items;
 
 	int xNew = 0, yNew = 0;
-	for (int yOld = 0; yOld * stepLength < height; yNew++)
+	for (int yOld = 0,indexNew=0; yOld < height; yNew++, yOld = (int)(yNew * stepLength))
 	{
-		yOld = (int)(yNew * stepLength);
 		xNew = 0;
-
-		for (int xOld = 0; xOld * stepLength < width; xNew++)
+		indexNew = widthNew * yNew;
+		for (int xOld = 0; xOld < width; xNew++,indexNew++, xOld = (int)(xNew * stepLength))
 		{
-			xOld = (int)(xNew * stepLength);
-
-			SetUChar(grayMap, xNew, yNew, GetUChar(grayMap, xOld, yOld));
+			grayArray[indexNew] = GetUInt8(grayMap, xOld, yOld);
+			//SetUInt8(grayMap, xNew, yNew, GetUInt8(grayMap, xOld, yOld));
 		}
 	}
 
-	grayMap->width = xNew + 1;
-	grayMap->height = yNew + 1;
+	grayMap->width = xNew;
+	grayMap->height = yNew;
 
 	return;
 }
 
 //计算灰度梯度
-static void CalculateGradient(const SafeArrayUChar* grayMap,SafeArrayVect* gradMap)
+static void CalculateGradient(const SafeArrayUInt8* grayMap,SafeArrayVect* gradMap)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
@@ -207,13 +216,13 @@ static void CalculateGradient(const SafeArrayUChar* grayMap,SafeArrayVect* gradM
 	{
 		for (int x = 0; x < width; x++)
 		{
-			dX = (GetUChar(grayMap, x + 1, y + 1) + 2 * GetUChar(grayMap, x + 1, y) + GetUChar(grayMap, x + 1, y - 1))
-				- (GetUChar(grayMap, x - 1, y + 1) + 2 * GetUChar(grayMap, x - 1, y) + GetUChar(grayMap, x - 1, y - 1));
+			dX = (GetUInt8(grayMap, x + 1, y + 1) + 2 * GetUInt8(grayMap, x + 1, y) + GetUInt8(grayMap, x + 1, y - 1))
+				- (GetUInt8(grayMap, x - 1, y + 1) + 2 * GetUInt8(grayMap, x - 1, y) + GetUInt8(grayMap, x - 1, y - 1));
 
-			dY = (GetUChar(grayMap, x + 1, y + 1) + 2 * GetUChar(grayMap, x, y + 1) + GetUChar(grayMap, x - 1, y + 1))
-				- (GetUChar(grayMap, x + 1, y - 1) + 2 * GetUChar(grayMap, x, y - 1) + GetUChar(grayMap, x - 1, y - 1));
+			dY = (GetUInt8(grayMap, x + 1, y - 1) + 2 * GetUInt8(grayMap, x, y - 1) + GetUInt8(grayMap, x - 1, y - 1))
+				- (GetUInt8(grayMap, x + 1, y + 1) + 2 * GetUInt8(grayMap, x, y + 1) + GetUInt8(grayMap, x - 1, y + 1));
 
-			thisGradient.value = (unsigned char)(sqrtf((float)((dX * dX) + (dY * dY))) / 4);
+			thisGradient.value = (uint8_t)fminf((float)HighGray, sqrtf((float)((dX * dX) + (dY * dY))) / 4.0f);
 			thisGradient.direction = GetDirection(dX, dY);
 
 			SetVect(gradMap, x, y, thisGradient);
@@ -231,35 +240,35 @@ static inline bool IsMaximum(const SafeArrayVect* gradMap, int x, int y)
 	case none:
 		return false;
 	case right:
-		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y).value
-			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y).value;
+		return GetVect(gradMap, x, y).value > GetVect(gradMap, x + 1, y).value
+			&& GetVect(gradMap, x, y).value > GetVect(gradMap, x - 1, y).value;
 	case rightup:
-		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y - 1).value
-			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y + 1).value;
+		return GetVect(gradMap, x, y).value > GetVect(gradMap, x + 1, y - 1).value
+			&& GetVect(gradMap, x, y).value > GetVect(gradMap, x - 1, y + 1).value;
 	case up:
-		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x, y + 1).value
-			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x, y - 1).value;
+		return GetVect(gradMap, x, y).value > GetVect(gradMap, x, y + 1).value
+			&& GetVect(gradMap, x, y).value > GetVect(gradMap, x, y - 1).value;
 	case leftup:
-		return GetVect(gradMap, x, y).value >= GetVect(gradMap, x - 1, y - 1).value
-			&& GetVect(gradMap, x, y).value >= GetVect(gradMap, x + 1, y + 1).value;
+		return GetVect(gradMap, x, y).value > GetVect(gradMap, x - 1, y - 1).value
+			&& GetVect(gradMap, x, y).value > GetVect(gradMap, x + 1, y + 1).value;
 	}
 
-	return none;
+	return false;
 }
 
 //非极值点抑制
-static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUChar* grayMap)
+static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUInt8* grayMap)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
 
-	for (int y = 0; y < height; y++)
+	for (int y = LowGray; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
 			if (!IsMaximum(gradMap, x, y))
 			{
-				SetUChar(grayMap, x, y, 0);
+				SetUInt8(grayMap, x, y, LowGray);
 			}
 		}
 	}
@@ -267,61 +276,85 @@ static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUChar* gray
 	return;
 }
 
-//双阈值及非孤立弱边缘抑制
-static void Threshold(const SafeArrayUChar* grayMap, SafeArrayBool* edgeMap, unsigned char highThreshold, unsigned char lowThreshold)
+//双阈值
+static void Threshold(SafeArrayUInt8* grayMap, uint8_t highThreshold, uint8_t lowThreshold)
 {
 	int width = grayMap->width;
 	int height = grayMap->height;
 
-	unsigned char thisGray = 0;
-	unsigned char xTP[8] = { 0,1,1,1,0,-1,-1,-1 };
-	unsigned char yTP[8] = { 1,1,0,-1,-1,-1,0,1 };
+	uint8_t thisGray = LowGray;
+	
 	for (int y = 0; y < height; y++)
 	{
 		for (int x = 0; x < width; x++)
 		{
-			thisGray = GetUChar(grayMap, x, y);
+			thisGray = GetUInt8(grayMap, x, y);
 
-			if (thisGray >= highThreshold) { SetBool(edgeMap, x, y, true); }
-			else if (thisGray <= lowThreshold) { SetBool(edgeMap, x, y, true); }
-			else
-			{
-				for (int i = 0; i < 8; i++)
-				{
-					if (GetUChar(grayMap, x + xTP[i], y + yTP[i]) >= highThreshold)
-					{
-						SetBool(edgeMap, x, y, false);
-					}
-					else
-					{
-						SetBool(edgeMap, x, y, true);
-					}
-				}
-			}
+			if (thisGray >= highThreshold) { SetUInt8(grayMap, x, y, HighGray); }
+			else if (thisGray <= lowThreshold) { SetUInt8(grayMap, x, y, LowGray); }
 		}
 	}
 
 	return;
 }
 
-HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, int height,
-	float stepLength, unsigned char lowThreshold, unsigned char highThreshold)
+//非孤立弱边缘抑制
+static void NonIndependentWeakEdgeInhibit(const SafeArrayUInt8* grayMap, SafeArrayUInt8* edgeMap)
+{
+	int width = grayMap->width;
+	int height = grayMap->height;
+
+	int xTP[8] = { 0,1,1,1,0,-1,-1,-1 };
+	int yTP[8] = { 1,1,0,-1,-1,-1,0,1 };
+	int isUsableWeakEdge = false;
+	uint8_t thisGray = LowGray;
+	for (int y = 0; y < height; y++)
+	{
+		for (int x = 0; x < width; x++)
+		{
+			thisGray = GetUInt8(grayMap, x, y);
+			if(thisGray!=LowGray&&thisGray!=HighGray)
+			{
+				isUsableWeakEdge = false;
+				for (int i = 0; i < 8; i++)
+				{
+					if (GetUInt8(grayMap, x + xTP[i], y + yTP[i]) == HighGray)
+					{
+						isUsableWeakEdge = true;
+						break;
+					}
+				}
+				SetUInt8(edgeMap, x, y, isUsableWeakEdge ? HighGray : LowGray);
+			}
+			else
+			{
+				SetUInt8(edgeMap, x, y, thisGray);
+			}
+		}
+	}
+}
+
+
+HEAD void CallingConvertion EdgeDetection(uint8_t* grayImage, int width, int height,
+	float stepLength, uint8_t lowThreshold, uint8_t highThreshold, uint8_t* edgeArray)
 {
 	//float sigma = shrinkRate / 2;
 
-	SafeArrayUChar grayMap = { grayImage,width,height };
+	SafeArrayUInt8 grayMap = { grayImage,width,height };
 
-	if (!NoiseReductionTriangle(&grayMap, (int)(stepLength * 3 / 2)))
+	if (!NoiseReductionTriangle(&grayMap, (int)(3 * sqrtf(stepLength / 2))))
 	{
-		return NULL;
+		return;
 	}
 
-	Shrink(&grayMap, stepLength);
+	Sample(&grayMap, stepLength);
+	width = grayMap.width;
+	height = grayMap.height;
 
 	Vector* gradArray = (Vector*)malloc((int64_t)(width * height) * sizeof(Vector));
 	if (!gradArray)
 	{
-		return NULL;
+		return;
 	}
 	SafeArrayVect gradMap = { gradArray,width,height };
 
@@ -332,14 +365,31 @@ HEAD bool* CallingConvertion EdgeDetection(unsigned char* grayImage, int width, 
 	free(gradArray);
 	gradArray = NULL;
 
-	bool* edgeArray = (bool*)malloc((int64_t)(width * height) * sizeof(bool));
-	if (!edgeArray)
+	Threshold(&grayMap, highThreshold, lowThreshold);
+
+	//Debug
+	for (int y = 0;y < grayMap.height;y++)
 	{
-		return NULL;
+		for (int x = 0;x < grayMap.width;x++)
+		{
+			printf("%c%c", GetUInt8(&grayMap, x, y) != LowGray ? 'X' : '-', x == grayMap.width - 1 ? '\n' : ' ');
+		}
 	}
-	SafeArrayBool edgeMap = { edgeArray,width,height };
+	//Debug/
 
-	Threshold(&grayMap, &edgeMap, highThreshold, lowThreshold);
+	SafeArrayUInt8 edgeMap = { edgeArray,width,height };
+	
+	NonIndependentWeakEdgeInhibit(&grayMap, &edgeMap);
 
-	return edgeArray;
+	//Debug
+	for (int y = 0;y < edgeMap.height;y++)
+	{
+		for (int x = 0;x < edgeMap.width;x++)
+		{
+			printf("%c%c", GetUInt8(&edgeMap, x, y) == HighGray ? 'X' : '-', x == edgeMap.width - 1 ? '\n' : ' ');
+		}
+	}
+	//Debug/
+
+	return;
 }

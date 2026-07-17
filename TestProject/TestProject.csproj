@@ -16,4 +16,17 @@
     <ProjectReference Include="..\OscillographPlayer.WaveGenerateLib\OscillographPlayer.WaveGenerateLib.csproj" />
   </ItemGroup>
 
+  <Target Name="CopyWaveGenerateCore" AfterTargets="Build">
+  	<Copy
+  	  SourceFiles="$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.dll"
+  	  DestinationFolder="$(TargetDir)"
+  	  SkipUnchangedFiles="true"
+  	  Condition="Exists('$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.dll')" />
+    <Copy
+      SourceFiles="$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.pdb"
+      DestinationFolder="$(TargetDir)"
+      SkipUnchangedFiles="true"
+      Condition="Exists('$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.pdb')" />
+  </Target>
+
 </Project>
