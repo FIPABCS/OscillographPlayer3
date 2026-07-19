@@ -23,10 +23,12 @@
     <ClInclude Include="PointQueue.h" />
     <ClInclude Include="SafeArray.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="WaveGenerate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EdgeDetaction.c" />
     <ClCompile Include="Vector.c" />
+    <ClCompile Include="WaveGenerate.c" />
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

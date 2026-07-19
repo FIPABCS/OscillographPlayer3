@@ -27,12 +27,18 @@
     <ClInclude Include="PointQueue.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="WaveGenerate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EdgeDetaction.c">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Vector.c">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveGenerate.c">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

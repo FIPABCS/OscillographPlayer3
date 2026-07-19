@@ -1,0 +1,20 @@
+#pragma once
+
+#ifdef __cplusplus
+#define EXTERNC extern "C"
+#else
+#define EXTERNC
+#endif
+
+#ifdef DLL_IMPORT
+#define HEAD EXTERNC __declspec(dllimport)
+#else
+#define HEAD EXTERNC __declspec(dllexport)
+#endif
+
+#define CallingConvertion _stdcall
+
+#include <stdbool.h>
+#include <stdint.h>
+
+HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, int width, int height, int frameRate, int sampleRate, uint16_t* waveArray);
