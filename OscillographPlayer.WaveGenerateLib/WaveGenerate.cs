@@ -6,9 +6,10 @@ namespace OscillographPlayer.WaveGenerateLib
 {
     public partial class WaveGenerate
     {
+        [return: MarshalAs(UnmanagedType.Bool)]
         [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvStdcall) })]
         [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "EdgeDetection")]
-        private static partial void EdgeDetectionUnsafe(
+        private static partial bool EdgeDetectionUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] grayImage, 
             int width, int height, float stepLength, byte lowThreshold, byte highThreshold,
@@ -25,7 +26,10 @@ namespace OscillographPlayer.WaveGenerateLib
 
             byte[] edgeImageFlat = new byte[widthNew * heightNew];
 
-            EdgeDetectionUnsafe(FlatMap<byte>(ref grayImage), width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
+            if(!EdgeDetectionUnsafe(FlatMap<byte>(ref grayImage), width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat))
+            {
+                throw new Exception("WaveGenerateCore running except.");
+            }
             if (edgeImageFlat == null)
             {
                 throw new Exception("Fail to get new map.");
@@ -41,7 +45,10 @@ namespace OscillographPlayer.WaveGenerateLib
 
             byte[] edgeImageFlat = new byte[widthNew * heightNew];
 
-            EdgeDetectionUnsafe(grayImageFlat, width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat);
+            if(!EdgeDetectionUnsafe(grayImageFlat, width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat))
+            {
+                throw new Exception("WaveGenerateCore running except.");
+            }
 
             return BulidMap<byte>(ref edgeImageFlat, widthNew, heightNew);
         }
