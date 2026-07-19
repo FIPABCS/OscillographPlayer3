@@ -2,7 +2,7 @@
 
 #include <stdint.h>
 
-typedef struct Point { int x;int y; } Point;
+typedef struct Point { uint16_t x;uint16_t y; } Point;
 
 typedef struct PointQueue
 {

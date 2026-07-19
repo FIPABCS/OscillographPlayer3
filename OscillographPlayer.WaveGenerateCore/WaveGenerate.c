@@ -17,38 +17,35 @@ DefineSafeArray(bool, Bool)
 //排列边缘像素
 static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
 {
-	int width = edgeMap->width,
+	uint16_t width = edgeMap->width,
 		height = edgeMap->height;
 
 	uint64_t bufferLength = (uint64_t)width * height;
 	Point* needCheckArray = (Point*)malloc(bufferLength * sizeof(Point));
-		 
 	if (!needCheckArray)
 	{
 		return false;
 	}
 	PointQueue needCheck;
-	InitQueue(&needCheck, &needCheckArray, bufferLength);
-	
+	InitQueue(&needCheck, needCheckArray, bufferLength);
 
 	bool* isCheckedArray = (bool*)calloc((int64_t)width * height, sizeof(bool));
 	if (!isCheckedArray)
 	{
+		free(needCheckArray);
 		return false;
 	}
-	SafeArrayBool isChecked = { &isChecked,width,height };
+	SafeArrayBool isChecked = { isCheckedArray,width,height };
 
 	Enqueue(&needCheck, (Point) { width / 2, height / 2 });
 	int xTP[4] = { 1,0,-1,0 },
-		yTP[4] = { 0,1,0,-1 },
-		curtX = 0, curtY = 0,
-		checkX = 0, checkY = 0;
+		yTP[4] = { 0,1,0,-1 };
 	Point curtPoint = { 0,0 };
 	while (Length(&needCheck))
 	{
 		curtPoint = Dequeue(&needCheck);
-		curtX = curtPoint.x;
-		curtY = curtPoint.y;
+		uint16_t curtX = curtPoint.x,
+			     curtY = curtPoint.y;
 
 		if (GetBool(&isChecked, curtX, curtY))
 		{
@@ -56,15 +53,15 @@ static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
 		}
 		SetBool(&isChecked, curtX, curtY, true);
 
-		if (GetBool(edgeMap, curtX, curtY) == HighGray)
+		if (GetUInt8(edgeMap, curtX, curtY) == HighGray)
 		{
-			Enqueue(&edgePoint, (Point) { curtX, curtY });
+			Enqueue(edgePoint, (Point) { curtX, curtY });
 		}
 
 		for (int i = 0;i < 4;i++)
 		{
-			checkX = curtX + xTP[i];
-			checkY = curtY + yTP[i];
+			int checkX = (int)curtX + xTP[i];
+			int checkY = (int)curtY + yTP[i];
 
 			if (GetBool(&isChecked, checkX, checkY))
 			{
@@ -72,14 +69,17 @@ static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
 			}
 			SetBool(&isChecked, checkX, checkY, true);
 
-			Enqueue(&needCheck, (Point) { checkX, checkY });
+			Enqueue(&needCheck, (Point) { (uint16_t)checkX, (uint16_t)checkY });
 		}
 	}
+
+	free(isCheckedArray);
+	free(needCheckArray);
 
 	return true;
 }
 
-HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray,int width,int height, int frameRate, int sampleRate, int16_t* waveArray)
+HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height, int frameRate, int sampleRate, uint16_t* waveArray)
 {
 	SafeArrayUInt8 edgeMap = { edgeArray,width,height };
 
@@ -90,10 +90,15 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray,int width,int height
 		return false;
 	}
 	PointQueue edgePoint;
-	InitQueue(&edgePoint, &edgePointArray, bufferLength);
+	InitQueue(&edgePoint, edgePointArray, bufferLength);
 
 	if (!SortEdgePoint(&edgeMap, &edgePoint))
 	{
+		free(edgePointArray);
 		return false;
 	}
+
+	free(edgePointArray);
+
+	return true;
 }
