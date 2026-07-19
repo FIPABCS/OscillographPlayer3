@@ -79,7 +79,79 @@ static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
 	return true;
 }
 
-HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height, int frameRate, int sampleRate, uint16_t* waveArray)
+//排布采样点（按点重复）【此处sampleInFrame为一帧时间内对应的音频采样数量，一个坐标占用两个采样点】
+static void ArrangeByPoint(PointQueue* edgePoint, int sampleInFrame, uint16_t* arrangedArray)
+{
+	float repetTime = sampleInFrame / (Length(edgePoint) * 2.0f);
+	
+	int arrIdx = 0;
+	for (int cycleTime = 1; arrIdx < sampleInFrame && Length(edgePoint) > 0;cycleTime++)
+	{
+		Point curtPoint = Dequeue(edgePoint);
+		while (arrIdx <= (int)((float)cycleTime * repetTime) && arrIdx < sampleInFrame)
+		{
+			arrangedArray[arrIdx] = curtPoint.x;
+			arrIdx++;
+			arrangedArray[arrIdx] = curtPoint.y;
+			arrIdx++;
+		}
+	}
+
+	if (arrIdx < sampleInFrame)
+	{
+		int lastIdx = arrIdx;
+		while (arrIdx < sampleInFrame)
+		{
+			arrangedArray[arrIdx] = arrangedArray[lastIdx - 1];
+			arrIdx++;
+			arrangedArray[arrIdx] = arrangedArray[lastIdx];
+			arrIdx++;
+		}
+	}
+
+	return;
+}
+
+//排布采样点（按帧重复）【此处sampleInFrame为一帧时间内对应的音频采样数量，一个坐标占用两个采样点】
+static void ArrangeByFrame(PointQueue* edgePoint, int sampleInFrame, uint16_t* arrangedArray)
+{
+	for (int arrIdx = 0; arrIdx < sampleInFrame;)
+	{
+		Point curtPoint = Dequeue(edgePoint);
+
+		arrangedArray[arrIdx] = curtPoint.x;
+		arrIdx++;
+		arrangedArray[arrIdx] = curtPoint.y;
+		arrIdx++;
+
+		Enqueue(edgePoint, curtPoint);
+	}
+
+	return;
+}
+
+//标准化输出
+static void StandardOutputArray(uint16_t* arrangedArray, int length, uint16_t width, uint16_t height, bool horizontalFlip,bool verticalFlip, int16_t* outputArray)
+{
+	int xMove = width / 2,
+		yMove = height / 2;
+
+	int16_t horiCoe = horizontalFlip ? -1 : 1,
+			veriCoe = verticalFlip ? -1 : 1;
+
+	for (int i = 0;i < length;)
+	{
+		outputArray[i] = horiCoe * (arrangedArray[i] - xMove);
+		i++;
+		outputArray[i] = veriCoe * (arrangedArray[i] - yMove);
+		i++;
+	}
+
+	return;
+}
+
+HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height, int sampleInFrame,
+	bool horizontalFlip, bool verticalFlip, int16_t* waveArray)
 {
 	SafeArrayUInt8 edgeMap = { edgeArray,width,height };
 
