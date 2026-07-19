@@ -1,13 +1,14 @@
 #pragma once
+#include <stdint.h>
 
 typedef enum Direction
 {
 	right = 0, leftup, up, rightup, none
 } Direction;
 
-typedef struct
+typedef struct Vector
 {
-	unsigned char value;
+	uint8_t value;
 	Direction direction;
 } Vector;
 

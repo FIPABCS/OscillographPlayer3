@@ -4,12 +4,13 @@ using FFMediaToolkit.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using OscillographPlayer.WaveGenerateLib;
 
-namespace TestProject
+namespace TestProject.WaveGenerateLibTest
 {
-    internal class VideoLoadTest
+    class WaveGenerateTest
     {
-        internal static void LoadAndPrintVideoFrames()
+        internal static void EdgeDetectionAndPrintFrame()
         {
             FFmpegLoader.FFmpegPath = @"D:\05.Code\.Process\OscillographPlayer\ffmpeg\bin\";
             var mediaOption = new MediaOptions() { VideoPixelFormat = ImagePixelFormat.Gray8 };
@@ -24,41 +25,37 @@ namespace TestProject
             while (true)
             {
                 Console.WriteLine("Enter the second:");
-                buffer=Console.ReadLine();
-                if(buffer == null)
+                buffer = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(buffer))
                 {
                     break;
                 }
                 second = int.Parse(buffer);
 
                 ImageData frame = testVideo.Video.GetFrame(TimeSpan.FromSeconds(second));
-
-                byte[] pixData = frame.Data.ToArray();
-
                 int height = frame.ImageSize.Height;
                 int width = frame.ImageSize.Width;
 
-                bool[,] grayMap = new bool[height, width];
-
-                for (int y = 0; y < height; y++)
+                //在此处获取帧像素数据
+                byte[] pixDataBuf = frame.Data.ToArray();
+                byte[] pixData = new byte[width * height];
+                for(int i=0;i<width*height;i++)
                 {
-                    for (int x = 0; x < width; x++)
-                    {
-                        byte buf;
-                        buf = pixData[y * width + x];
-
-                        grayMap[y, x] = buf > 128;
-                    }
+                    pixData[i] = pixDataBuf[i];
                 }
 
-                for (int y = 0; y < height; y++)
+                var edgeMap = WaveGenerate.EdgeDetectionImage(pixData, width, height, 1.0f, 8, 128);
+
+                for (int y = 0; y < edgeMap.GetLength(0); y++)
                 {
-                    for (int x = 0; x < width; x++)
+                    for(int x=0;x<edgeMap.GetLength(1);x++)
                     {
-                        Console.Write("{0}{1}", grayMap[y, x] ? '1' : '0', x == width - 1 ? '\n' : ' ');
+                        Console.Write("{0}{1}", edgeMap[y, x] == 255 ? 'X' : '-', x == edgeMap.GetLength(1) - 1 ? '\n' : ' ');
                     }
                 }
             }
+
+            return;
         }
     }
 }
