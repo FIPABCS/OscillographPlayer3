@@ -209,3 +209,22 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uin
 
 	return true;
 }
+
+HEAD void CallingConvertion AmplitudeMaximization(int16_t* waveArray, int length)
+{
+	int16_t maxAmplitude = 0;
+	for (int i = 0;i < length;i++)
+	{
+		int16_t thisAmplitude = waveArray[i];
+		if (maxAmplitude < thisAmplitude) { maxAmplitude = thisAmplitude; }
+	}
+
+	float maxCoe = INT16_MAX / maxAmplitude;
+
+	for (int i = 0;i < length;i++)
+	{
+		waveArray[i] *= maxCoe;
+	}
+
+	return;
+}

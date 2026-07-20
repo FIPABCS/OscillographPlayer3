@@ -22,3 +22,5 @@ typedef enum ArrangeMethod { ByPoint, ByFrame } ArrangeMethods;
 HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height, 
 	ArrangeMethods arrangeMethod, int sampleInFrame, bool horizontalFlip, bool verticalFlip,
 	int16_t* waveArray);
+
+HEAD void CallingConvertion AmplitudeMaximization(int16_t* waveArray, int length);
