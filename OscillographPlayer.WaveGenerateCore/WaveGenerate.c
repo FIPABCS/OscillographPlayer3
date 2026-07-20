@@ -130,6 +130,26 @@ static void ArrangeByFrame(PointQueue* edgePoint, int sampleInFrame, uint16_t* a
 	return;
 }
 
+
+//排布采样点（汇总方法）
+static void ArrangeSamples(PointQueue* edgePoint, int sampleInFrame, ArrangeMethods arrangeMethod, uint16_t* arrangedArray)
+{
+	static void (*arrangeSamples)(PointQueue * edgePoint, int sampleInFrame, uint16_t * arrangedArray);
+	switch (arrangeMethod)
+	{
+	case ByPoint:
+		arrangeSamples = ArrangeByPoint;
+		break;
+	case ByFrame:
+		arrangeSamples = ArrangeByFrame;
+		break;
+	}
+
+	arrangeSamples(edgePoint, sampleInFrame, arrangedArray);
+
+	return;
+}
+
 //标准化输出
 static void StandardOutputArray(uint16_t* arrangedArray, int length, uint16_t width, uint16_t height, bool horizontalFlip,bool verticalFlip, int16_t* outputArray)
 {
@@ -141,17 +161,20 @@ static void StandardOutputArray(uint16_t* arrangedArray, int length, uint16_t wi
 
 	for (int i = 0;i < length;)
 	{
-		outputArray[i] = horiCoe * (arrangedArray[i] - xMove);
+		int temp = (int)arrangedArray[i] - xMove;
+		outputArray[i] = horiCoe * (int16_t)temp;
 		i++;
-		outputArray[i] = veriCoe * (arrangedArray[i] - yMove);
+		temp = (int)arrangedArray[i] - yMove;
+		outputArray[i] = veriCoe * (int16_t)temp;	
 		i++;
 	}
 
 	return;
 }
 
-HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height, int sampleInFrame,
-	bool horizontalFlip, bool verticalFlip, int16_t* waveArray)
+HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height,
+	ArrangeMethods arrangeMethod, int sampleInFrame, bool horizontalFlip, bool verticalFlip,
+	int16_t* waveArray)
 {
 	SafeArrayUInt8 edgeMap = { edgeArray,width,height };
 
@@ -170,7 +193,19 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uin
 		return false;
 	}
 
+	uint16_t* arrangedArray = (uint16_t*)malloc(sampleInFrame * sizeof(uint16_t));
+	if (!arrangedArray)
+	{
+		free(edgePointArray);
+		return false;
+	}
+
+	ArrangeSamples(&edgePoint, sampleInFrame, arrangeMethod, arrangedArray);
+
+	StandardOutputArray(arrangedArray, sampleInFrame, width, height, horizontalFlip, verticalFlip, waveArray);
+
 	free(edgePointArray);
+	free(arrangedArray);
 
 	return true;
 }
