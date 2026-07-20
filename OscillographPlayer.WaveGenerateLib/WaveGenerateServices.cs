@@ -36,7 +36,7 @@ namespace OscillographPlayer.WaveGenerateLib
             int length
             );
 
-        private static short[] WaveGenerate(byte[] edgeImageFlat, ushort width,ushort height,ArrangeMethod arrangeMethod, bool horizontalFlip,bool verticalFlip)
+        public static short[] WaveGenerate(byte[] edgeImageFlat, ushort width,ushort height,ArrangeMethod arrangeMethod, bool horizontalFlip,bool verticalFlip)
         {
             const byte highGray = 255;
             int sampleInFrame = 0;
@@ -58,7 +58,7 @@ namespace OscillographPlayer.WaveGenerateLib
             return waveArray;
         }
 
-        private static void AmplitudeMaximization(short[] waveArray)
+        public static void AmplitudeMaximization(short[] waveArray)
         {
             AmplitudeMaximizationUnsafe(ref waveArray, waveArray.Length);
 
