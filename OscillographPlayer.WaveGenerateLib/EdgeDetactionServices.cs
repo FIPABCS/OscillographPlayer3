@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace OscillographPlayer.WaveGenerateLib
 {
-    public partial class EdgeDetaction
+    public partial class EdgeDetactionServices
     {
         [return: MarshalAs(UnmanagedType.Bool)]
         [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvStdcall) })]
@@ -32,7 +32,7 @@ namespace OscillographPlayer.WaveGenerateLib
 
             if(!EdgeDetectionUnsafe(ArrayHelpers.FlatMap<byte>(ref grayImage), width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat))
             {
-                throw new Exception("WaveGenerateCore running except.");
+                throw new Exception("EdgeDetectionImage running except.");
             }
             if (edgeImageFlat == null)
             {
@@ -51,10 +51,25 @@ namespace OscillographPlayer.WaveGenerateLib
 
             if(!EdgeDetectionUnsafe(grayImageFlat, width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat))
             {
-                throw new Exception("WaveGenerateCore running except.");
+                throw new Exception("EdgeDetectionImage running except.");
             }
 
             return ArrayHelpers.BulidMap<byte>(ref edgeImageFlat, widthNew, heightNew);
+        }
+
+        public static byte[] EdgeDetectionImageFlat(byte[] grayImageFlat, ushort width, ushort height, float stepLength, byte lowThreshold, byte highThreshold)
+        {
+            ushort widthNew = (ushort)(width / stepLength),
+                   heightNew = (ushort)(height / stepLength);
+
+            byte[] edgeImageFlat = new byte[widthNew * heightNew];
+
+            if (!EdgeDetectionUnsafe(grayImageFlat, width, height, stepLength, lowThreshold, highThreshold, edgeImageFlat))
+            {
+                throw new Exception("EdgeDetectionImageFlat running except.");
+            }
+
+            return edgeImageFlat;
         }
     }
 }

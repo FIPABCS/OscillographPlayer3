@@ -44,7 +44,7 @@ namespace TestProject.WaveGenerateLibTest
                     pixData[i] = pixDataBuf[i];
                 }
 
-                var edgeMap = EdgeDetaction.EdgeDetectionImage(pixData, width, height, 1.0f, 8, 128);
+                var edgeMap = EdgeDetactionServices.EdgeDetectionImage(pixData, width, height, 1.0f, 8, 128);
 
                 for (int y = 0; y < edgeMap.GetLength(0); y++)
                 {
