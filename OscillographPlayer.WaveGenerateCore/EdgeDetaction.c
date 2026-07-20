@@ -1,4 +1,4 @@
-#include "EdgeDetection.h"
+﻿#include "EdgeDetection.h"
 #include "Vector.h"
 #include "SafeArray.h"
 #include "PointQueue.h"
