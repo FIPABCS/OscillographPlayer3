@@ -12,7 +12,11 @@ namespace OscillographPlayer.WaveGenerateLib
         private static partial bool EdgeDetectionUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] grayImage, 
-            int width, int height, float stepLength, byte lowThreshold, byte highThreshold,
+            int width,
+            int height, 
+            float stepLength,
+            byte lowThreshold,
+            byte highThreshold,
             [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] edgeMap
         );
