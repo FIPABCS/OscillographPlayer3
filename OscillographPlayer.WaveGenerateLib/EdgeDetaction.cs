@@ -12,8 +12,8 @@ namespace OscillographPlayer.WaveGenerateLib
         private static partial bool EdgeDetectionUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] grayImage, 
-            int width,
-            int height, 
+            ushort width,
+            ushort height, 
             float stepLength,
             byte lowThreshold,
             byte highThreshold,
@@ -23,10 +23,10 @@ namespace OscillographPlayer.WaveGenerateLib
 
         public static byte[,] EdgeDetectionImage(byte[,] grayImage,float stepLength,byte lowThreshold,byte highThreshold)
         {
-            int width = grayImage.GetLength(1),
-                height = grayImage.GetLength(0),
-                widthNew = (int)(width / stepLength),
-                heightNew = (int)(height / stepLength);
+            ushort width = (ushort)grayImage.GetLength(1),
+                   height = (ushort)grayImage.GetLength(0),
+                   widthNew = (ushort)(width / stepLength),
+                   heightNew = (ushort)(height / stepLength);
 
             byte[] edgeImageFlat = new byte[widthNew * heightNew];
 
@@ -42,10 +42,10 @@ namespace OscillographPlayer.WaveGenerateLib
             return ArrayHelpers.BulidMap<byte>(ref edgeImageFlat, widthNew, heightNew);
         }
 
-        public static byte[,] EdgeDetectionImage(byte[] grayImageFlat, int width,int height, float stepLength, byte lowThreshold, byte highThreshold)
+        public static byte[,] EdgeDetectionImage(byte[] grayImageFlat, ushort width,ushort height, float stepLength, byte lowThreshold, byte highThreshold)
         {
-            int widthNew = (int)(width / stepLength),
-                heightNew = (int)(height / stepLength);
+            ushort widthNew = (ushort)(width / stepLength),
+                   heightNew = (ushort)(height / stepLength);
 
             byte[] edgeImageFlat = new byte[widthNew * heightNew];
 

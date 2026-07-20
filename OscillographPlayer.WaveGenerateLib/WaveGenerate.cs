@@ -16,8 +16,8 @@ namespace OscillographPlayer.WaveGenerateLib
         private static partial bool WaveGenerateUnsafe(
             [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
             byte[] edgeArray,
-            short width,
-            short height, 
+            ushort width,
+            ushort height, 
             ArrangeMethod arrangeMethod,
             int sampleInFrame,
             [MarshalAs(UnmanagedType.U1)]
