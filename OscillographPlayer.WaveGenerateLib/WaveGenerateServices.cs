@@ -58,7 +58,7 @@ namespace OscillographPlayer.WaveGenerateLib
             return waveArray;
         }
 
-        public static void AmplitudeMaximization(short[] waveArray)
+        public static void AmplitudeMaximization(ref short[] waveArray)
         {
             AmplitudeMaximizationUnsafe(ref waveArray, waveArray.Length);
 

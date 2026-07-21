@@ -11,14 +11,23 @@
 #define HighGray 255
 #define LowGray 0
 
+//Debug
+#include <stdio.h>
+//Debug/
+
 DefineSafeArray(uint8_t, UInt8)
 DefineSafeArray(bool, Bool)
 
-//排列边缘像素
-static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
+//排列边缘像素//有问题要大改
+static bool SortEdgePoint(SafeArrayUInt8* edgeMap,Point startPoint, PointQueue* edgePoint)
 {
+	if (GetUInt8(edgeMap, startPoint.x, startPoint.y) != HighGray)
+	{
+		return false;
+	}
+
 	uint16_t width = edgeMap->width,
-		height = edgeMap->height;
+			 height = edgeMap->height;
 
 	uint64_t bufferLength = (uint64_t)width * height;
 	Point* needCheckArray = (Point*)malloc(bufferLength * sizeof(Point));
@@ -37,9 +46,9 @@ static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
 	}
 	SafeArrayBool isChecked = { isCheckedArray,width,height };
 
-	Enqueue(&needCheck, (Point) { width / 2, height / 2 });
-	int xTP[4] = { 1,0,-1,0 },
-		yTP[4] = { 0,1,0,-1 };
+	Enqueue(&needCheck, startPoint);
+	int16_t xTP[4] = { 1,0,-1,0 },
+		    yTP[4] = { 0,1,0,-1 };
 	Point curtPoint = { 0,0 };
 	while (Length(&needCheck))
 	{
@@ -60,16 +69,10 @@ static bool SortEdgePoint(SafeArrayUInt8* edgeMap, PointQueue* edgePoint)
 
 		for (int i = 0;i < 4;i++)
 		{
-			int checkX = (int)curtX + xTP[i];
-			int checkY = (int)curtY + yTP[i];
+			uint16_t checkX = curtX + xTP[i],
+					 checkY = curtY + yTP[i];
 
-			if (GetBool(&isChecked, checkX, checkY))
-			{
-				continue;
-			}
-			SetBool(&isChecked, checkX, checkY, true);
-
-			Enqueue(&needCheck, (Point) { (uint16_t)checkX, (uint16_t)checkY });
+			Enqueue(&needCheck, (Point) { checkX, checkY });
 		}
 	}
 
@@ -187,11 +190,36 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uin
 	PointQueue edgePoint;
 	InitQueue(&edgePoint, edgePointArray, bufferLength);
 
-	if (!SortEdgePoint(&edgeMap, &edgePoint))
+	Point startPoint = { 0,0 };
+	for (int y = 0;y < height;y++)
+	{
+		for (int x = 0;x < width;x++)
+		{
+			if (GetUInt8(&edgeMap, x, y) == HighGray)
+			{
+				startPoint = (Point){ x,y };
+				break;
+			}
+		}
+		if (startPoint.x != 0 || startPoint.y != 0)
+		{
+			break;
+		}
+	}
+
+	if (!SortEdgePoint(&edgeMap, startPoint, &edgePoint))
 	{
 		free(edgePointArray);
 		return false;
 	}
+
+	//Debug
+	while(Length(&edgePoint))
+	{
+		Point thisPoint = Dequeue(&edgePoint);
+		printf("%d %d\n", thisPoint.x, thisPoint.y);
+	}
+	//Debug/
 
 	uint16_t* arrangedArray = (uint16_t*)malloc(sampleInFrame * sizeof(uint16_t));
 	if (!arrangedArray)
