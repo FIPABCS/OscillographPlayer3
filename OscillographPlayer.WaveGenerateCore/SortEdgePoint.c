@@ -1,4 +1,4 @@
-#include "SortEdgePoint.h"
+﻿#include "SortEdgePoint.h"
 #include "Point.h"
 #include "PointQueue.h"
 #include "EndpointList.h"
@@ -179,11 +179,11 @@ bool SortEdgePoint(SafeArrayUInt8* edgeMap, Point startPoint, PointQueue* edgePo
 	}
 
 	//Debug
-	for (int i = 0;i < endpoints.count;i++)
+	/*for (int i = 0;i < endpoints.count;i++)
 	{
 		printf("%d %d\n", endpoints.items[i].headEndpoint.x, endpoints.items[i].headEndpoint.y);
 		printf("%d %d\n", endpoints.items[i].tailEndpoint.x, endpoints.items[i].tailEndpoint.y);
-	}
+	}*/
 	//Debug/
 
 	//整合分段

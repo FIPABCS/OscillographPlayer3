@@ -36,17 +36,9 @@ namespace OscillographPlayer.WaveGenerateLib
             int length
             );
 
-        public static short[] WaveGenerate(byte[] edgeImageFlat, ushort width,ushort height,ArrangeMethod arrangeMethod, bool horizontalFlip,bool verticalFlip)
+        public static short[] WaveGenerate(byte[] edgeImageFlat, ushort width,ushort height,ArrangeMethod arrangeMethod,double frameRate,int sampleRate, bool horizontalFlip,bool verticalFlip)
         {
-            const byte highGray = 255;
-            int sampleInFrame = 0;
-            foreach(var gray in edgeImageFlat)
-            {
-                if (gray == highGray)
-                {
-                    sampleInFrame++;
-                }
-            }
+            int sampleInFrame = (int)(sampleRate / frameRate);
 
             short[] waveArray = new short[sampleInFrame * 2];
 

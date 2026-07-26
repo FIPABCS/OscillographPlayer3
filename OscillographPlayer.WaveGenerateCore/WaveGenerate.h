@@ -17,7 +17,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-typedef enum ArrangeMethod { ByPoint, ByFrame } ArrangeMethods;
+#include "ArrangePoints.h"
 
 HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height, 
 	ArrangeMethods arrangeMethod, int sampleInFrame, bool horizontalFlip, bool verticalFlip,

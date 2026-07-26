@@ -60,6 +60,9 @@
     <ClInclude Include="EndpointList.h">
       <Filter>头文件\Model</Filter>
     </ClInclude>
+    <ClInclude Include="ArrangeSamples.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vector.c">
@@ -72,6 +75,9 @@
       <Filter>源文件\Service</Filter>
     </ClCompile>
     <ClCompile Include="SortEdgePoint.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrangeSamples.c">
       <Filter>源文件\Service</Filter>
     </ClCompile>
   </ItemGroup>

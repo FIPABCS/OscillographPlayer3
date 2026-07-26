@@ -13,7 +13,7 @@ namespace TestProject
             //VideoLoadTest.LoadAndPrintVideoFrames();
             //WaveGenerateTest.EdgeDetectionAndPrintFrame();
 
-            WaveGenerateTest.WaveGenerateAndPrintPoints(2.0f, 32, 128, WaveGenerateServices.ArrangeMethod.ByPoint, false, false, false);
+            WaveGenerateTest.WaveGenerateAndPrintPoints(2.0f, 32, 128, WaveGenerateServices.ArrangeMethod.ByFrame,30.0,28800, false, false, false);
 
             return;
         }

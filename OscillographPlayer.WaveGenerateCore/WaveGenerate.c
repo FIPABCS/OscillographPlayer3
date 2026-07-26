@@ -3,104 +3,38 @@
 #include "Point.h"
 #include "WaveGenerate.h"
 #include "PointQueue.h"
-#include "Defines.h"
-
+#include "ArrangeSamples.h"
 #include "SortEdgePoint.h"
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <malloc.h>
 
-//Debug
-#include <stdio.h>
-//Debug/
-
-//排布采样点（按点重复）【此处sampleInFrame为一帧时间内对应的音频采样数量，一个坐标占用两个采样点】
-static void ArrangeByPoint(PointQueue* edgePoint, int sampleInFrame, uint16_t* arrangedArray)
+static inline int16_t ConvertToInt16(int num)
 {
-	float repetTime = sampleInFrame / (QueueLength(edgePoint) * 2.0f);
-	
-	int arrIdx = 0;
-	for (int cycleTime = 1; arrIdx < sampleInFrame && QueueLength(edgePoint) > 0;cycleTime++)
-	{
-		Point curtPoint = Dequeue(edgePoint);
-		while (arrIdx <= (int)((float)cycleTime * repetTime) && arrIdx < sampleInFrame)
-		{
-			arrangedArray[arrIdx] = (uint16_t)curtPoint.x;
-			arrIdx++;
-			arrangedArray[arrIdx] = (uint16_t)curtPoint.y;
-			arrIdx++;
-		}
-	}
+	if (num < INT16_MIN) { num = INT16_MIN; }
+	else if (num > INT16_MAX) { num = INT16_MAX; }
 
-	if (arrIdx < sampleInFrame)
-	{
-		int lastIdx = arrIdx;
-		while (arrIdx < sampleInFrame)
-		{
-			arrangedArray[arrIdx] = arrangedArray[lastIdx - 1];
-			arrIdx++;
-			arrangedArray[arrIdx] = arrangedArray[lastIdx];
-			arrIdx++;
-		}
-	}
-
-	return;
-}
-
-//排布采样点（按帧重复）【此处sampleInFrame为一帧时间内对应的音频采样数量，一个坐标占用两个采样点】
-static void ArrangeByFrame(PointQueue* edgePoint, int sampleInFrame, uint16_t* arrangedArray)
-{
-	for (int arrIdx = 0; arrIdx < sampleInFrame;)
-	{
-		Point curtPoint = Dequeue(edgePoint);
-
-		arrangedArray[arrIdx] = (uint16_t)curtPoint.x;
-		arrIdx++;
-		arrangedArray[arrIdx] = (uint16_t)curtPoint.y;
-		arrIdx++;
-
-		Enqueue(edgePoint, curtPoint);
-	}
-
-	return;
-}
-
-//排布采样点（汇总方法）
-static void ArrangeSamples(PointQueue* edgePoint, int sampleInFrame, ArrangeMethods arrangeMethod, uint16_t* arrangedArray)
-{
-	static void (*arrangeSamples)(PointQueue * edgePoint, int sampleInFrame, uint16_t * arrangedArray);
-	switch (arrangeMethod)
-	{
-	case ByPoint:
-		arrangeSamples = ArrangeByPoint;
-		break;
-	case ByFrame:
-		arrangeSamples = ArrangeByFrame;
-		break;
-	}
-
-	arrangeSamples(edgePoint, sampleInFrame, arrangedArray);
-
-	return;
+	return (int16_t)num;
 }
 
 //标准化输出
-static void StandardOutputArray(uint16_t* arrangedArray, int length, uint16_t width, uint16_t height, bool horizontalFlip,bool verticalFlip, int16_t* outputArray)
+static void StandardOutputArray(PointQueue* arrangedPoint, uint16_t width, uint16_t height, 
+	bool horizontalFlip,bool verticalFlip, int16_t* dataArray)
 {
-	int xMove = width / 2,
-		yMove = height / 2;
+	int
+		xMove = width / 2,
+		yMove = height / 2,
+		horiCoe = horizontalFlip ? -1 : 1,
+		veriCoe = verticalFlip ? -1 : 1;
 
-	int16_t horiCoe = horizontalFlip ? -1 : 1,
-			veriCoe = verticalFlip ? -1 : 1;
-
-	for (int i = 0;i < length;)
+	for (int i = 0;QueueLength(arrangedPoint);)
 	{
-		int temp = (int)arrangedArray[i] - xMove;
-		outputArray[i] = horiCoe * (int16_t)temp;
+		Point curtPoint = Dequeue(arrangedPoint);
+
+		dataArray[i] = ConvertToInt16((curtPoint.x - xMove) * horiCoe);
 		i++;
-		temp = (int)arrangedArray[i] - yMove;
-		outputArray[i] = veriCoe * (int16_t)temp;	
+		dataArray[i] = ConvertToInt16((curtPoint.y - yMove) * veriCoe);
 		i++;
 	}
 
@@ -122,51 +56,28 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uin
 	PointQueue edgePoint;
 	InitQueue(&edgePoint, edgePointArray, bufferLength);
 
-	Point startPoint = { 0,0 };
-	for (int y = 0;y < height;y++)
-	{
-		for (int x = 0;x < width;x++)
-		{
-			if (GetUInt8(&edgeMap, x, y) == HighGray)
-			{
-				startPoint = (Point){ x,y };
-				break;
-			}
-		}
-		if (startPoint.x != 0 || startPoint.y != 0)
-		{
-			break;
-		}
-	}
-
+	Point startPoint = { (int)width / 2,(int)height / 2 };
 	if (!SortEdgePoint(&edgeMap, startPoint, &edgePoint))
 	{
 		free(edgePointArray);
 		return false;
 	}
 
-	//Debug
-	//printf("------------------------------------------------\n");
-	//while(QueueLength(&edgePoint))
-	//{
-	//	Point thisPoint = Dequeue(&edgePoint);
-	//	printf("%d %d\n", thisPoint.x, thisPoint.y);
-	//}
-	//Debug/
-
-	uint16_t* arrangedArray = (uint16_t*)malloc(sampleInFrame * sizeof(uint16_t));
-	if (!arrangedArray)
+	Point* arrangedPointArray = (Point*)malloc(sampleInFrame * sizeof(Point));
+	if (!arrangedPointArray) 
 	{
 		free(edgePointArray);
-		return false;
+		return false; 
 	}
+	PointQueue arrangedPoint;
+	InitQueue(&arrangedPoint, arrangedPointArray, sampleInFrame);
 
-	ArrangeSamples(&edgePoint, sampleInFrame, arrangeMethod, arrangedArray);
+	ArrangeSamples(&edgePoint, sampleInFrame, arrangeMethod, &arrangedPoint);
 
-	StandardOutputArray(arrangedArray, sampleInFrame, width, height, horizontalFlip, verticalFlip, waveArray);
+	StandardOutputArray(&arrangedPoint, width, height, horizontalFlip, verticalFlip, waveArray);
 
 	free(edgePointArray);
-	free(arrangedArray);
+	free(arrangedPointArray);
 
 	return true;
 }
