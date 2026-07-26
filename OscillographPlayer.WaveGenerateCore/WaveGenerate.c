@@ -1,101 +1,34 @@
 ﻿#pragma once
 
+#include "Point.h"
 #include "WaveGenerate.h"
-#include "SafeArray.h"
 #include "PointQueue.h"
+#include "Defines.h"
+
+#include "SortEdgePoint.h"
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <malloc.h>
 
-#define HighGray 255
-#define LowGray 0
-
 //Debug
 #include <stdio.h>
 //Debug/
 
-DefineSafeArray(uint8_t, UInt8)
-DefineSafeArray(bool, Bool)
-
-//排列边缘像素//有问题要大改
-static bool SortEdgePoint(SafeArrayUInt8* edgeMap,Point startPoint, PointQueue* edgePoint)
-{
-	if (GetUInt8(edgeMap, startPoint.x, startPoint.y) != HighGray)
-	{
-		return false;
-	}
-
-	uint16_t width = edgeMap->width,
-			 height = edgeMap->height;
-
-	uint64_t bufferLength = (uint64_t)width * height;
-	Point* needCheckArray = (Point*)malloc(bufferLength * sizeof(Point));
-	if (!needCheckArray)
-	{
-		return false;
-	}
-	PointQueue needCheck;
-	InitQueue(&needCheck, needCheckArray, bufferLength);
-
-	bool* isCheckedArray = (bool*)calloc((int64_t)width * height, sizeof(bool));
-	if (!isCheckedArray)
-	{
-		free(needCheckArray);
-		return false;
-	}
-	SafeArrayBool isChecked = { isCheckedArray,width,height };
-
-	Enqueue(&needCheck, startPoint);
-	int16_t xTP[4] = { 1,0,-1,0 },
-		    yTP[4] = { 0,1,0,-1 };
-	Point curtPoint = { 0,0 };
-	while (Length(&needCheck))
-	{
-		curtPoint = Dequeue(&needCheck);
-		uint16_t curtX = curtPoint.x,
-			     curtY = curtPoint.y;
-
-		if (GetBool(&isChecked, curtX, curtY))
-		{
-			continue;
-		}
-		SetBool(&isChecked, curtX, curtY, true);
-
-		if (GetUInt8(edgeMap, curtX, curtY) == HighGray)
-		{
-			Enqueue(edgePoint, (Point) { curtX, curtY });
-		}
-
-		for (int i = 0;i < 4;i++)
-		{
-			uint16_t checkX = curtX + xTP[i],
-					 checkY = curtY + yTP[i];
-
-			Enqueue(&needCheck, (Point) { checkX, checkY });
-		}
-	}
-
-	free(isCheckedArray);
-	free(needCheckArray);
-
-	return true;
-}
-
 //排布采样点（按点重复）【此处sampleInFrame为一帧时间内对应的音频采样数量，一个坐标占用两个采样点】
 static void ArrangeByPoint(PointQueue* edgePoint, int sampleInFrame, uint16_t* arrangedArray)
 {
-	float repetTime = sampleInFrame / (Length(edgePoint) * 2.0f);
+	float repetTime = sampleInFrame / (QueueLength(edgePoint) * 2.0f);
 	
 	int arrIdx = 0;
-	for (int cycleTime = 1; arrIdx < sampleInFrame && Length(edgePoint) > 0;cycleTime++)
+	for (int cycleTime = 1; arrIdx < sampleInFrame && QueueLength(edgePoint) > 0;cycleTime++)
 	{
 		Point curtPoint = Dequeue(edgePoint);
 		while (arrIdx <= (int)((float)cycleTime * repetTime) && arrIdx < sampleInFrame)
 		{
-			arrangedArray[arrIdx] = curtPoint.x;
+			arrangedArray[arrIdx] = (uint16_t)curtPoint.x;
 			arrIdx++;
-			arrangedArray[arrIdx] = curtPoint.y;
+			arrangedArray[arrIdx] = (uint16_t)curtPoint.y;
 			arrIdx++;
 		}
 	}
@@ -122,9 +55,9 @@ static void ArrangeByFrame(PointQueue* edgePoint, int sampleInFrame, uint16_t* a
 	{
 		Point curtPoint = Dequeue(edgePoint);
 
-		arrangedArray[arrIdx] = curtPoint.x;
+		arrangedArray[arrIdx] = (uint16_t)curtPoint.x;
 		arrIdx++;
-		arrangedArray[arrIdx] = curtPoint.y;
+		arrangedArray[arrIdx] = (uint16_t)curtPoint.y;
 		arrIdx++;
 
 		Enqueue(edgePoint, curtPoint);
@@ -132,7 +65,6 @@ static void ArrangeByFrame(PointQueue* edgePoint, int sampleInFrame, uint16_t* a
 
 	return;
 }
-
 
 //排布采样点（汇总方法）
 static void ArrangeSamples(PointQueue* edgePoint, int sampleInFrame, ArrangeMethods arrangeMethod, uint16_t* arrangedArray)
@@ -214,11 +146,12 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uin
 	}
 
 	//Debug
-	while(Length(&edgePoint))
-	{
-		Point thisPoint = Dequeue(&edgePoint);
-		printf("%d %d\n", thisPoint.x, thisPoint.y);
-	}
+	//printf("------------------------------------------------\n");
+	//while(QueueLength(&edgePoint))
+	//{
+	//	Point thisPoint = Dequeue(&edgePoint);
+	//	printf("%d %d\n", thisPoint.x, thisPoint.y);
+	//}
 	//Debug/
 
 	uint16_t* arrangedArray = (uint16_t*)malloc(sampleInFrame * sizeof(uint16_t));

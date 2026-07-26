@@ -2,14 +2,13 @@
 #include "Vector.h"
 #include "SafeArray.h"
 #include "PointQueue.h"
+#include "Defines.h"
+#include "Point.h"
 
 #include <malloc.h>
 #include <stdint.h>
 #include <math.h>
 #include <stdbool.h>
-
-#define LowGray 0
-#define HighGray 255
 
 DefineSafeArray(uint8_t, UInt8)
 DefineSafeArray(float, Float)
@@ -257,10 +256,11 @@ static bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap,SafeArrayUInt8* ed
 	int xTP[8] = { 0,1,1,1,0,-1,-1,-1 },
 		yTP[8] = { 1,1,0,-1,-1,-1,0,1 };
 
-	while (Length(&needCheck))
+	while (QueueLength(&needCheck))
 	{
 		Point thisPoint = Dequeue(&needCheck);
-		uint16_t x = thisPoint.x,
+		int 
+			x = thisPoint.x,
 			y = thisPoint.y;
 
 		SetUInt8(edgeMap, x, y, HighGray);

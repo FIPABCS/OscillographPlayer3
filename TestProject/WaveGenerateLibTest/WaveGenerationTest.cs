@@ -102,15 +102,9 @@ namespace TestProject.WaveGenerateLibTest
                     WaveGenerateServices.AmplitudeMaximization(ref samplePoints);
                 }
 
-                Console.WriteLine("X:");
                 for(int i = 0; i<samplePoints.Length; i+=2)
                 {
-                    Console.Write($"{samplePoints[i]} ");
-                }
-                Console.WriteLine("Y:");
-                for (int i = 1; i < samplePoints.Length; i += 2)
-                {
-                    Console.Write($"{samplePoints[i]} ");
+                    Console.WriteLine($"{samplePoints[i]} {samplePoints[i + 1]}");
                 }
             }
         }

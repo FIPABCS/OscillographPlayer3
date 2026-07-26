@@ -19,14 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Defines.h" />
     <ClInclude Include="EdgeDetection.h" />
+    <ClInclude Include="EndpointList.h" />
+    <ClInclude Include="Point.h" />
+    <ClInclude Include="ContinueLine.h" />
     <ClInclude Include="PointQueue.h" />
     <ClInclude Include="SafeArray.h" />
+    <ClInclude Include="SafeArrayReturnBlank.h" />
+    <ClInclude Include="SortEdgePoint.h" />
     <ClInclude Include="Vector.h" />
     <ClInclude Include="WaveGenerate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EdgeDetaction.c" />
+    <ClCompile Include="SortEdgePoint.c" />
     <ClCompile Include="Vector.c" />
     <ClCompile Include="WaveGenerate.c" />
   </ItemGroup>
