@@ -8,12 +8,12 @@ namespace TestProject
 {
     internal class Program
     {
-        static void Main()
+        private static void Main()
         {
             //VideoLoadTest.LoadAndPrintVideoFrames();
             //WaveGenerateTest.EdgeDetectionAndPrintFrame();
 
-            WaveGenerateTest.WaveGenerateAndPrintPoints(2.0f, 32, 128, WaveGenerateServices.ArrangeMethod.ByFrame,30.0,28800, false, false, false);
+            WaveGenerateTest.WaveGenerateAndPrintPoints(2.0f, 32, 128, WaveGenerateServices.ArrangeMethod.ByPoint, 30.0, 28800, false, false, false);
 
             return;
         }

@@ -19,8 +19,8 @@ static inline int16_t ConvertToInt16(int num)
 }
 
 //标准化输出
-static void StandardOutputArray(PointQueue* arrangedPoint, uint16_t width, uint16_t height, 
-	bool horizontalFlip,bool verticalFlip, int16_t* dataArray)
+static void StandardOutputArray(PointQueue* arrangedPoint, uint16_t width, uint16_t height,
+	bool horizontalFlip, bool verticalFlip, int16_t* dataArray)
 {
 	int
 		xMove = width / 2,
@@ -56,21 +56,27 @@ HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uin
 	PointQueue edgePoint;
 	InitQueue(&edgePoint, edgePointArray, bufferLength);
 
-	Point startPoint = { (int)width / 2,(int)height / 2 };
-	if (!SortEdgePoint(&edgeMap, startPoint, &edgePoint))
+	Point centerPoint = { (int)width / 2,(int)height / 2 };
+	if (!SortEdgePoint(&edgeMap, centerPoint, &edgePoint))
 	{
 		free(edgePointArray);
 		return false;
 	}
 
-	Point* arrangedPointArray = (Point*)malloc(sampleInFrame * sizeof(Point));
-	if (!arrangedPointArray) 
+	if (!QueueLength(&edgePoint))
+	{
+		Enqueue(&edgePoint, centerPoint);
+	}
+
+	int arrangedPointArrayBufferLength = sampleInFrame + 1;
+	Point* arrangedPointArray = (Point*)malloc(arrangedPointArrayBufferLength * sizeof(Point));
+	if (!arrangedPointArray)
 	{
 		free(edgePointArray);
-		return false; 
+		return false;
 	}
 	PointQueue arrangedPoint;
-	InitQueue(&arrangedPoint, arrangedPointArray, sampleInFrame);
+	InitQueue(&arrangedPoint, arrangedPointArray, arrangedPointArrayBufferLength);
 
 	ArrangeSamples(&edgePoint, sampleInFrame, arrangeMethod, &arrangedPoint);
 
