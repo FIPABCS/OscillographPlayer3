@@ -25,6 +25,12 @@
     <Filter Include="源文件\Service">
       <UniqueIdentifier>{57a8d3fb-cc5c-4eba-b9fc-e71a05861b75}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\Export">
+      <UniqueIdentifier>{9ec51267-025d-497a-a06d-2ecdebacb21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Export">
+      <UniqueIdentifier>{8655acd4-46f7-4760-be5d-0e506370c951}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Point.h">
@@ -45,12 +51,6 @@
     <ClInclude Include="Vector.h">
       <Filter>头文件\Model</Filter>
     </ClInclude>
-    <ClInclude Include="EdgeDetection.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
-    <ClInclude Include="WaveGenerate.h">
-      <Filter>头文件\Service</Filter>
-    </ClInclude>
     <ClInclude Include="SortEdgePoint.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
@@ -63,21 +63,57 @@
     <ClInclude Include="ArrangeSamples.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
+    <ClInclude Include="GaussianBlur.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="NonMaximumInhibit.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="PostProcess.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveGenerate.h">
+      <Filter>头文件\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="EdgeDetection.h">
+      <Filter>头文件\Export</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSample.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="StandardOutputArray.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vector.c">
       <Filter>源文件\Model</Filter>
     </ClCompile>
-    <ClCompile Include="EdgeDetaction.c">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
-    <ClCompile Include="WaveGenerate.c">
-      <Filter>源文件\Service</Filter>
-    </ClCompile>
     <ClCompile Include="SortEdgePoint.c">
       <Filter>源文件\Service</Filter>
     </ClCompile>
     <ClCompile Include="ArrangeSamples.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussianBlur.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="NonMaximumInhibit.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="PostProcess.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveGenerate.c">
+      <Filter>源文件\Export</Filter>
+    </ClCompile>
+    <ClCompile Include="EdgeDetaction.c">
+      <Filter>源文件\Export</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSample.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="StandardOutputArray.c">
       <Filter>源文件\Service</Filter>
     </ClCompile>
   </ItemGroup>

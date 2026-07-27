@@ -10,20 +10,19 @@
 #include <malloc.h>
 
 //Debug
-#include <stdio.h>
+//#include <stdio.h>
 //Debug/
 
 //沿连续线条移动、擦除并记录端点
-static bool MoveOnContinueLineAndRecord(SafeArrayUInt8* edgeMap, Point startPoint, EndpointCollection* endpoints)
+static bool MoveOnContinueLineAndRecord(SafeArrayRBUInt8* edgeMap, Point startPoint, EndpointCollection* endpoints)
 {
-	if (GetUInt8(edgeMap, startPoint.x, startPoint.y) != HighGray) { return false; }
+	if (GetRBUInt8(edgeMap, startPoint.x, startPoint.y) != HighGray) { return false; }
 
 	int
 		width = edgeMap->width,
 		height = edgeMap->height;
 	uint64_t
 		mapArea = (uint64_t)width * height;
-
 
 	Point* lineArray = (Point*)malloc(mapArea * sizeof(Point));
 	if (!lineArray) { return false; }
@@ -50,16 +49,15 @@ static bool MoveOnContinueLineAndRecord(SafeArrayUInt8* edgeMap, Point startPoin
 
 		//加入
 		AddLineHead(line, curtPoint);
-		SetUInt8(edgeMap, curtPoint.x, curtPoint.y, LowGray);
+		SetRBUInt8(edgeMap, curtPoint.x, curtPoint.y, LowGray);
 
 		//搜索和匹配
 		for (int i = 0;i < 8;i++)
 		{
-
 			checkX = curtPoint.x + xTP[i];
 			checkY = curtPoint.y + yTP[i];
 
-			if (GetUInt8(edgeMap, checkX, checkY) != HighGray)
+			if (GetRBUInt8(edgeMap, checkX, checkY) != HighGray)
 			{
 				continue;
 			}
@@ -82,11 +80,10 @@ static bool MoveOnContinueLineAndRecord(SafeArrayUInt8* edgeMap, Point startPoin
 		//搜索和匹配
 		for (int i = 7;i >= 0;i--)
 		{
-
 			checkX = curtPoint.x + xTP[i];
 			checkY = curtPoint.y + yTP[i];
 
-			if (GetUInt8(edgeMap, checkX, checkY) != HighGray)
+			if (GetRBUInt8(edgeMap, checkX, checkY) != HighGray)
 			{
 				continue;
 			}
@@ -99,7 +96,7 @@ static bool MoveOnContinueLineAndRecord(SafeArrayUInt8* edgeMap, Point startPoin
 
 		//加入
 		AddLineTail(line, curtPoint);
-		SetUInt8(edgeMap, curtPoint.x, curtPoint.y, LowGray);
+		SetRBUInt8(edgeMap, curtPoint.x, curtPoint.y, LowGray);
 	}
 	curtEndpointPair.tailEndpoint = curtPoint;
 
@@ -148,7 +145,7 @@ static EndpointPair* SearchNearlistEndpointPair(EndpointCollection* endpoints, P
 	return nearlistEndpoint;
 }
 
-bool SortEdgePoint(SafeArrayUInt8* edgeMap, Point startPoint, PointQueue* edgePoint)
+bool SortEdgePoint(SafeArrayRBUInt8* edgeMap, Point startPoint, PointQueue* edgePoint)
 {
 	int
 		width = edgeMap->width,
@@ -166,7 +163,7 @@ bool SortEdgePoint(SafeArrayUInt8* edgeMap, Point startPoint, PointQueue* edgePo
 	{
 		for (int x = 0;x < width;x++)
 		{
-			if (GetUInt8(edgeMap, x, y) != HighGray)
+			if (GetRBUInt8(edgeMap, x, y) != HighGray)
 			{
 				continue;
 			}

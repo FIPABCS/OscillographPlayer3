@@ -1,51 +1,22 @@
-﻿#pragma once
-
+﻿#include "WaveGenerate.h"
+//Model
 #include "Point.h"
-#include "WaveGenerate.h"
 #include "PointQueue.h"
+#include "Defines.h"
+//Service
 #include "ArrangeSamples.h"
 #include "SortEdgePoint.h"
+#include "StandardOutputArray.h"
 
 #include <stdbool.h>
 #include <stdint.h>
 #include <malloc.h>
 
-static inline int16_t ConvertToInt16(int num)
-{
-	if (num < INT16_MIN) { num = INT16_MIN; }
-	else if (num > INT16_MAX) { num = INT16_MAX; }
-
-	return (int16_t)num;
-}
-
-//标准化输出
-static void StandardOutputArray(PointQueue* arrangedPoint, uint16_t width, uint16_t height,
-	bool horizontalFlip, bool verticalFlip, int16_t* dataArray)
-{
-	int
-		xMove = width / 2,
-		yMove = height / 2,
-		horiCoe = horizontalFlip ? -1 : 1,
-		veriCoe = verticalFlip ? -1 : 1;
-
-	for (int i = 0;QueueLength(arrangedPoint);)
-	{
-		Point curtPoint = Dequeue(arrangedPoint);
-
-		dataArray[i] = ConvertToInt16((curtPoint.x - xMove) * horiCoe);
-		i++;
-		dataArray[i] = ConvertToInt16((curtPoint.y - yMove) * veriCoe);
-		i++;
-	}
-
-	return;
-}
-
 HEAD bool CallingConvertion WaveGenerate(uint8_t* edgeArray, uint16_t width, uint16_t height,
 	ArrangeMethods arrangeMethod, int sampleInFrame, bool horizontalFlip, bool verticalFlip,
 	int16_t* waveArray)
 {
-	SafeArrayUInt8 edgeMap = { edgeArray,width,height };
+	SafeArrayRBUInt8 edgeMap = { edgeArray,width,height };
 
 	uint64_t bufferLength = (uint64_t)width * height;
 	Point* edgePointArray = (Point*)malloc(bufferLength * sizeof(Point));
