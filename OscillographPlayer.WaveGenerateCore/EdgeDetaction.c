@@ -1,6 +1,7 @@
 ﻿#include "EdgeDetection.h"
 //Models
 #include "Vector.h"
+#include "Defines.h"
 //Services
 #include "GaussianBlur.h"
 #include "NonMaximumInhibit.h"
@@ -10,10 +11,6 @@
 #include <malloc.h>
 #include <stdint.h>
 #include <stdbool.h>
-
-//DefineSafeArray(float, Float)
-//DefineSafeArray(Vector, Vect)
-//DefineSafeArray(bool, Bool)
 
 HEAD bool CallingConvertion EdgeDetection(uint8_t* grayImage, uint16_t width, uint16_t height,
 	float stepLength, uint8_t lowThreshold, uint8_t highThreshold, uint8_t* edgeArray)
@@ -49,6 +46,11 @@ HEAD bool CallingConvertion EdgeDetection(uint8_t* grayImage, uint16_t width, ui
 	SafeArrayUInt8 edgeMap = { edgeArray,width,height };
 
 	if (!DoubleThresholdAndConnect(&grayMap, &edgeMap, highThreshold, lowThreshold))
+	{
+		return false;
+	}
+
+	if (!EdgeRefinement(&edgeMap))
 	{
 		return false;
 	}
