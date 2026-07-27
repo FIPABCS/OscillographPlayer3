@@ -13,27 +13,72 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="头文件\Model">
+      <UniqueIdentifier>{a199a5e5-944c-460a-9ace-5765a42c1aff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\Service">
+      <UniqueIdentifier>{90dc10f3-9a1f-44c9-b33d-9f11314dfe4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Model">
+      <UniqueIdentifier>{4c4c347a-450e-43a3-a1b4-c4cc6ae1e2f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\Service">
+      <UniqueIdentifier>{57a8d3fb-cc5c-4eba-b9fc-e71a05861b75}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="EdgeDetection.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="Point.h">
+      <Filter>头文件\Model</Filter>
     </ClInclude>
-    <ClInclude Include="SafeArray.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>头文件</Filter>
+    <ClInclude Include="ContinueLine.h">
+      <Filter>头文件\Model</Filter>
     </ClInclude>
     <ClInclude Include="PointQueue.h">
-      <Filter>头文件</Filter>
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeArray.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="SafeArrayReturnBlank.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="EdgeDetection.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveGenerate.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="SortEdgePoint.h">
+      <Filter>头文件\Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Defines.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="EndpointList.h">
+      <Filter>头文件\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrangeSamples.h">
+      <Filter>头文件\Service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="EdgeDetaction.c">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Vector.c">
-      <Filter>源文件</Filter>
+      <Filter>源文件\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="EdgeDetaction.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveGenerate.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="SortEdgePoint.c">
+      <Filter>源文件\Service</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrangeSamples.c">
+      <Filter>源文件\Service</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

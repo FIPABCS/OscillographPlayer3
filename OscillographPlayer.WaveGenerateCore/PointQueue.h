@@ -1,8 +1,7 @@
 ﻿#pragma once
 
 #include <stdint.h>
-
-typedef struct Point { int x;int y; } Point;
+#include "Point.h"
 
 typedef struct PointQueue
 {
@@ -52,7 +51,7 @@ inline Point Dequeue(PointQueue* queue)
 	return point;
 }
 
-inline uint64_t Length(const PointQueue* queue)
+inline uint64_t QueueLength(const PointQueue* queue)
 {
 	uint64_t headIdx = queue->headIdx,
 		tailIdx = queue->tailIdx;

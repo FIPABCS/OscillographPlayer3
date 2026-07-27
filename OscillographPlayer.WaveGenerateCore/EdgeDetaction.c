@@ -1,15 +1,14 @@
-#include "EdgeDetection.h"
+﻿#include "EdgeDetection.h"
 #include "Vector.h"
 #include "SafeArray.h"
 #include "PointQueue.h"
+#include "Defines.h"
+#include "Point.h"
 
 #include <malloc.h>
 #include <stdint.h>
 #include <math.h>
 #include <stdbool.h>
-
-#define LowGray 0
-#define HighGray 255
 
 DefineSafeArray(uint8_t, UInt8)
 DefineSafeArray(float, Float)
@@ -55,8 +54,8 @@ static bool NoiseReductionGaussian(SafeArrayUInt8* grayMap, float sigma)
 		weight[i] *= normalization;
 	}
 
-	int width = grayMap->width;
-	int height = grayMap->height;
+	uint16_t width = grayMap->width;
+	uint16_t height = grayMap->height;
 
 	float* horizonWeightArray = (float*)malloc((int64_t)width * height * sizeof(float));
 	if (!horizonWeightArray)
@@ -66,9 +65,9 @@ static bool NoiseReductionGaussian(SafeArrayUInt8* grayMap, float sigma)
 	SafeArrayFloat horizonWeight = { horizonWeightArray,width,height };
 
 	float tempGray = 0;
-	for (int y = 0; y < height; y++)
+	for (uint16_t y = 0; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (uint16_t x = 0; x < width; x++)
 		{
 			tempGray = 0;
 			for (int xTP = 0; xTP < diameter; xTP++)
@@ -79,9 +78,9 @@ static bool NoiseReductionGaussian(SafeArrayUInt8* grayMap, float sigma)
 			SetFloat(&horizonWeight, x, y, tempGray);
 		}
 	}
-	for (int y = 0; y < height; y++)
+	for (uint16_t y = 0; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (uint16_t x = 0; x < width; x++)
 		{
 			tempGray = 0;
 			for (int yTP = 0; yTP < diameter; yTP++)
@@ -115,12 +114,12 @@ static void Sample(SafeArrayUInt8* grayMap, float stepLength)
 {
 	if (stepLength < 1) { stepLength = 1; }
 
-	int width = grayMap->width,
+	uint16_t width = grayMap->width,
 		height = grayMap->height,
-		widthNew = (int)(width / stepLength);
+		widthNew = (uint16_t)(width / stepLength);
 	uint8_t* grayArray = grayMap->items;
 
-	int xNew = 0, yNew = 0;
+	uint16_t xNew = 0, yNew = 0;
 	for (int yOld = 0,indexNew=0; yOld < height; yNew++, yOld = (int)(yNew * stepLength))
 	{
 		xNew = 0;
@@ -141,14 +140,14 @@ static void Sample(SafeArrayUInt8* grayMap, float stepLength)
 //计算灰度梯度
 static void CalculateGradient(const SafeArrayUInt8* grayMap,SafeArrayVect* gradMap)
 {
-	int width = grayMap->width;
-	int height = grayMap->height;
+	uint16_t width = grayMap->width;
+	uint16_t height = grayMap->height;
 
 	int dX = 0, dY = 0;
 	Vector thisGradient = { 0,none };
-	for (int y = 0; y < height; y++)
+	for (uint16_t y = 0; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (uint16_t x = 0; x < width; x++)
 		{
 			dX = (GetUInt8(grayMap, x + 1, y + 1) + 2 * GetUInt8(grayMap, x + 1, y) + GetUInt8(grayMap, x + 1, y - 1))
 				- (GetUInt8(grayMap, x - 1, y + 1) + 2 * GetUInt8(grayMap, x - 1, y) + GetUInt8(grayMap, x - 1, y - 1));
@@ -193,12 +192,12 @@ static inline bool IsMaximum(const SafeArrayVect* gradMap, int x, int y)
 //非极值点抑制
 static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUInt8* grayMap)
 {
-	int width = grayMap->width;
-	int height = grayMap->height;
+	uint16_t width = grayMap->width;
+	uint16_t height = grayMap->height;
 
-	for (int y = 0; y < height; y++)
+	for (uint16_t y = 0; y < height; y++)
 	{
-		for (int x = 0; x < width; x++)
+		for (uint16_t x = 0; x < width; x++)
 		{
 			if (!IsMaximum(gradMap, x, y))
 			{
@@ -217,9 +216,9 @@ static void NonMaximumInhibit(const SafeArrayVect* gradMap, SafeArrayUInt8* gray
 //双阈值及孤立弱边缘抑制
 static bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap,SafeArrayUInt8* edgeMap, uint8_t highThreshold, uint8_t lowThreshold)
 {
-	int width = grayMap->width,
+	uint16_t width = grayMap->width,
 		height = grayMap->height;
-	
+
 	PointQueue needCheck;
 	uint64_t bufferLength = (uint64_t)(width * height);
 	Point* needCheckArray = (Point*)malloc(bufferLength * sizeof(Point));
@@ -229,10 +228,10 @@ static bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap,SafeArrayUInt8* ed
 	}
 	InitQueue(&needCheck, needCheckArray, bufferLength);
 
-	int thisGray = LowGray;
-	for (int y = 0;y < height;y++)
+	uint8_t thisGray = LowGray;
+	for (uint16_t y = 0;y < height;y++)
 	{
-		for (int x = 0;x < width;x++)
+		for (uint16_t x = 0;x < width;x++)
 		{
 			thisGray = GetUInt8(grayMap, x, y);
 			if (thisGray < lowThreshold)
@@ -257,18 +256,19 @@ static bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap,SafeArrayUInt8* ed
 	int xTP[8] = { 0,1,1,1,0,-1,-1,-1 },
 		yTP[8] = { 1,1,0,-1,-1,-1,0,1 };
 
-	while (Length(&needCheck))
+	while (QueueLength(&needCheck))
 	{
 		Point thisPoint = Dequeue(&needCheck);
-		int x = thisPoint.x, 
+		int 
+			x = thisPoint.x,
 			y = thisPoint.y;
 
 		SetUInt8(edgeMap, x, y, HighGray);
 
 		for (int i = 0;i < 8;i++)
 		{
-			int xCheck = x + xTP[i],
-				yCheck = y + yTP[i];
+			int xCheck = (int)x + xTP[i],
+				yCheck = (int)y + yTP[i];
 
 			uint8_t checkGray = GetUInt8(grayMap, xCheck, yCheck);
 
@@ -283,7 +283,7 @@ static bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap,SafeArrayUInt8* ed
 				SetUInt8(edgeMap, xCheck, yCheck, LowGray);
 				continue;
 			}
-			Enqueue(&needCheck, (Point) { xCheck, yCheck });
+			Enqueue(&needCheck, (Point) { (uint16_t)xCheck, (uint16_t)yCheck });
 		}
 	}
 
@@ -293,7 +293,7 @@ static bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap,SafeArrayUInt8* ed
 	return true;
 }
 
-HEAD bool CallingConvertion EdgeDetection(uint8_t* grayImage, int width, int height,
+HEAD bool CallingConvertion EdgeDetection(uint8_t* grayImage, uint16_t width, uint16_t height,
 	float stepLength, uint8_t lowThreshold, uint8_t highThreshold, uint8_t* edgeArray)
 {
 	SafeArrayUInt8 grayMap = { grayImage,width,height };
