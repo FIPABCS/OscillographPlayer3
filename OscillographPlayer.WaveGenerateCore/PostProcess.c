@@ -4,7 +4,7 @@
 #include "PointQueue.h"
 #include "Defines.h"
 #include "SafeArray.h"
-#include "GuoHallJudge.h"
+#include "EdgeRefineJudge.h"
 
 #include <stdbool.h>
 #include <stdint.h>

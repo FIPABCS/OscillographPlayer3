@@ -24,7 +24,7 @@
     <ClInclude Include="EdgeDetection.h" />
     <ClInclude Include="EndpointList.h" />
     <ClInclude Include="GaussianBlur.h" />
-    <ClInclude Include="GuoHallJudge.h" />
+    <ClInclude Include="EdgeRefineJudge.h" />
     <ClInclude Include="ImageSample.h" />
     <ClInclude Include="NonMaximumInhibit.h" />
     <ClInclude Include="Point.h" />

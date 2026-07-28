@@ -84,8 +84,8 @@
     <ClInclude Include="StandardOutputArray.h">
       <Filter>头文件\Service</Filter>
     </ClInclude>
-    <ClInclude Include="GuoHallJudge.h">
-      <Filter>头文件\Model</Filter>
+    <ClInclude Include="EdgeRefineJudge.h">
+      <Filter>头文件\Service</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

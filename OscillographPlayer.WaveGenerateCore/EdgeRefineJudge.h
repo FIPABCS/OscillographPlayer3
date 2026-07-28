@@ -1,3 +1,15 @@
+/*
+* 此文件包含源自 OpenCV 项目的代码片段。
+* OpenCV 代码部分遵循 Apache License, Version 2.0。
+* 您可以在以下地址获取许可证副本：
+*     http://www.apache.org/licenses/LICENSE-2.0
+*
+* OpenCV 版权归 OpenCV Foundation 所有。
+* 本文件的其余部分（非 OpenCV 衍生代码）仍遵循本仓库原有的 GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0 协议。
+*
+* SPDX-License-Identifier: Apache-2.0 AND GNU LESSER GENERAL PUBLIC LICENSE, Version 3.0
+*/
+
 #pragma once
 
 #include "Defines.h"
