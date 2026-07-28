@@ -3,14 +3,14 @@
 #include <stdint.h>
 
 #define DefineSafeArrayReturnBlank(T,typeName,blank)                                    \
-typedef struct SafeArray##typeName                                                      \
+typedef struct SafeArrayRB##typeName                                                    \
 {                                                                                       \
     T* items;                                                                           \
     uint16_t width;                                                                     \
     uint16_t height;                                                                    \
-} SafeArray##typeName;                                                                  \
+} SafeArrayRB##typeName;                                                                \
                                                                                         \
-static inline T Get##typeName(const SafeArray##typeName *array, int x, int y)           \
+static inline T GetRB##typeName(const SafeArrayRB##typeName *array, int x, int y)       \
 {                                                                                       \
     if(x < 0 || x >= array->width || y < 0 || y >= array->height)                       \
     {                                                                                   \
@@ -22,7 +22,7 @@ static inline T Get##typeName(const SafeArray##typeName *array, int x, int y)   
     }                                                                                   \
 }                                                                                       \
                                                                                         \
-static inline void Set##typeName(SafeArray##typeName *array, int x, int y, T value)     \
+static inline void SetRB##typeName(SafeArrayRB##typeName *array, int x, int y, T value) \
 {                                                                                       \
     if(x < 0 || x >= array->width || y < 0 || y >= array->height)                       \
     {                                                                                   \

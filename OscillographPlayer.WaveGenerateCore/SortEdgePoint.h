@@ -8,6 +8,4 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-DefineSafeArrayReturnBlank(uint8_t,UInt8,LowGray)
-
-bool SortEdgePoint(SafeArrayUInt8* edgeMap, Point startPoint, PointQueue* edgePoint);
+bool SortEdgePoint(SafeArrayRBUInt8* edgeMap, Point startPoint, PointQueue* edgePoint);

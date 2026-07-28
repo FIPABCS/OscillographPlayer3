@@ -9,7 +9,7 @@ typedef struct PointQueue
 	Point* items;
 } PointQueue;
 
-inline void InitQueue(PointQueue* queue,Point* queueBuffer,uint64_t bufferLength)
+inline void InitQueue(PointQueue* queue, Point* queueBuffer, uint64_t bufferLength)
 {
 	queue->headIdx = 0;
 	queue->tailIdx = 0;
