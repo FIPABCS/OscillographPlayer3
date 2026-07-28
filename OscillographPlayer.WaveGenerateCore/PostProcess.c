@@ -4,6 +4,7 @@
 #include "PointQueue.h"
 #include "Defines.h"
 #include "SafeArray.h"
+#include "GuoHallJudge.h"
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -91,84 +92,6 @@ bool DoubleThresholdAndConnect(SafeArrayUInt8* grayMap, SafeArrayUInt8* edgeMap,
 	return true;
 }
 
-//边缘细化判定A
-static bool InhibitJudgeA(SafeArrayUInt8* edgeMap, int x, int y)
-{
-	if (GetUInt8(edgeMap, x, y) != HighGray)
-	{
-		return false;
-	}
-
-	int
-		xTP[8] = { 0,1,1,1,0,-1,-1,-1 },
-		yTP[8] = { 1,1,0,-1,-1,-1,0,1 },
-		neighborHighCount = 0,
-		neighborChangeCount = 0;
-	uint8_t grays[9] = { 0 };
-
-	for (int i = 0;i < 8;i++)
-	{
-		uint8_t curtGray = GetUInt8(edgeMap, x + xTP[i], y + yTP[i]);
-
-		grays[i] = curtGray;
-		if (curtGray == HighGray) { neighborHighCount++; }
-	}
-	grays[8] = grays[0];
-	for (int i = 0;i < 8;i++)
-	{
-		if (grays[i] == LowGray && grays[i + 1] == HighGray) { neighborChangeCount++; }
-	}
-
-	bool
-		judgeRight = !(grays[0] && grays[2] && grays[4]),
-		judgeButton = !(grays[2] && grays[4] && grays[6]);
-
-	return
-		neighborHighCount >= 2 && neighborHighCount <= 6 &&
-		neighborChangeCount == 1 &&
-		judgeRight &&
-		judgeButton;
-}
-
-//边缘细化判定B
-static bool InhibitJudgeB(SafeArrayUInt8* edgeMap, int x, int y)
-{
-	if (GetUInt8(edgeMap, x, y) != HighGray)
-	{
-		return false;
-	}
-
-	int
-		xTP[8] = { 0,1,1,1,0,-1,-1,-1 },
-		yTP[8] = { 1,1,0,-1,-1,-1,0,1 },
-		neighborHighCount = 0,
-		neighborChangeCount = 0;
-	uint8_t grays[9] = { 0 };
-
-	for (int i = 0;i < 8;i++)
-	{
-		uint8_t curtGray = GetUInt8(edgeMap, x + xTP[i], y + yTP[i]);
-
-		grays[i] = curtGray;
-		if (curtGray == HighGray) { neighborHighCount++; }
-	}
-	grays[8] = grays[0];
-	for (int i = 0;i < 8;i++)
-	{
-		if (grays[i] == LowGray && grays[i + 1] == HighGray) { neighborChangeCount++; }
-	}
-
-	bool
-		judgeLeft = !(grays[0] && grays[4] && grays[6]),
-		judgeTop = !(grays[0] && grays[2] && grays[6]);
-
-	return
-		neighborHighCount >= 2 && neighborHighCount <= 6 &&
-		neighborChangeCount == 1 &&
-		judgeLeft &&
-		judgeTop;
-}
-
 //边缘细化
 bool EdgeRefinement(SafeArrayUInt8* edgeMap)
 {
@@ -181,51 +104,33 @@ bool EdgeRefinement(SafeArrayUInt8* edgeMap)
 	PointQueue needInhibitPoint;
 	InitQueue(&needInhibitPoint, needInhibitPointArray, mapArea);
 
-	bool needInhibit = true;
-	while (needInhibit)
+	bool needInhibit;
+	do
 	{
 		needInhibit = false;
 
-		//子迭代A
-		for (int y = 0;y < height;y++)
+		for (int i = 0;i < 2;i++)
 		{
-			for (int x = 0;x < width;x++)
+			for (int y = 0;y < height;y++)
 			{
-				if (GetUInt8(edgeMap, x, y) != HighGray) { continue; }
-
-				if (InhibitJudgeA(edgeMap, x, y))
+				for (int x = 0;x < width;x++)
 				{
-					Enqueue(&needInhibitPoint, (Point) { x, y });
+					if (GetUInt8(edgeMap, x, y) != HighGray) { continue; }
+
+					if (NeedInhibit(edgeMap, x, y, i))
+					{
+						Enqueue(&needInhibitPoint, (Point) { x, y });
+					}
 				}
 			}
-		}
-		needInhibit += (bool)QueueLength(&needInhibitPoint);
-		while (QueueLength(&needInhibitPoint))
-		{
-			Point inhibitPoint = Dequeue(&needInhibitPoint);
-			SetUInt8(edgeMap, inhibitPoint.x, inhibitPoint.y, LowGray);
-		}
-
-		//子迭代B
-		for (int y = 0;y < height;y++)
-		{
-			for (int x = 0;x < width;x++)
+			needInhibit |= (bool)QueueLength(&needInhibitPoint);
+			while (QueueLength(&needInhibitPoint))
 			{
-				if (GetUInt8(edgeMap, x, y) != HighGray) { continue; }
-
-				if (InhibitJudgeB(edgeMap, x, y))
-				{
-					Enqueue(&needInhibitPoint, (Point) { x, y });
-				}
+				Point inhibitPoint = Dequeue(&needInhibitPoint);
+				SetUInt8(edgeMap, inhibitPoint.x, inhibitPoint.y, LowGray);
 			}
 		}
-		needInhibit += (bool)QueueLength(&needInhibitPoint);
-		while (QueueLength(&needInhibitPoint))
-		{
-			Point inhibitPoint = Dequeue(&needInhibitPoint);
-			SetUInt8(edgeMap, inhibitPoint.x, inhibitPoint.y, LowGray);
-		}
-	}
+	} while (needInhibit);
 
 	free(needInhibitPointArray);
 

@@ -8,7 +8,7 @@ using OscillographPlayer.WaveGenerateLib;
 
 namespace TestProject.WaveGenerateLibTest
 {
-    class WaveGenerateTest
+    internal class WaveGenerateTest
     {
         internal static void EdgeDetectionAndPrintFrame()
         {
@@ -39,26 +39,27 @@ namespace TestProject.WaveGenerateLibTest
                 //在此处获取帧像素数据
                 byte[] pixDataBuf = frame.Data.ToArray();
                 byte[] pixData = new byte[width * height];
-                for(int i=0;i<width*height;i++)
+                for (int i = 0; i < width * height; i++)
                 {
                     pixData[i] = pixDataBuf[i];
                 }
 
-                var edgeMap = EdgeDetactionServices.EdgeDetectionImage(pixData, (ushort)width, (ushort)height, 1.0f, 8, 128);
+                var edgeMap = EdgeDetactionServices.EdgeDetectionImage(pixData, (ushort)width, (ushort)height, 2.0f, 8, 128);
 
                 for (int y = 0; y < edgeMap.GetLength(0); y++)
                 {
-                    for(int x=0;x<edgeMap.GetLength(1);x++)
+                    for (int x = 0; x < edgeMap.GetLength(1); x++)
                     {
-                        Console.Write("{0}{1}", edgeMap[y, x] == 255 ? 'X' : '-', x == edgeMap.GetLength(1) - 1 ? '\n' : ' ');
+                        Console.Write("{0} ", edgeMap[y, x] == 255 ? 'X' : '-');
                     }
+                    Console.Write("\n");
                 }
             }
 
             return;
         }
 
-        internal static void WaveGenerateAndPrintPoints(float stepLength,byte lowThreshold,byte highThreshold, WaveGenerateServices.ArrangeMethod arrangeMethod,double frameRate,int sampleRate, bool horizontalFlip, bool verticalFlip,bool amplitudeMaximization)
+        internal static void WaveGenerateAndPrintPoints(float stepLength, byte lowThreshold, byte highThreshold, WaveGenerateServices.ArrangeMethod arrangeMethod, double frameRate, int sampleRate, bool horizontalFlip, bool verticalFlip, bool amplitudeMaximization)
         {
             FFmpegLoader.FFmpegPath = @"D:\05.Code\.Process\OscillographPlayer\ffmpeg\bin\";
             var mediaOption = new MediaOptions() { VideoPixelFormat = ImagePixelFormat.Gray8 };
@@ -97,12 +98,12 @@ namespace TestProject.WaveGenerateLibTest
                 height = (ushort)(height / stepLength);
                 var samplePoints = WaveGenerateServices.WaveGenerate(edgeImageFlat, width, height, arrangeMethod, frameRate, sampleRate, horizontalFlip, verticalFlip);
 
-                if(amplitudeMaximization)
+                if (amplitudeMaximization)
                 {
                     WaveGenerateServices.AmplitudeMaximization(ref samplePoints);
                 }
 
-                for(int i = 0; i<samplePoints.Length; i+=2)
+                for (int i = 0; i < samplePoints.Length; i += 2)
                 {
                     Console.WriteLine($"{samplePoints[i]} {samplePoints[i + 1]}");
                 }
