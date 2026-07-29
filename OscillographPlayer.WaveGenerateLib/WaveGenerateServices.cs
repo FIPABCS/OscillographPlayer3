@@ -1,48 +1,45 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace OscillographPlayer.WaveGenerateLib
 {
     public partial class WaveGenerateServices
     {
-        public enum ArrangeMethod { ByPoint,ByFrame};
+        public enum ArrangeMethod { ByPoint, ByFrame };
 
         [return: MarshalAs(UnmanagedType.Bool)]
         [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvStdcall) })]
         [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "WaveGenerate")]
         private static partial bool WaveGenerateUnsafe(
-            [In, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.U1)]
+            [In]
             byte[] edgeArray,
             ushort width,
-            ushort height, 
+            ushort height,
             ArrangeMethod arrangeMethod,
             int sampleInFrame,
             [MarshalAs(UnmanagedType.U1)]
             bool horizontalFlip,
             [MarshalAs(UnmanagedType.U1)]
-            bool verticalFlip, 
-            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I2)] 
+            bool verticalFlip,
+            [Out, MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I2)]
             short[] waveArray
             );
 
         [UnmanagedCallConv(CallConvs = new Type[] { typeof(CallConvStdcall) })]
         [LibraryImport(@"OscillographPlayer.WaveGenerateCore.dll", EntryPoint = "AmplitudeMaximization")]
         private static partial void AmplitudeMaximizationUnsafe(
-            [MarshalAs(UnmanagedType.LPArray,ArraySubType = UnmanagedType.I2)]
-            ref short[] waveArray,
+            [In,Out]
+            short[] waveArray,
             int length
             );
 
-        public static short[] WaveGenerate(byte[] edgeImageFlat, ushort width,ushort height,ArrangeMethod arrangeMethod,double frameRate,int sampleRate, bool horizontalFlip,bool verticalFlip)
+        public static short[] WaveGenerate(byte[] edgeImageFlat, ushort width, ushort height, ArrangeMethod arrangeMethod, double frameRate, int sampleRate, bool horizontalFlip, bool verticalFlip)
         {
             int sampleInFrame = (int)(sampleRate / frameRate);
 
             short[] waveArray = new short[sampleInFrame * 2];
 
-            if(!WaveGenerateUnsafe(edgeImageFlat, width, height, arrangeMethod, sampleInFrame, horizontalFlip, verticalFlip, waveArray))
+            if (!WaveGenerateUnsafe(edgeImageFlat, width, height, arrangeMethod, sampleInFrame, horizontalFlip, verticalFlip, waveArray))
             {
                 throw new Exception("WaveGenerate running except.");
             }
@@ -52,7 +49,7 @@ namespace OscillographPlayer.WaveGenerateLib
 
         public static void AmplitudeMaximization(ref short[] waveArray)
         {
-            AmplitudeMaximizationUnsafe(ref waveArray, waveArray.Length);
+            AmplitudeMaximizationUnsafe(waveArray, waveArray.Length);
 
             return;
         }

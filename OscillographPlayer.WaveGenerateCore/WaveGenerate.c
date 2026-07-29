@@ -72,7 +72,11 @@ HEAD void CallingConvertion AmplitudeMaximization(int16_t* waveArray, int length
 
 	for (int i = 0;i < length;i++)
 	{
-		waveArray[i] = (int16_t)(waveArray[i] * maxCoe);
+		int temp = (int)(waveArray[i] * maxCoe);
+		if (temp < INT16_MIN) { temp = INT16_MIN; }
+		if (temp > INT16_MAX) { temp = INT16_MAX; }
+
+		waveArray[i] = (int16_t)temp;
 	}
 
 	return;
