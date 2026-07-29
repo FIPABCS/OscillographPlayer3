@@ -6,69 +6,101 @@ namespace OscillographPlayer.Models
 {
     public class SettingsModel
     {
+        //低阈值
+        private byte _lowThreshold;
 
-        public bool MaintainAspectRatio { get; set; } = true;
-
-        public bool StretchToOriginalFrame { get; set; } = true;
-        
-        public bool HorizontalFlip {  get; set; } = false;
-
-        public bool VerticalFlip { get; set; }=true;
-
-        private double _widthSqueezeRate;
-        public double WidthSqueezeRate
+        public byte LowThreshold
         {
-            get => _widthSqueezeRate;
+            get => _lowThreshold;
             set
             {
-                _widthSqueezeRate= value;
-
-                if (MaintainAspectRatio && _heightSqueezeRate != _widthSqueezeRate)
+                if (value < byte.MinValue)
                 {
-                    _heightSqueezeRate = _widthSqueezeRate;
+                    _lowThreshold = byte.MinValue;
+                }
+                else if (value > _highThreshold)
+                {
+                    _lowThreshold = _highThreshold;
+                }
+                else
+                {
+                    _lowThreshold = value;
                 }
             }
         }
 
-        private double _heightSqueezeRate;
-        public double HeightSqueezeRate
+        //高阈值
+        private byte _highThreshold;
+
+        public byte HighThreshold
         {
-            get => _heightSqueezeRate;
+            get => _highThreshold;
             set
             {
-                if(MaintainAspectRatio)
+                if (value > byte.MaxValue)
                 {
-                    throw new InvalidOperationException("Setting HeightSqueezeRate directly is disabled when MaintainAspectRatio is true.");
+                    _highThreshold = byte.MaxValue;
                 }
-
-                _heightSqueezeRate = value;
+                else if (value < _lowThreshold)
+                {
+                    _highThreshold = _lowThreshold;
+                }
+                else
+                {
+                    _highThreshold = value;
+                }
             }
         }
 
+        //振幅最大化
+        public bool AmplitudeMaximization { get; set; } = true;
+
+        //水平翻转
+        public bool HorizontalFlip { get; set; } = false;
+
+        //竖直翻转
+        public bool VerticalFlip { get; set; } = true;
+
+        //视频帧采样步长
+        public double SampleStepLength { get; set; } = 0;
+
+        //音频采样率
         private int _sampleRate;
+
         public int SampleRate
         {
             get => _sampleRate;
-            set => _sampleRate = value;
+            set
+            {
+                if (value < 0)
+                {
+                    _sampleRate = 1;
+                }
+                else
+                {
+                    _sampleRate = value;
+                }
+            }
         }
 
-        public enum MappingMethodCollection
+        //采样点排布方式
+        public enum ArrangeMethodCollection
         {
-            HighFrequecy, 
-            LowFrequecy
+            ArrangeByFrame,
+            ArrangeByPoint
         }
 
-        public MappingMethodCollection MappingMethod { get; set; } = MappingMethodCollection.HighFrequecy;
+        public ArrangeMethodCollection ArrangeMethod { get; set; } = ArrangeMethodCollection.ArrangeByFrame;
 
-        public SettingsModel(double widthSqueezeRate,bool maintainAspectRatio,bool stretchToOriginalFrame,bool horizontalFlip,bool verticalFlip,int sampleRate,MappingMethodCollection mappingMethod)
+        public SettingsModel(byte highThreshold, byte lowThreshold, bool amplitudeMaximization, bool horizontalFlip, bool verticalFlip, int sampleRate, ArrangeMethodCollection arrangeMethod)
         {
-            WidthSqueezeRate = widthSqueezeRate;
-            MaintainAspectRatio = maintainAspectRatio;
-            StretchToOriginalFrame = stretchToOriginalFrame;
+            HighThreshold = highThreshold;
+            LowThreshold = lowThreshold;
+            AmplitudeMaximization = amplitudeMaximization;
             HorizontalFlip = horizontalFlip;
             VerticalFlip = verticalFlip;
             SampleRate = sampleRate;
-            MappingMethod = mappingMethod;
+            ArrangeMethod = arrangeMethod;
         }
     }
 }
