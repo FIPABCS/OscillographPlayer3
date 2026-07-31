@@ -9,24 +9,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="wave.txt" />
+    <None Remove="wave.wav" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FFMediaToolkit" Version="4.8.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\OscillographPlayer.WaveGenerateLib\OscillographPlayer.WaveGenerateLib.csproj" />
+    <ProjectReference Include="..\OscillographPlayer\OscillographPlayer.csproj" />
   </ItemGroup>
 
   <Target Name="CopyWaveGenerateCore" AfterTargets="Build">
-  	<Copy
-  	  SourceFiles="$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.dll"
-  	  DestinationFolder="$(TargetDir)"
-  	  SkipUnchangedFiles="true"
-  	  Condition="Exists('$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.dll')" />
-    <Copy
-      SourceFiles="$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.pdb"
-      DestinationFolder="$(TargetDir)"
-      SkipUnchangedFiles="true"
-      Condition="Exists('$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.pdb')" />
+  	<Copy SourceFiles="$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.dll" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.dll')" />
+    <Copy SourceFiles="$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.pdb" DestinationFolder="$(TargetDir)" SkipUnchangedFiles="true" Condition="Exists('$(SolutionDir)bin\$(Configuration)\OscillographPlayer.WaveGenerateCore.pdb')" />
   </Target>
 
 </Project>

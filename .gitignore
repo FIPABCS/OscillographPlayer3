@@ -363,3 +363,6 @@ MigrationBackup/
 FodyWeavers.xsd
 /ffmpeg
 /TestProject/Oscillograph.xlsx
+/TestProject/wave.wav
+/TestProject/wave.txt
+/TestProject/Oscillograph.flp

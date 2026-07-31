@@ -9,37 +9,48 @@ namespace OscillographPlayer.Models
 {
     public class VideoModel
     {
+        //Useful
         private readonly MediaFile _video;
+
         public MediaFile Video
         {
             get => _video;
         }
 
+        //Useful
         private readonly int _width;
+
         public int Width
         {
             get => _width;
         }
 
+        //Useful
         private readonly int _height;
+
         public int Height
         {
             get => _height;
         }
 
         private readonly double _durationInMillisecond;
+
         public double DurationInMillisecond
         {
             get => _durationInMillisecond;
         }
 
+        //Maybe Useful
         private readonly int _totalFrameNumber;
+
         public int TotalFrameNumber
         {
             get => _totalFrameNumber;
         }
 
+        //Useful
         private readonly double _frameRate;
+
         public double FrameRate
         {
             get => _frameRate;

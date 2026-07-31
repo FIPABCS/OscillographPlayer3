@@ -16,7 +16,7 @@ namespace OscillographPlayer.Models
 
         private const string _subchunk1ID = "fmt ";
 
-        private const short _subchunk1Size = 16;
+        private const int _subchunk1Size = 16;
 
         private const short _audioFormat = 1;
 
@@ -51,12 +51,12 @@ namespace OscillographPlayer.Models
             get
             {
                 using var memory = new MemoryStream(_chunkSize + 8);
-                using var writer = new BinaryWriter(memory,Encoding.ASCII,true);
+                using var writer = new BinaryWriter(memory, Encoding.ASCII, true);
 
                 writer.Write(Encoding.ASCII.GetBytes(_chunkID));
                 writer.Write(_chunkSize);
                 writer.Write(Encoding.ASCII.GetBytes(_format));
-                
+
                 writer.Write(Encoding.ASCII.GetBytes(_subchunk1ID));
                 writer.Write(_subchunk1Size);
                 writer.Write(_audioFormat);
@@ -65,7 +65,7 @@ namespace OscillographPlayer.Models
                 writer.Write(_byteRate);
                 writer.Write(_blockAlign);
                 writer.Write(_bitsPerSample);
-                
+
                 writer.Write(Encoding.ASCII.GetBytes(_subchunk2ID));
                 writer.Write(_subchunk2Size);
 
@@ -73,6 +73,8 @@ namespace OscillographPlayer.Models
                 {
                     writer.Write(sampleData); ;
                 }
+
+                memory.SetLength(memory.Position);
 
                 return memory.ToArray();
             }
