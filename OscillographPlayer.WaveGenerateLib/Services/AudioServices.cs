@@ -1,4 +1,4 @@
-﻿using OscillographPlayer.Models;
+﻿using OscillographPlayer.WaveGenerateLib.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

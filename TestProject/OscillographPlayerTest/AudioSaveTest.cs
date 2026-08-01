@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Channels;
-using OscillographPlayer.Models;
+using OscillographPlayer.WaveGenerateLib.Models;
 
 namespace TestProject.OscillographPlayerTest
 {

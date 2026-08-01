@@ -1,10 +1,9 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace OscillographPlayer.Models
+namespace OscillographPlayer.WaveGenerateLib.Models
 {
     public class AudioModel
     {

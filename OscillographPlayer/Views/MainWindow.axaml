@@ -1,12 +1,22 @@
-<Window xmlns="https://github.com/avaloniaui"
+﻿<window:FluentWindow
+        xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:OscillographPlayer.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:ui="using:AvaloniaFluentUI.Controls"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
+        xmlns:icon="clr-namespace:AvaloniaFluentUI.Icons;assembly=AvaloniaFluentUI"
+        xmlns:window="clr-namespace:AvaloniaFluentUI.Windowing;assembly=AvaloniaFluentUI"
+        mc:Ignorable="d" 
+        d:DesignWidth="500" 
+        d:DesignHeight="600"
         x:Class="OscillographPlayer.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
+        Width="500" 
+        Height="600"
+        MinWidth="500"
+        MinHeight="600"
+        TitleBarMargin="45,0,0,0"
         Icon="/Assets/avalonia-logo.ico"
         Title="OscillographPlayer">
 
@@ -16,6 +26,40 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    
+    <window:FluentWindow.Resources>
+        <Thickness x:Key="NavigationViewContentMargin">0,40,0,0</Thickness>
+    </window:FluentWindow.Resources>
 
-</Window>
+    <ui:NavigationView
+        HorizontalAlignment="Stretch"
+        PaneDisplayMode="Left"
+        IsPaneOpen="False"
+        IsSettingsVisible="False"
+        OpenPaneLength="200"
+        PaneFooterSeparatorIsVisible="True">
+
+        <ui:NavigationView.MenuItems>
+        
+            <ui:NavigationViewItem
+                Content="由视频生成" 
+                IconSource="{x:Static icon:FluentIcon.Video}"/>
+
+        </ui:NavigationView.MenuItems>
+
+        <ui:NavigationView.FooterMenuItems>
+            
+            <ui:NavigationViewItem
+                Content="关于" 
+                IconSource="{x:Static icon:FluentIcon.Info}"/>
+            
+            <ui:NavigationViewItem
+                Content="设置"
+                IconSource="{x:Static icon:FluentIcon.Setting}"/>
+
+        </ui:NavigationView.FooterMenuItems>
+
+        <ui:NavigationView.Content/>
+
+    </ui:NavigationView>
+
+</window:FluentWindow>
