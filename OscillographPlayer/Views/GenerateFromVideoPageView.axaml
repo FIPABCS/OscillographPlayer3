@@ -1,0 +1,177 @@
+<UserControl 
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
+    xmlns:icon="clr-namespace:AvaloniaFluentUI.Icons;assembly=AvaloniaFluentUI"
+    mc:Ignorable="d" 
+    d:DesignWidth="450" 
+    d:DesignHeight="600"
+    x:Class="OscillographPlayer.Views.GenerateFromVideoPage">
+
+    <ui:SingleDirectionScrollViewer
+    Orientation="Vertical"
+    VerticalScrollBarVisibility="Auto"
+    HorizontalScrollBarVisibility="Disabled">
+    
+        <StackPanel>
+
+            <ui:GroupHeaderCard
+            Header="文件">
+
+                <ui:GroupHeaderCardItem
+                    Header="源文件"
+                    Description="输入的视频文件路径">
+
+                    <ui:PushButton
+                    Content="打开文件"
+                    Classes="Accent"/>
+                    
+                </ui:GroupHeaderCardItem>
+
+                <ui:GroupHeaderCardItem
+                    Header="保存文件"
+                    Description="输出的音频文件路径">
+
+                    <ui:PushButton
+                    Content="指定路径"/>
+                    
+                </ui:GroupHeaderCardItem>
+
+            </ui:GroupHeaderCard>
+
+            <ui:GroupHeaderCard
+            Header="视频处理设置">
+
+                <ui:GroupHeaderCardItem
+                    Header="平均采样步长"
+                    Description="采样时平均每步移动的像素数">
+                    
+                    <ui:NumberBox
+                    Minimum="1"
+                    SpinButtonPlacementMode="Inline"
+                    MinWidth="120"/>
+
+                </ui:GroupHeaderCardItem>
+
+                <ui:ExpanderSettingCard
+                Header="边缘判定阈值"
+                Description="依据边缘的明显程度确定是否保留，取值0 ~ 255"
+                IsExpanded="True">
+                
+                    <ui:ExpanderSettingCardItem
+                    Header="高阈值"
+                    Description="保留高于该值的边缘">
+                              
+                        <ui:NumberBox
+                            x:Name="HighThresholdInput"
+                            MinWidth="120"
+                            SpinButtonPlacementMode="Inline"
+                            Minimum="0"
+                            Maximum="255"/>
+                    
+                    </ui:ExpanderSettingCardItem>
+                    
+                    <ui:ExpanderSettingCardItem
+                    Header="低阈值"
+                    Description="丢弃低于该值的边缘">
+                    
+                        <ui:NumberBox
+                            x:Name="LowThresholdInput"
+                            MinWidth="120"
+                            SpinButtonPlacementMode="Inline"
+                            Minimum="0"
+                            Maximum="{Binding #HighThresholdInput.Value}"/>
+                    
+                    </ui:ExpanderSettingCardItem>
+
+                </ui:ExpanderSettingCard>
+
+                <ui:ExpanderSettingCard
+                Header="画面翻转"
+                Description="镜像画面，用于适配示波器坐标系"
+                IsExpanded="True">
+                
+                    <ui:ExpanderSettingCardItem
+                    Header="竖直翻转"
+                    Description="上下翻转画面">
+                          
+                        <CheckBox/>
+
+                    </ui:ExpanderSettingCardItem>
+                    
+                    <ui:ExpanderSettingCardItem
+                    Header="水平翻转"
+                    Description="左右翻转画面">
+                    
+                        <CheckBox/>
+
+                    </ui:ExpanderSettingCardItem>
+
+                </ui:ExpanderSettingCard>
+
+            </ui:GroupHeaderCard>
+
+            <ui:GroupHeaderCard
+            Header="波形生成设置">
+            
+                 <ui:GroupHeaderCardItem
+                    Header="波形采样率"
+                    Description="音频文件采样率">
+                    
+                    <ComboBox
+                        IsEditable="True"/>
+
+                </ui:GroupHeaderCardItem>
+
+                <ui:GroupHeaderCardItem
+                    Header="采样重复方式"
+                    Description="采样点重复方式，用于对齐采样和视频帧">
+                    
+                    <ComboBox/>
+
+                </ui:GroupHeaderCardItem>
+
+                <ui:GroupHeaderCardItem
+                    Header="振幅最大化"
+                    Description="最大化波形振幅">
+                    
+                    <CheckBox/>
+
+                </ui:GroupHeaderCardItem>
+
+            </ui:GroupHeaderCard>
+
+            <ui:Card>
+                
+                <StackPanel 
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Center">
+                
+                    <ui:PushButton
+                        Content="开始生成"
+                        Margin="5,0"
+                        Classes="Accent"/>
+                    
+                    <ui:PushButton
+                        Margin="5,0"
+                        Content="导出配置"/>
+                    
+                    <ui:PushButton
+                        Margin="5,0"
+                        Content="导入配置"/>
+
+                    <ui:PushButton
+                        Margin="5,0"
+                        Content="默认配置"/>
+                
+                </StackPanel>
+
+            </ui:Card>
+
+        </StackPanel>
+    
+    </ui:SingleDirectionScrollViewer>
+
+</UserControl>

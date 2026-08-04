@@ -3,6 +3,7 @@
              x:Class="OscillographPlayer.App"
              xmlns:local="using:OscillographPlayer"
              xmlns:fluent="using:AvaloniaFluentUI.Styling"
+             xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -11,6 +12,13 @@
     </Application.DataTemplates>
   
     <Application.Styles>
+        
         <fluent:AvaloniaFluentTheme/>
+
+        <Style
+            Selector="ui|Card,ui|GroupHeaderCard">
+            <Setter Property="Margin" Value="0,1,0,1.5"/>
+        </Style>
+
     </Application.Styles>
 </Application>

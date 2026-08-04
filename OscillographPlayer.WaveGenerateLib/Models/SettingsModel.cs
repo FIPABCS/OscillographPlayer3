@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OscillographPlayer.Models
+namespace OscillographPlayer.WaveGenerateLib.Models
 {
     public class SettingsModel
     {
