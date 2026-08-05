@@ -4,19 +4,21 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
-    xmlns:icon="clr-namespace:AvaloniaFluentUI.Icons;assembly=AvaloniaFluentUI"
     mc:Ignorable="d" 
+    MinWidth="450"
+    MinHeight="300"
     d:DesignWidth="450" 
-    d:DesignHeight="600"
+    d:DesignHeight="1200"
     x:Class="OscillographPlayer.Views.GenerateFromVideoPage">
 
     <ui:SingleDirectionScrollViewer
     Orientation="Vertical"
     VerticalScrollBarVisibility="Auto"
     HorizontalScrollBarVisibility="Disabled">
-    
+
         <StackPanel>
 
+            <!--文件-->
             <ui:GroupHeaderCard
             Header="文件">
 
@@ -41,23 +43,29 @@
 
             </ui:GroupHeaderCard>
 
+            <!--视频处理设置-->
             <ui:GroupHeaderCard
             Header="视频处理设置">
+
+                <ui:GroupHeaderCard.Styles>
+                    <Style Selector="ui|NumberBox">
+                        <Setter Property="MinWidth" Value="120"/>
+                        <Setter Property="SpinButtonPlacementMode" Value="Inline"/>
+                    </Style>
+                </ui:GroupHeaderCard.Styles>
 
                 <ui:GroupHeaderCardItem
                     Header="平均采样步长"
                     Description="采样时平均每步移动的像素数">
                     
                     <ui:NumberBox
-                    Minimum="1"
-                    SpinButtonPlacementMode="Inline"
-                    MinWidth="120"/>
+                    Minimum="1"/>
 
                 </ui:GroupHeaderCardItem>
 
                 <ui:ExpanderSettingCard
                 Header="边缘判定阈值"
-                Description="依据边缘的明显程度确定是否保留，取值0 ~ 255"
+                Description="依据明显程度确定保留的边缘"
                 IsExpanded="True">
                 
                     <ui:ExpanderSettingCardItem
@@ -66,8 +74,6 @@
                               
                         <ui:NumberBox
                             x:Name="HighThresholdInput"
-                            MinWidth="120"
-                            SpinButtonPlacementMode="Inline"
                             Minimum="0"
                             Maximum="255"/>
                     
@@ -79,8 +85,6 @@
                     
                         <ui:NumberBox
                             x:Name="LowThresholdInput"
-                            MinWidth="120"
-                            SpinButtonPlacementMode="Inline"
                             Minimum="0"
                             Maximum="{Binding #HighThresholdInput.Value}"/>
                     
@@ -113,8 +117,15 @@
 
             </ui:GroupHeaderCard>
 
+            <!--波形生成设置-->
             <ui:GroupHeaderCard
             Header="波形生成设置">
+
+                <ui:GroupHeaderCard.Styles>
+                    <Style Selector="ComboBox">
+                        <Setter Property="MinWidth" Value="120"/>
+                    </Style>
+                </ui:GroupHeaderCard.Styles>
             
                  <ui:GroupHeaderCardItem
                     Header="波形采样率"
@@ -143,32 +154,57 @@
 
             </ui:GroupHeaderCard>
 
-            <ui:Card>
+            <!--配置管理-->
+            <ui:ExpanderSettingCard
+                IsExpanded="True"
+                Header="配置管理">
                 
-                <StackPanel 
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Center">
-                
-                    <ui:PushButton
-                        Content="开始生成"
-                        Margin="5,0"
-                        Classes="Accent"/>
+                <ui:ExpanderSettingCardItem
+                    Header="导出和导入配置"
+                    Description="保存以上配置或加载已有配置">
+
+                    <Grid
+                        ColumnDefinitions="Auto,Auto">
                     
-                    <ui:PushButton
-                        Margin="5,0"
-                        Content="导出配置"/>
+                        <Grid.Styles>
+                            <Style Selector="ui|PushButton">
+                                <Setter Property="Margin" Value="2.5,0"/>
+                            </Style>
+                        </Grid.Styles>
+
+                        <ui:PushButton
+                            Grid.Column="0"
+                            Content="导出配置"/>
+
+                        <ui:PushButton
+                            Grid.Column="1"
+                            Content="导入配置"/>
+
+                    </Grid>
                     
-                    <ui:PushButton
-                        Margin="5,0"
-                        Content="导入配置"/>
+                </ui:ExpanderSettingCardItem>
+
+                <ui:ExpanderSettingCardItem
+                    Header="默认配置"
+                    Description="使用默认的波形生成配置">
 
                     <ui:PushButton
-                        Margin="5,0"
                         Content="默认配置"/>
-                
-                </StackPanel>
 
-            </ui:Card>
+                </ui:ExpanderSettingCardItem>
+
+            </ui:ExpanderSettingCard>
+
+            <!--开始生成-->
+            <ui:SettingCard
+                Header="开始生成"
+                Description="使用以上配置生成波形">
+            
+                <ui:PushButton
+                    Content="开始生成"
+                    Classes="Accent"/>
+
+            </ui:SettingCard>
 
         </StackPanel>
     

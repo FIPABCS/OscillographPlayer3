@@ -16,8 +16,10 @@
         <fluent:AvaloniaFluentTheme/>
 
         <Style
-            Selector="ui|Card,ui|GroupHeaderCard">
-            <Setter Property="Margin" Value="0,1,0,1.5"/>
+            Selector="ui|SettingCard,
+            ui|GroupHeaderCard,
+            ui|ExpanderSettingCard:not(ui|GroupHeaderCard > ui|ExpanderSettingCard)">
+            <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
     </Application.Styles>
