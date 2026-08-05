@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
+             xmlns:icon="clr-namespace:AvaloniaFluentUI.Icons;assembly=AvaloniaFluentUI"
              mc:Ignorable="d" 
              MinWidth="450"
              MinHeight="300"
@@ -22,18 +23,29 @@
             Grid.Row="1">
     
             <StackPanel>
+
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="语言"/>
                 
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.Language}"
                     Header="语言"
-                    Description="该应用程序使用的语言">
+                    Description="设置应用语言">
                 
                     <ComboBox/>
                 
                 </ui:SettingCard>
 
+                
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="外观"/>
+
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.Constract}"
                     Header="主题"
-                    Description="该应用程序的界面主题">
+                    Description="更改应用主题">
                 
                     <ComboBox/>
                 

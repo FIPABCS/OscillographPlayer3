@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
+             xmlns:icon="clr-namespace:AvaloniaFluentUI.Icons;assembly=AvaloniaFluentUI"
              mc:Ignorable="d" 
              MinWidth="450"
              MinHeight="300"
@@ -24,12 +25,17 @@
             <StackPanel>
                 
                 <ui:ExpanderSettingCard
+                    IsExpanded="False"
                     Header="OscillographPlayer 3"
                     Description="Copyright © 2026 FIPA, Licensed under the LGPL 3">
-                    
+                    <ui:ExpanderSettingCard.IconSource>
+                        <ui:BitmapIcon UriSource="avares://OscillographPlayer/Assets/ApplicationIcon.ico"/>
+                    </ui:ExpanderSettingCard.IconSource>
+
                     <ui:ExpanderSettingCardItem
+                        IconSource="{x:Static icon:FluentIcon.Application}"
                         Header="当前版本"
-                        Description="OscillographPlayer 3, Version 1.0">
+                        Description="OscillographPlayer 3, Version 1.0.0">
                     
                         <ui:PushButton
                             Content="查看发行版"
@@ -38,11 +44,13 @@
                     </ui:ExpanderSettingCardItem>
 
                     <ui:ExpanderSettingCardItem
+                        IconSource="{x:Static icon:FluentIcon.GitHub}"
                         IsClickEnabled="True"
                         Header="项目仓库"
                         Description="访问本项目在GitHub上的开源仓库"/>
 
                     <ui:ExpanderSettingCardItem
+                        IconSource="{x:Static icon:FluentIcon.Document}"
                         IsClickEnabled="True"
                         Header="开源许可"
                         Description="查看本项目的开源许可证"/>
@@ -54,10 +62,13 @@
                     Text="帮助与反馈"/>
                 
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.Help}"
                     Classes="Clicked"
                     Header="帮助"
                     Description="了解如何使用 OscillographerPlayer 3"/>
+                
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.Feedback}"
                     Classes="Clicked"
                     Header="反馈"
                         Description="报告软件问题和提出建议"/>
@@ -71,7 +82,5 @@
         </ui:SingleDirectionScrollViewer>
 
     </Grid>
-
-    
 
 </UserControl>

@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
+    xmlns:icon="clr-namespace:AvaloniaFluentUI.Icons;assembly=AvaloniaFluentUI"
     mc:Ignorable="d" 
     MinWidth="450"
     MinHeight="300"
@@ -41,21 +42,23 @@
 
                 <!--文件-->
                 <ui:SettingCard
-                        Header="源文件"
-                        Description="输入的视频文件路径">
+                    IconSource="{x:Static icon:FluentIcon.Document}"
+                    Header="源文件"
+                    Description="输入的视频文件路径">
 
-                        <ui:PushButton
-                        Content="打开文件"
-                        Classes="Accent"/>
+                    <ui:PushButton
+                    Content="打开文件"
+                    Classes="Accent"/>
                         
                 </ui:SettingCard>
 
                 <ui:SettingCard
-                        Header="保存文件"
-                        Description="输出的音频文件路径">
+                    IconSource="{x:Static icon:FluentIcon.Folder}"
+                    Header="输出文件"
+                    Description="输出的音频文件路径">
 
-                        <ui:PushButton
-                        Content="指定路径"/>
+                    <ui:PushButton
+                    Content="指定路径"/>
                         
                 </ui:SettingCard>
 
@@ -65,6 +68,7 @@
                     Text="视频处理设置"/>
                 
                 <ui:SettingCard 
+                    IconSource="{x:Static icon:FluentIcon.Minimize}"
                     Header="平均采样步长"
                     Description="采样时平均每步移动的像素数">
                     
@@ -74,7 +78,8 @@
                 </ui:SettingCard>
 
                 <ui:ExpanderSettingCard
-                    Header="边缘判定阈值"
+                    IconSource="{x:Static icon:FluentIcon.PencilInk}"
+                    Header="边缘判定"
                     Description="依据明显程度确定保留的边缘"
                     IsExpanded="True">
                 
@@ -103,6 +108,7 @@
                 </ui:ExpanderSettingCard>
 
                 <ui:ExpanderSettingCard
+                    IconSource="{x:Static icon:FluentIcon.Scroll}"
                     Header="画面翻转"
                     Description="镜像画面，用于适配示波器坐标系"
                     IsExpanded="True">
@@ -131,6 +137,7 @@
                     Text="波形生成设置"/>
                 
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.More}"
                     Header="波形采样率"
                     Description="音频文件采样率">
                     
@@ -140,6 +147,7 @@
                 </ui:SettingCard>
 
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.Copy}"
                     Header="采样重复方式"
                     Description="采样点重复方式，用于对齐采样和视频帧">
                     
@@ -148,6 +156,7 @@
                 </ui:SettingCard>
 
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.ZoomIn}"
                     Header="振幅最大化"
                     Description="最大化波形振幅">
                     
@@ -165,6 +174,7 @@
                     Header="配置管理">
                     
                     <ui:ExpanderSettingCardItem
+                        IconSource="{x:Static icon:FluentIcon.Save}"
                         Header="导出和导入配置"
                         Description="保存以上配置或加载已有配置">
 
@@ -190,6 +200,7 @@
                     </ui:ExpanderSettingCardItem>
 
                     <ui:ExpanderSettingCardItem
+                        IconSource="{x:Static icon:FluentIcon.Setting}"
                         Header="默认配置"
                         Description="使用默认的波形生成配置">
 
@@ -202,6 +213,7 @@
 
                 <!--开始生成-->
                 <ui:SettingCard
+                    IconSource="{x:Static icon:FluentIcon.Play}"
                     Header="开始生成"
                     Description="使用以上配置生成波形">
                 

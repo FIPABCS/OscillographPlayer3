@@ -17,7 +17,7 @@
         MinWidth="500"
         MinHeight="600"
         TitleBarMargin="45,0,0,0"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/ApplicationIcon.ico"
         Title="OscillographPlayer">
 
     <Design.DataContext>
