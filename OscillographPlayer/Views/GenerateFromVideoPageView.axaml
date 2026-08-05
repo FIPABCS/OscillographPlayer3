@@ -7,63 +7,76 @@
     mc:Ignorable="d" 
     MinWidth="450"
     MinHeight="300"
+    MaxHeight="1290"
     d:DesignWidth="450" 
-    d:DesignHeight="1200"
+    d:DesignHeight="1290"
     x:Class="OscillographPlayer.Views.GenerateFromVideoPage">
 
-    <ui:SingleDirectionScrollViewer>
 
-        <StackPanel>
+    <UserControl.Styles>
+        
+        <Style Selector="ui|NumberBox">
+            <Setter Property="MinWidth" Value="120"/>
+            <Setter Property="SpinButtonPlacementMode" Value="Inline"/>
+        </Style>
 
-            <!--文件-->
-            <ui:GroupHeaderCard
-            Header="文件">
+        <Style Selector="ComboBox">
+            <Setter Property="MinWidth" Value="120"/>
+        </Style>
 
-                <ui:GroupHeaderCardItem
-                    Header="源文件"
-                    Description="输入的视频文件路径">
+    </UserControl.Styles>
 
-                    <ui:PushButton
-                    Content="打开文件"
-                    Classes="Accent"/>
-                    
-                </ui:GroupHeaderCardItem>
+    <Grid
+        RowDefinitions="Auto,*">
+    
+        <TextBlock
+            Grid.Row="0"
+            Classes="Title"
+            Text="由视频生成"/>
 
-                <ui:GroupHeaderCardItem
-                    Header="保存文件"
-                    Description="输出的音频文件路径">
+        <ui:SingleDirectionScrollViewer
+            Grid.Row="1">
 
-                    <ui:PushButton
-                    Content="指定路径"/>
-                    
-                </ui:GroupHeaderCardItem>
+            <StackPanel>
 
-            </ui:GroupHeaderCard>
+                <!--文件-->
+                <ui:SettingCard
+                        Header="源文件"
+                        Description="输入的视频文件路径">
 
-            <!--视频处理设置-->
-            <ui:GroupHeaderCard
-            Header="视频处理设置">
+                        <ui:PushButton
+                        Content="打开文件"
+                        Classes="Accent"/>
+                        
+                </ui:SettingCard>
 
-                <ui:GroupHeaderCard.Styles>
-                    <Style Selector="ui|NumberBox">
-                        <Setter Property="MinWidth" Value="120"/>
-                        <Setter Property="SpinButtonPlacementMode" Value="Inline"/>
-                    </Style>
-                </ui:GroupHeaderCard.Styles>
+                <ui:SettingCard
+                        Header="保存文件"
+                        Description="输出的音频文件路径">
 
-                <ui:GroupHeaderCardItem
+                        <ui:PushButton
+                        Content="指定路径"/>
+                        
+                </ui:SettingCard>
+
+                <!--视频处理设置-->
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="视频处理设置"/>
+                
+                <ui:SettingCard 
                     Header="平均采样步长"
                     Description="采样时平均每步移动的像素数">
                     
                     <ui:NumberBox
                     Minimum="1"/>
 
-                </ui:GroupHeaderCardItem>
+                </ui:SettingCard>
 
                 <ui:ExpanderSettingCard
-                Header="边缘判定阈值"
-                Description="依据明显程度确定保留的边缘"
-                IsExpanded="True">
+                    Header="边缘判定阈值"
+                    Description="依据明显程度确定保留的边缘"
+                    IsExpanded="True">
                 
                     <ui:ExpanderSettingCardItem
                     Header="高阈值"
@@ -90,121 +103,118 @@
                 </ui:ExpanderSettingCard>
 
                 <ui:ExpanderSettingCard
-                Header="画面翻转"
-                Description="镜像画面，用于适配示波器坐标系"
-                IsExpanded="True">
+                    Header="画面翻转"
+                    Description="镜像画面，用于适配示波器坐标系"
+                    IsExpanded="True">
+                    
+                        <ui:ExpanderSettingCardItem
+                        Header="竖直翻转"
+                        Description="上下翻转画面">
+                              
+                            <CheckBox/>
+
+                        </ui:ExpanderSettingCardItem>
+                        
+                        <ui:ExpanderSettingCardItem
+                        Header="水平翻转"
+                        Description="左右翻转画面">
+                        
+                            <CheckBox/>
+
+                        </ui:ExpanderSettingCardItem>
+
+                    </ui:ExpanderSettingCard>
+
+                <!--波形生成设置-->
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="波形生成设置"/>
                 
-                    <ui:ExpanderSettingCardItem
-                    Header="竖直翻转"
-                    Description="上下翻转画面">
-                          
-                        <CheckBox/>
-
-                    </ui:ExpanderSettingCardItem>
-                    
-                    <ui:ExpanderSettingCardItem
-                    Header="水平翻转"
-                    Description="左右翻转画面">
-                    
-                        <CheckBox/>
-
-                    </ui:ExpanderSettingCardItem>
-
-                </ui:ExpanderSettingCard>
-
-            </ui:GroupHeaderCard>
-
-            <!--波形生成设置-->
-            <ui:GroupHeaderCard
-            Header="波形生成设置">
-
-                <ui:GroupHeaderCard.Styles>
-                    <Style Selector="ComboBox">
-                        <Setter Property="MinWidth" Value="120"/>
-                    </Style>
-                </ui:GroupHeaderCard.Styles>
-            
-                 <ui:GroupHeaderCardItem
+                <ui:SettingCard
                     Header="波形采样率"
                     Description="音频文件采样率">
                     
                     <ComboBox
                         IsEditable="True"/>
 
-                </ui:GroupHeaderCardItem>
+                </ui:SettingCard>
 
-                <ui:GroupHeaderCardItem
+                <ui:SettingCard
                     Header="采样重复方式"
                     Description="采样点重复方式，用于对齐采样和视频帧">
                     
                     <ComboBox/>
 
-                </ui:GroupHeaderCardItem>
+                </ui:SettingCard>
 
-                <ui:GroupHeaderCardItem
+                <ui:SettingCard
                     Header="振幅最大化"
                     Description="最大化波形振幅">
                     
                     <CheckBox/>
 
-                </ui:GroupHeaderCardItem>
+                </ui:SettingCard>
 
-            </ui:GroupHeaderCard>
+                <!--配置管理-->
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="配置和生成"/>
 
-            <!--配置管理-->
-            <ui:ExpanderSettingCard
-                IsExpanded="True"
-                Header="配置管理">
+                <ui:ExpanderSettingCard
+                    IsExpanded="False"
+                    Header="配置管理">
+                    
+                    <ui:ExpanderSettingCardItem
+                        Header="导出和导入配置"
+                        Description="保存以上配置或加载已有配置">
+
+                        <Grid
+                            ColumnDefinitions="Auto,Auto">
+                        
+                            <Grid.Styles>
+                                <Style Selector="ui|PushButton">
+                                    <Setter Property="Margin" Value="2.5,0"/>
+                                </Style>
+                            </Grid.Styles>
+
+                            <ui:PushButton
+                                Grid.Column="0"
+                                Content="导出配置"/>
+
+                            <ui:PushButton
+                                Grid.Column="1"
+                                Content="导入配置"/>
+
+                        </Grid>
+                        
+                    </ui:ExpanderSettingCardItem>
+
+                    <ui:ExpanderSettingCardItem
+                        Header="默认配置"
+                        Description="使用默认的波形生成配置">
+
+                        <ui:PushButton
+                            Content="默认配置"/>
+
+                    </ui:ExpanderSettingCardItem>
+
+                </ui:ExpanderSettingCard>
+
+                <!--开始生成-->
+                <ui:SettingCard
+                    Header="开始生成"
+                    Description="使用以上配置生成波形">
                 
-                <ui:ExpanderSettingCardItem
-                    Header="导出和导入配置"
-                    Description="保存以上配置或加载已有配置">
-
-                    <Grid
-                        ColumnDefinitions="Auto,Auto">
-                    
-                        <Grid.Styles>
-                            <Style Selector="ui|PushButton">
-                                <Setter Property="Margin" Value="2.5,0"/>
-                            </Style>
-                        </Grid.Styles>
-
-                        <ui:PushButton
-                            Grid.Column="0"
-                            Content="导出配置"/>
-
-                        <ui:PushButton
-                            Grid.Column="1"
-                            Content="导入配置"/>
-
-                    </Grid>
-                    
-                </ui:ExpanderSettingCardItem>
-
-                <ui:ExpanderSettingCardItem
-                    Header="默认配置"
-                    Description="使用默认的波形生成配置">
-
                     <ui:PushButton
-                        Content="默认配置"/>
+                        Content="开始生成"
+                        Classes="Accent"/>
 
-                </ui:ExpanderSettingCardItem>
+                </ui:SettingCard>
 
-            </ui:ExpanderSettingCard>
-
-            <!--开始生成-->
-            <ui:SettingCard
-                Header="开始生成"
-                Description="使用以上配置生成波形">
-            
-                <ui:PushButton
-                    Content="开始生成"
-                    Classes="Accent"/>
-
-            </ui:SettingCard>
-
-        </StackPanel>
+            </StackPanel>
+        
+        </ui:SingleDirectionScrollViewer>
     
-    </ui:SingleDirectionScrollViewer>
+    </Grid>
 
 </UserControl>
