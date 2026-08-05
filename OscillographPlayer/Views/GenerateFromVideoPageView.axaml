@@ -11,10 +11,7 @@
     d:DesignHeight="1200"
     x:Class="OscillographPlayer.Views.GenerateFromVideoPage">
 
-    <ui:SingleDirectionScrollViewer
-    Orientation="Vertical"
-    VerticalScrollBarVisibility="Auto"
-    HorizontalScrollBarVisibility="Disabled">
+    <ui:SingleDirectionScrollViewer>
 
         <StackPanel>
 

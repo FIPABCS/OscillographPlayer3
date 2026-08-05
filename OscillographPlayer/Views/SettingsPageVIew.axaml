@@ -10,6 +10,28 @@
              d:DesignHeight="600"
              x:Class="OscillographPlayer.Views.SettingsPageVIew">
 
+    <ui:SingleDirectionScrollViewer>
+        
+        <StackPanel>
+            
+            <ui:SettingCard
+                Header="语言"
+                Description="该应用程序使用的语言">
+            
+                <ComboBox/>
+            
+            </ui:SettingCard>
 
+            <ui:SettingCard
+                Header="主题"
+                Description="该应用程序的界面主题">
+            
+                <ComboBox/>
+            
+            </ui:SettingCard>
+
+        </StackPanel>
+
+    </ui:SingleDirectionScrollViewer>
 
 </UserControl>

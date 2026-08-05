@@ -22,5 +22,14 @@
             <Setter Property="Margin" Value="0,2,0,2"/>
         </Style>
 
+        <Style
+        Selector="ui|SingleDirectionScrollViewer">
+        
+            <Setter Property="Orientation" Value="Vertical"/>
+            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+
+        </Style>
+
     </Application.Styles>
 </Application>
