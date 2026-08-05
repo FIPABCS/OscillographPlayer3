@@ -2,7 +2,76 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
+             mc:Ignorable="d" 
+             MinWidth="450"
+             MinHeight="300"
+             d:DesignWidth="450"
+             d:DesignHeight="600"
              x:Class="OscillographPlayer.Views.InfoPageView">
-  Welcome to Avalonia!
+
+    <Grid
+        RowDefinitions="Auto,*">
+    
+        <TextBlock
+            Grid.Row="0"
+            Classes="Title"
+            Text="关于"/>
+
+        <ui:SingleDirectionScrollViewer
+            Grid.Row="1">
+            
+            <StackPanel>
+                
+                <ui:ExpanderSettingCard
+                    Header="OscillographPlayer 3"
+                    Description="Copyright © 2026 FIPA, Licensed under the LGPL 3">
+                    
+                    <ui:ExpanderSettingCardItem
+                        Header="当前版本"
+                        Description="OscillographPlayer 3, Version 1.0">
+                    
+                        <ui:PushButton
+                            Content="查看发行版"
+                            Classes="Accent"/>
+
+                    </ui:ExpanderSettingCardItem>
+
+                    <ui:ExpanderSettingCardItem
+                        IsClickEnabled="True"
+                        Header="项目仓库"
+                        Description="访问本项目在GitHub上的开源仓库"/>
+
+                    <ui:ExpanderSettingCardItem
+                        IsClickEnabled="True"
+                        Header="开源许可"
+                        Description="查看本项目的开源许可证"/>
+
+                </ui:ExpanderSettingCard>
+
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="帮助与反馈"/>
+                
+                <ui:SettingCard
+                    Classes="Clicked"
+                    Header="帮助"
+                    Description="了解如何使用 OscillographerPlayer 3"/>
+                <ui:SettingCard
+                    Classes="Clicked"
+                    Header="反馈"
+                        Description="报告软件问题和提出建议"/>
+
+                <TextBlock
+                    Classes="Subtitle"
+                    Text="依赖与引用"/>
+
+            </StackPanel>
+
+        </ui:SingleDirectionScrollViewer>
+
+    </Grid>
+
+    
+
 </UserControl>
