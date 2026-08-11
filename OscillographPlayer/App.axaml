@@ -51,5 +51,12 @@
 
         </Style>
 
+        <Style
+            Selector="Grid.PageBorder">
+            
+            <Setter Property="Margin" Value="18,0,4,18"/>
+
+        </Style>
+
     </Application.Styles>
 </Application>

@@ -4,9 +4,9 @@ using Avalonia.Markup.Xaml;
 
 namespace OscillographPlayer.Views
 {
-    public partial class GenerateFromVideoPage : UserControl
+    public partial class VideoGeneratePageView : UserControl
     {
-        public GenerateFromVideoPage()
+        public VideoGeneratePageView()
         {
             InitializeComponent();
         }

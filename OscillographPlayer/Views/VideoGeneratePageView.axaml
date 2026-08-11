@@ -1,6 +1,7 @@
 <UserControl 
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:OscillographPlayer.ViewModels"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
@@ -11,7 +12,8 @@
     MaxHeight="1290"
     d:DesignWidth="450" 
     d:DesignHeight="1290"
-    x:Class="OscillographPlayer.Views.GenerateFromVideoPage">
+    x:DataType="vm:VideoGeneratePageViewModel"
+    x:Class="OscillographPlayer.Views.VideoGeneratePageView">
 
 
     <UserControl.Styles>
@@ -28,6 +30,7 @@
     </UserControl.Styles>
 
     <Grid
+        Classes="PageBorder"
         RowDefinitions="Auto,*">
     
         <TextBlock

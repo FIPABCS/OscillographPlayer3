@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:OscillographPlayer.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
@@ -9,9 +10,11 @@
              MinHeight="300"
              d:DesignWidth="450"
              d:DesignHeight="600"
-             x:Class="OscillographPlayer.Views.SettingsPageVIew">
+             x:Class="OscillographPlayer.Views.SettingsPageView"
+             x:DataType="vm:SettingsPageViewModel">
 
     <Grid
+        Classes="PageBorder"
         RowDefinitions="Auto,*">
     
         <TextBlock
@@ -31,7 +34,7 @@
                 <ui:SettingCard
                     IconSource="{x:Static icon:FluentIcon.Language}"
                     Header="语言"
-                    Description="设置应用语言">
+                    Description="应用使用的语言">
                 
                     <ComboBox/>
                 
@@ -43,9 +46,9 @@
                     Text="外观"/>
 
                 <ui:SettingCard
-                    IconSource="{x:Static icon:FluentIcon.Constract}"
+                    IconSource="{x:Static icon:FluentIcon.Brush}"
                     Header="主题"
-                    Description="更改应用主题">
+                    Description="应用使用的主题">
                 
                     <ComboBox/>
                 

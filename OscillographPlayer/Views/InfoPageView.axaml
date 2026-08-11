@@ -1,5 +1,6 @@
 <UserControl xmlns="https://github.com/avaloniaui"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:OscillographPlayer.ViewModels"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
@@ -9,9 +10,11 @@
              MinHeight="300"
              d:DesignWidth="450"
              d:DesignHeight="600"
-             x:Class="OscillographPlayer.Views.InfoPageView">
+             x:Class="OscillographPlayer.Views.InfoPageView"
+             x:DataType="vm:InfoPageViewModel">
 
     <Grid
+        Classes="PageBorder"
         RowDefinitions="Auto,*">
     
         <TextBlock
@@ -71,7 +74,7 @@
                     IconSource="{x:Static icon:FluentIcon.Feedback}"
                     Classes="Clicked"
                     Header="反馈"
-                        Description="报告软件问题和提出建议"/>
+                        Description="报告软件问题或提出建议"/>
 
                 <TextBlock
                     Classes="Subtitle"

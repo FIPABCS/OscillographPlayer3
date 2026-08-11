@@ -12,13 +12,14 @@
         d:DesignHeight="600"
         x:Class="OscillographPlayer.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Width="500" 
-        Height="600"
-        MinWidth="500"
-        MinHeight="600"
-        TitleBarMargin="45,0,0,0"
+        Width="600" 
+        Height="700"
+        MinWidth="600"
+        MinHeight="200"
+        TitleBarMargin="40,0,0,0"
         Icon="/Assets/ApplicationIcon.ico"
-        Title="OscillographPlayer">
+        Title="OscillographPlayer 3"
+        WindowStartupLocation="CenterOwner">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -27,7 +28,7 @@
     </Design.DataContext>
 
     <window:FluentWindow.Resources>
-        <Thickness x:Key="NavigationViewContentMargin">0,40,0,0</Thickness>
+        <Thickness x:Key="NavigationViewContentMargin">0,45,0,0</Thickness>
     </window:FluentWindow.Resources>
 
     <ui:NavigationView
@@ -35,30 +36,38 @@
         PaneDisplayMode="Left"
         IsPaneOpen="False"
         IsSettingsVisible="False"
+        CompactPaneLength="45"
         OpenPaneLength="200"
-        PaneFooterSeparatorIsVisible="True">
+        PaneFooterSeparatorIsVisible="True"
+        SelectedItem="{Binding NavigateViewSeletedItem, Mode=TwoWay}">
 
         <ui:NavigationView.MenuItems>
         
             <ui:NavigationViewItem
-                Content="由视频生成" 
-                IconSource="{x:Static icon:FluentIcon.Video}"/>
+                Content="由视频生成"
+                IconSource="{x:Static icon:FluentIcon.Video}"
+                IsSelected="True"
+                Tag="VideoPage"/>
 
         </ui:NavigationView.MenuItems>
 
         <ui:NavigationView.FooterMenuItems>
             
             <ui:NavigationViewItem
-                Content="关于" 
-                IconSource="{x:Static icon:FluentIcon.Info}"/>
+                Content="关于"
+                IconSource="{x:Static icon:FluentIcon.Info}"
+                Tag="InfoPage"/>
             
             <ui:NavigationViewItem
                 Content="设置"
-                IconSource="{x:Static icon:FluentIcon.Setting}"/>
+                IconSource="{x:Static icon:FluentIcon.Setting}"
+                Tag="SettingsPage"/>
 
         </ui:NavigationView.FooterMenuItems>
 
-        <ui:NavigationView.Content/>
+        <ui:NavigationView.Content>
+            <ui:StackContent Content="{Binding CurrentPage}"/>
+        </ui:NavigationView.Content>
 
     </ui:NavigationView>
 
