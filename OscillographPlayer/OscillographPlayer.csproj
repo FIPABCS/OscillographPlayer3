@@ -16,6 +16,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Remove="Assets\Languages\String.zh-CN.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="Assets\Languages\String.zh-CN.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Avalonia" Version="12.1.1" />
     <PackageReference Include="Avalonia.Desktop" Version="12.1.1" />
     <PackageReference Include="Avalonia.Fonts.Inter" Version="12.1.1" />
@@ -37,8 +45,8 @@
   </ItemGroup>
 
   <ItemGroup>
-  	<AdditionalFiles Include="Assets\Languages\String.resx" />
   	<AdditionalFiles Include="Assets\Languages\String.zh-CN.resx" />
+  	<AdditionalFiles Include="Assets\Languages\String.resx" />
   	<AdditionalFiles Include="Assets\Languages\String.en-US.resx" />
   </ItemGroup>
 

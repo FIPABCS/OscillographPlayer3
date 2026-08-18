@@ -13,20 +13,26 @@
              x:Class="OscillographPlayer.Views.InfoPageView"
              x:DataType="vm:InfoPageViewModel">
 
+    <UserControl.DataContext>
+        <vm:InfoPageViewModel/>
+    </UserControl.DataContext>
+
     <Grid
         Classes="PageBorder"
         RowDefinitions="Auto,*">
     
+        <!--Title-->
         <TextBlock
             Grid.Row="0"
             Classes="Title"
-            Text="关于"/>
+            Text="{Binding Title^}"/>
 
         <ui:SingleDirectionScrollViewer
             Grid.Row="1">
             
             <StackPanel>
                 
+                <!--HeadCard-->
                 <ui:ExpanderSettingCard
                     IsExpanded="False"
                     Header="OscillographPlayer 3"
@@ -35,50 +41,57 @@
                         <ui:BitmapIcon UriSource="avares://OscillographPlayer/Assets/ApplicationIcon.ico"/>
                     </ui:ExpanderSettingCard.IconSource>
 
+                    <!--Current Version-->
                     <ui:ExpanderSettingCardItem
                         IconSource="{x:Static icon:FluentIcon.Application}"
-                        Header="当前版本"
+                        Header="{Binding CurrentVersionCardTitle^}"
                         Description="OscillographPlayer 3, Version 1.0.0">
                     
                         <ui:PushButton
-                            Content="查看发行版"
+                            Content="{Binding ViewRelease^}"
                             Classes="Accent"/>
 
                     </ui:ExpanderSettingCardItem>
 
+                    <!--Repository-->
                     <ui:ExpanderSettingCardItem
                         IconSource="{x:Static icon:FluentIcon.GitHub}"
                         IsClickEnabled="True"
-                        Header="项目仓库"
-                        Description="访问本项目在GitHub上的开源仓库"/>
+                        Header="{Binding RepositoryCardTitle^}"
+                        Description="{Binding RepositoryCardDes^}"/>
 
+                    <!--License-->
                     <ui:ExpanderSettingCardItem
                         IconSource="{x:Static icon:FluentIcon.Document}"
                         IsClickEnabled="True"
-                        Header="开源许可"
-                        Description="查看本项目的开源许可证"/>
+                        Header="{Binding LicenseCardTitle^}"
+                        Description="{Binding LicenseCardDes^}"/>
 
                 </ui:ExpanderSettingCard>
 
+                <!--Help and Feedback Subtitle-->
                 <TextBlock
                     Classes="Subtitle"
-                    Text="帮助与反馈"/>
+                    Text="{Binding HelpAndFeedbackSubtitle^}"/>
                 
+                <!--Help-->
                 <ui:SettingCard
                     IconSource="{x:Static icon:FluentIcon.Help}"
                     Classes="Clicked"
-                    Header="帮助"
-                    Description="了解如何使用 OscillographerPlayer 3"/>
+                    Header="{Binding HelpCardTitle^}"
+                    Description="{Binding HelpCardDes^}"/>
                 
+                <!--Feedback-->
                 <ui:SettingCard
                     IconSource="{x:Static icon:FluentIcon.Feedback}"
                     Classes="Clicked"
-                    Header="反馈"
-                        Description="报告软件问题或提出建议"/>
+                    Header="{Binding FeedbackCardTitle^}"
+                    Description="{Binding FeedBackCardDes^}"/>
 
+                <!--Dependent and Reference Subtitle-->
                 <TextBlock
                     Classes="Subtitle"
-                    Text="依赖与引用"/>
+                    Text="{Binding DependencyAndReferenceSubtitle^}"/>
 
             </StackPanel>
 

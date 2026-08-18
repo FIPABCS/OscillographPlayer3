@@ -147,4 +147,43 @@
   <data name="SettingsPage_ThemeOption_System" xml:space="preserve">
     <value>Follow the system</value>
   </data>
+  <data name="InfoPage_Title" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="InfoPage_CurrentVersionCardTitle" xml:space="preserve">
+    <value>Current Version</value>
+  </data>
+  <data name="InfoPage_ViewRelease" xml:space="preserve">
+    <value>View Release</value>
+  </data>
+  <data name="InfoPage_RepositoryCardTitle" xml:space="preserve">
+    <value>Repository</value>
+  </data>
+  <data name="InfoPage_LicenseCardTitle" xml:space="preserve">
+    <value>License</value>
+  </data>
+  <data name="InfoPage_RepositoryCardDes" xml:space="preserve">
+    <value>View the repository of this application on GitHub</value>
+  </data>
+  <data name="InfoPage_LicenseCardDes" xml:space="preserve">
+    <value>View the license of this application</value>
+  </data>
+  <data name="InfoPage_HelpAndFeedbackSubtitle" xml:space="preserve">
+    <value>Help and Feedback</value>
+  </data>
+  <data name="InfoPage_HelpCardTitle" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="InfoPage_HelpCardDes" xml:space="preserve">
+    <value>Learn to use OscillographPlayer 3</value>
+  </data>
+  <data name="InfoPage_FeedbackCardTitle" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="InfoPage_FeedbackCardDes" xml:space="preserve">
+    <value>Report application issues or make suggestions</value>
+  </data>
+  <data name="InfoPage_DependencyAndReferenceSubtitle" xml:space="preserve">
+    <value>Dependency and Reference</value>
+  </data>
 </root>
