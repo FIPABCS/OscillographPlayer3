@@ -3,7 +3,6 @@
              x:Class="OscillographPlayer.App"
              xmlns:local="using:OscillographPlayer"
              xmlns:fluent="using:AvaloniaFluentUI.Styling"
-             xmlns:ui="clr-namespace:AvaloniaFluentUI.Controls;assembly=AvaloniaFluentUI"
              RequestedThemeVariant="Default">
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
@@ -15,55 +14,7 @@
         
         <fluent:AvaloniaFluentTheme/>
 
-        <Style
-            Selector="ui|SettingCard,
-            ui|GroupHeaderCard,
-            ui|ExpanderSettingCard:not(ui|GroupHeaderCard > ui|ExpanderSettingCard)">
-            <Setter Property="Margin" Value="0,0,0,4"/>
-        </Style>
-
-        <Style
-        Selector="ui|SingleDirectionScrollViewer">
-        
-            <Setter Property="Orientation" Value="Vertical"/>
-            <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
-            <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
-
-        </Style>
-
-        <Style
-            Selector="TextBlock.Title">
-            
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="FontSize" Value="32"/>
-            <Setter Property="FontWeight" Value="Regular"/>
-            <Setter Property="Margin" Value="0,20,0,20"/>
-
-        </Style>
-
-        <Style
-            Selector="TextBlock.Subtitle">
-            
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontWeight" Value="Regular"/>
-            <Setter Property="Margin" Value="0,15,0,5"/>
-
-        </Style>
-
-        <Style
-            Selector="Grid.PageBorder">
-            
-            <Setter Property="Margin" Value="18,0,4,18"/>
-
-        </Style>
-
-        <Style
-            Selector="ComboBox">
-
-            <Setter Property="MinWidth" Value="128"/>
-        
-        </Style>
+        <StyleInclude Source="./Views/ApplicationStyles.axaml"/>
 
     </Application.Styles>
 </Application>
