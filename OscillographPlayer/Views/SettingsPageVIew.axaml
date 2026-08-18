@@ -13,6 +13,10 @@
              x:Class="OscillographPlayer.Views.SettingsPageView"
              x:DataType="vm:SettingsPageViewModel">
 
+    <Design.DataContext>
+        <vm:SettingsPageViewModel/>
+    </Design.DataContext>
+
     <Grid
         Classes="PageBorder"
         RowDefinitions="Auto,*">
@@ -20,35 +24,46 @@
         <TextBlock
             Grid.Row="0"
             Classes="Title"
-            Text="设置"/>
+            Text="{Binding PageTitle^}"/>
 
         <ui:SingleDirectionScrollViewer
             Grid.Row="1">
     
             <StackPanel>
 
+                <!--Subtitle: Language-->
                 <TextBlock
                     Classes="Subtitle"
-                    Text="语言"/>
+                    Text="{Binding LanguageSubtitle^}"/>
                 
+                <!--Language-->
                 <ui:SettingCard
                     IconSource="{x:Static icon:FluentIcon.Language}"
-                    Header="语言"
-                    Description="应用使用的语言">
+                    Header="{Binding LanguageCardTitle^}"
+                    Description="{Binding LanguageCardDes^}">
                 
-                    <ComboBox/>
+                    <ComboBox
+                        ItemsSource="{Binding LanguageList}"
+                        SelectedItem="{Binding SelectedLanguage}">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding DisplayName}"/>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
                 
                 </ui:SettingCard>
 
-                
+                <!--Subtitle: Appearance-->
                 <TextBlock
                     Classes="Subtitle"
-                    Text="外观"/>
+                    Text="{Binding AppearanceSubtitlt^}"/>
 
+                <!--Theme-->
                 <ui:SettingCard
                     IconSource="{x:Static icon:FluentIcon.Brush}"
-                    Header="主题"
-                    Description="应用使用的主题">
+                    Header="{Binding ThemeCardTitle^}"
+                    Description="{Binding ThemeCardDes^}">
                 
                     <ComboBox/>
                 

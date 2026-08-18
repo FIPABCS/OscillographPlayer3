@@ -26,6 +26,7 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="FluentIcons.Avalonia" Version="2.1.333" />
+    <PackageReference Include="Irihi.Lingua" Version="1.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +34,20 @@
     <Folder Include="Services\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+  	<AdditionalFiles Include="Assets\Languages\String.resx" />
+  	<AdditionalFiles Include="Assets\Languages\String.zh-CN.resx" />
+  	<AdditionalFiles Include="Assets\Languages\String.en-US.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Update="Assets\Languages\SettingsPageStr.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SettingsPageStr.resx</DependentUpon>
+    </AvaloniaResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -42,5 +57,12 @@
     <Compile Update="Views\SettingsPageVIew.axaml.cs">
       <DependentUpon>SettingsPageView.axaml</DependentUpon>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Assets\Languages\SettingsPageStr.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SettingsPageStr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

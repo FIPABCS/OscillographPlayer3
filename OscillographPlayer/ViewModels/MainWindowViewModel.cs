@@ -7,10 +7,11 @@ namespace OscillographPlayer.ViewModels
     public partial class MainWindowViewModel : ViewModelBase
     {
         [ObservableProperty]
-        private ViewModelBase? _currentPage;
+        public partial ViewModelBase? CurrentPage { get; set; }
 
         [ObservableProperty]
-        private object? _navigateViewSeletedItem;
+        public partial object? NavigateViewSeletedItem { get; set; }
+
         partial void OnNavigateViewSeletedItemChanged(object? value)
         {
             if(value is AvaloniaFluentUI.Controls.NavigationViewItem item)
