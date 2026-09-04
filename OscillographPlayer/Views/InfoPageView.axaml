@@ -35,8 +35,8 @@
                 <!--HeadCard-->
                 <ui:ExpanderSettingCard
                     IsExpanded="False"
-                    Header="OscillographPlayer 3"
-                    Description="Copyright © 2026 FIPA, Licensed under the LGPL 3">
+                    Header="{Binding AppName^}"
+                    Description="{Binding LicenseInfo^}">
                     <ui:ExpanderSettingCard.IconSource>
                         <ui:BitmapIcon UriSource="avares://OscillographPlayer/Assets/ApplicationIcon.ico"/>
                     </ui:ExpanderSettingCard.IconSource>
@@ -45,7 +45,7 @@
                     <ui:ExpanderSettingCardItem
                         IconSource="{x:Static icon:FluentIcon.Application}"
                         Header="{Binding CurrentVersionCardTitle^}"
-                        Description="OscillographPlayer 3, Version 1.0.0">
+                        Description="{Binding Version^}">
                     
                         <ui:PushButton
                             Content="{Binding ViewRelease^}"

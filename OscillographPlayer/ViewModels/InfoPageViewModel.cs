@@ -11,7 +11,11 @@ namespace OscillographPlayer.ViewModels
         //View Text
         public static IObservable<string?> Title => LanguageHelper.Instance.InfoPage_Title;
 
+        public static IObservable<string?> AppName => LanguageHelper.Instance.Global_AppName;
+        public static IObservable<string?> LicenseInfo => LanguageHelper.Instance.Global_AppLicense;
+
         public static IObservable<string?> CurrentVersionCardTitle => LanguageHelper.Instance.InfoPage_CurrentVersionCardTitle;
+        public static IObservable<string?> Version => LanguageHelper.Instance.Global_AppVersion;
         public static IObservable<string?> ViewRelease => LanguageHelper.Instance.InfoPage_ViewRelease;
 
         public static IObservable<string?> RepositoryCardTitle => LanguageHelper.Instance.InfoPage_RepositoryCardTitle;

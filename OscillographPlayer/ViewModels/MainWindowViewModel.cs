@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using OscillographPlayer.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OscillographPlayer.ViewModels
 {
@@ -45,5 +47,14 @@ namespace OscillographPlayer.ViewModels
                 {"SettingsPage",new SettingsPageViewModel() },
             };
         }
+
+        //View Texts
+
+        public static IObservable<string?> AppTitle => LanguageHelper.Instance.Global_AppName;
+
+        public static IObservable<string?> VideoPageName => LanguageHelper.Instance.VideoPage_Title;
+        public static IObservable<string?> InfoPageName => LanguageHelper.Instance.InfoPage_Title;
+        public static IObservable<string?> SettingsPageName => LanguageHelper.Instance.SettingsPage_Title;
+
     }
 }

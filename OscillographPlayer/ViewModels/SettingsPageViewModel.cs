@@ -8,6 +8,7 @@ using Irihi.Lingua;
 using Avalonia.Styling;
 using System.Drawing;
 using AvaloniaFluentUI.Styling;
+using System.Reflection;
 
 namespace OscillographPlayer.ViewModels
 {

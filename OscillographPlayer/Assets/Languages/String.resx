@@ -175,7 +175,7 @@
     <value>帮助</value>
   </data>
   <data name="InfoPage_HelpCardDes" xml:space="preserve">
-    <value>了解如何使用 OscillographPlayer 3</value>
+    <value>了解如何使用该应用程序</value>
   </data>
   <data name="InfoPage_FeedbackCardTitle" xml:space="preserve">
     <value>反馈</value>
@@ -185,5 +185,140 @@
   </data>
   <data name="InfoPage_DependencyAndReferenceSubtitle" xml:space="preserve">
     <value>依赖与引用</value>
+  </data>
+  <data name="VideoPage_Title" xml:space="preserve">
+    <value>由视频生成</value>
+  </data>
+  <data name="VideoPage_SourceFileCardTitle" xml:space="preserve">
+    <value>源文件</value>
+  </data>
+  <data name="VideoPage_SourceFileCardDes" xml:space="preserve">
+    <value>输入的视频文件</value>
+  </data>
+  <data name="VideoPage_SourceFileCard_OpenFile" xml:space="preserve">
+    <value>打开文件</value>
+  </data>
+  <data name="VideoPage_OutputFileCardTitle" xml:space="preserve">
+    <value>输出文件</value>
+  </data>
+  <data name="VideoPage_OutputFileCardDes" xml:space="preserve">
+    <value>输出的波形文件路径</value>
+  </data>
+  <data name="VideoPage_OutputFileCard_OpenFloder" xml:space="preserve">
+    <value>打开文件夹</value>
+  </data>
+  <data name="VideoPage_VideoProcessingProfileSubitle" xml:space="preserve">
+    <value>视频处理配置</value>
+  </data>
+  <data name="VideoPage_AverangeSampleStepLengthCardTitle" xml:space="preserve">
+    <value>平均采样步长</value>
+  </data>
+  <data name="VideoPage_AverangeSampleStepLengthCardDes" xml:space="preserve">
+    <value>采样时平均每步移动的像素数</value>
+  </data>
+  <data name="VideoPage_EdgeJudgementCardTitle" xml:space="preserve">
+    <value>边缘判定</value>
+  </data>
+  <data name="VideoPage_EdgeJudgementCardDes" xml:space="preserve">
+    <value>依据明显程度保留边缘</value>
+  </data>
+  <data name="VideoPage_HighThresholdCardTitle" xml:space="preserve">
+    <value>高阈值</value>
+  </data>
+  <data name="VideoPage_HighThresholdCardDes" xml:space="preserve">
+    <value>保留高于该值的边缘</value>
+  </data>
+  <data name="VideoPage_LowThresholdCardTitle" xml:space="preserve">
+    <value>低阈值</value>
+  </data>
+  <data name="VideoPage_LowThresholdCardDes" xml:space="preserve">
+    <value>丢弃低于该值的边缘</value>
+  </data>
+  <data name="VideoPage_ScreenFlipCardTitle" xml:space="preserve">
+    <value>画面翻转</value>
+  </data>
+  <data name="VideoPage_ScreenFlipCardDes" xml:space="preserve">
+    <value>翻转画面</value>
+  </data>
+  <data name="VideoPage_VerticalFlipCardTitle" xml:space="preserve">
+    <value>竖直翻转</value>
+  </data>
+  <data name="VideoPage_HorizontalFlipCardTitle" xml:space="preserve">
+    <value>水平翻转</value>
+  </data>
+  <data name="VideoPage_VerticalFlipCardDes" xml:space="preserve">
+    <value>上下翻转画面</value>
+  </data>
+  <data name="VideoPage_HorizontalFlipCardDes" xml:space="preserve">
+    <value>左右翻转画面</value>
+  </data>
+  <data name="VideoPage_WaveGenerateProfileSubtitle" xml:space="preserve">
+    <value>波形生成配置</value>
+  </data>
+  <data name="VideoPage_SampleRateCardTitle" xml:space="preserve">
+    <value>采样率</value>
+  </data>
+  <data name="VideoPage_SampleRateCardDes" xml:space="preserve">
+    <value>波形的采样率</value>
+  </data>
+  <data name="VideoPage_SampleRepeatMethodCardTitle" xml:space="preserve">
+    <value>采样重复方法</value>
+  </data>
+  <data name="VideoPage_SampleRepeatMethodCardDes" xml:space="preserve">
+    <value>对齐视频帧时，采样重复的方式</value>
+  </data>
+  <data name="VideoPage_AmplitudeMaximizeCardTitle" xml:space="preserve">
+    <value>振幅最大化</value>
+  </data>
+  <data name="VideoPage_AmplitudeMaximizeCardDes" xml:space="preserve">
+    <value>最大化波形振幅</value>
+  </data>
+  <data name="VideoPage_ProfileAndGenerateSubtitle" xml:space="preserve">
+    <value>配置管理和生成</value>
+  </data>
+  <data name="VideoPage_ProfileManageCardTitle" xml:space="preserve">
+    <value>配置管理</value>
+  </data>
+  <data name="VideoPage_ImportAndExportProfileCardTitle" xml:space="preserve">
+    <value>导入和导出配置</value>
+  </data>
+  <data name="VideoPage_ImportAndExportProfileCardDes" xml:space="preserve">
+    <value>保存以上配置或加载已有配置</value>
+  </data>
+  <data name="VideoPage_ImportProfile" xml:space="preserve">
+    <value>导入配置</value>
+  </data>
+  <data name="VideoPage_ExportProfile" xml:space="preserve">
+    <value>导出配置</value>
+  </data>
+  <data name="VideoPage_DefaultProfileCardTitle" xml:space="preserve">
+    <value>默认配置</value>
+  </data>
+  <data name="VideoPage_DefaultProfileCardDes" xml:space="preserve">
+    <value>加载默认配置</value>
+  </data>
+  <data name="VideoPage_DefaultProfile" xml:space="preserve">
+    <value>默认配置</value>
+  </data>
+  <data name="VideoPage_StartGenerateCardTitle" xml:space="preserve">
+    <value>开始生成</value>
+  </data>
+  <data name="VideoPage_StartGenerateCardDes" xml:space="preserve">
+    <value>使用以上配置生成波形</value>
+  </data>
+  <data name="VideoPage_StartGenerate" xml:space="preserve">
+    <value>开始生成</value>
+  </data>
+  <data name="VideoPage_ProfileManageCardDes" xml:space="preserve">
+    <value>导入、导出配置或恢复默认配置</value>
+  </data>
+  <data name="Global_AppName" xml:space="preserve">
+    <value>OscillographPlayer 3</value>
+  </data>
+  <data name="Global_AppVersion" xml:space="preserve">
+    <value>版本 1.0.0</value>
+  </data>
+  <data name="Global_AppLicense" xml:space="preserve">
+    <value>版权 © 2026 FIPA，基于 LGPL 3授权</value>
   </data>
 </root>

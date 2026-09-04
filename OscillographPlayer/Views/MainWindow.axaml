@@ -42,7 +42,7 @@
         <ui:NavigationView.MenuItems>
         
             <ui:NavigationViewItem
-                Content="由视频生成"
+                Content="{Binding VideoPageName^}"
                 IconSource="{x:Static icon:FluentIcon.Video}"
                 IsSelected="True"
                 Tag="VideoPage"/>
@@ -52,12 +52,12 @@
         <ui:NavigationView.FooterMenuItems>
             
             <ui:NavigationViewItem
-                Content="关于"
+                Content="{Binding InfoPageName^}"
                 IconSource="{x:Static icon:FluentIcon.Info}"
                 Tag="InfoPage"/>
             
             <ui:NavigationViewItem
-                Content="设置"
+                Content="{Binding SettingsPageName^}"
                 IconSource="{x:Static icon:FluentIcon.Setting}"
                 Tag="SettingsPage"/>
 

@@ -175,7 +175,7 @@
     <value>Help</value>
   </data>
   <data name="InfoPage_HelpCardDes" xml:space="preserve">
-    <value>Learn to use OscillographPlayer 3</value>
+    <value>Learn to use this application</value>
   </data>
   <data name="InfoPage_FeedbackCardTitle" xml:space="preserve">
     <value>Feedback</value>
@@ -185,5 +185,140 @@
   </data>
   <data name="InfoPage_DependencyAndReferenceSubtitle" xml:space="preserve">
     <value>Dependency and Reference</value>
+  </data>
+  <data name="VideoPage_Title" xml:space="preserve">
+    <value>Generate From Video</value>
+  </data>
+  <data name="VideoPage_SourceFileCardTitle" xml:space="preserve">
+    <value>Source File</value>
+  </data>
+  <data name="VideoPage_SourceFileCardDes" xml:space="preserve">
+    <value>Video File imported</value>
+  </data>
+  <data name="VideoPage_SourceFileCard_OpenFile" xml:space="preserve">
+    <value>Open file</value>
+  </data>
+  <data name="VideoPage_OutputFileCardTitle" xml:space="preserve">
+    <value>File Output</value>
+  </data>
+  <data name="VideoPage_OutputFileCardDes" xml:space="preserve">
+    <value>Path to output the wave file</value>
+  </data>
+  <data name="VideoPage_OutputFileCard_OpenFloder" xml:space="preserve">
+    <value>Open a floder</value>
+  </data>
+  <data name="VideoPage_VideoProcessingProfileSubitle" xml:space="preserve">
+    <value>Video Processing Profile</value>
+  </data>
+  <data name="VideoPage_AverangeSampleStepLengthCardTitle" xml:space="preserve">
+    <value>Averange step length of sample</value>
+  </data>
+  <data name="VideoPage_AverangeSampleStepLengthCardDes" xml:space="preserve">
+    <value>Averange numbers of pixels moved per step during sampling</value>
+  </data>
+  <data name="VideoPage_EdgeJudgementCardTitle" xml:space="preserve">
+    <value>Edge Judgement</value>
+  </data>
+  <data name="VideoPage_EdgeJudgementCardDes" xml:space="preserve">
+    <value>Retain edges according to the degree of clarity</value>
+  </data>
+  <data name="VideoPage_HighThresholdCardTitle" xml:space="preserve">
+    <value>High Threshold</value>
+  </data>
+  <data name="VideoPage_HighThresholdCardDes" xml:space="preserve">
+    <value>Retain edges more obvious than this value</value>
+  </data>
+  <data name="VideoPage_LowThresholdCardTitle" xml:space="preserve">
+    <value>Low Threshold</value>
+  </data>
+  <data name="VideoPage_LowThresholdCardDes" xml:space="preserve">
+    <value>Ignore the edges less obvious than this value</value>
+  </data>
+  <data name="VideoPage_ScreenFlipCardTitle" xml:space="preserve">
+    <value>Screen Flip</value>
+  </data>
+  <data name="VideoPage_ScreenFlipCardDes" xml:space="preserve">
+    <value>Flip the screen</value>
+  </data>
+  <data name="VideoPage_VerticalFlipCardTitle" xml:space="preserve">
+    <value>Vertical Flip</value>
+  </data>
+  <data name="VideoPage_HorizontalFlipCardTitle" xml:space="preserve">
+    <value>Horizontal Flip</value>
+  </data>
+  <data name="VideoPage_VerticalFlipCardDes" xml:space="preserve">
+    <value>Flip the screen upside down</value>
+  </data>
+  <data name="VideoPage_HorizontalFlipCardDes" xml:space="preserve">
+    <value>Flip the screen left and right</value>
+  </data>
+  <data name="VideoPage_WaveGenerateProfileSubtitle" xml:space="preserve">
+    <value>Wave Generation Profile</value>
+  </data>
+  <data name="VideoPage_SampleRateCardTitle" xml:space="preserve">
+    <value>Sample Rate</value>
+  </data>
+  <data name="VideoPage_SampleRateCardDes" xml:space="preserve">
+    <value>Sample Rate of wave</value>
+  </data>
+  <data name="VideoPage_SampleRepeatMethodCardTitle" xml:space="preserve">
+    <value>Sample Repeat Method</value>
+  </data>
+  <data name="VideoPage_SampleRepeatMethodCardDes" xml:space="preserve">
+    <value>The method to repeat samples during align the video frame</value>
+  </data>
+  <data name="VideoPage_AmplitudeMaximizeCardTitle" xml:space="preserve">
+    <value>Amplitude Maximization</value>
+  </data>
+  <data name="VideoPage_AmplitudeMaximizeCardDes" xml:space="preserve">
+    <value>Maximize the amplitude of wave</value>
+  </data>
+  <data name="VideoPage_ProfileAndGenerateSubtitle" xml:space="preserve">
+    <value>Profile Management and Wave Generation</value>
+  </data>
+  <data name="VideoPage_ProfileManageCardTitle" xml:space="preserve">
+    <value>Profile Management</value>
+  </data>
+  <data name="VideoPage_ImportAndExportProfileCardTitle" xml:space="preserve">
+    <value>Import or Export the Profile</value>
+  </data>
+  <data name="VideoPage_ImportAndExportProfileCardDes" xml:space="preserve">
+    <value>Save above profile or load an existing profile</value>
+  </data>
+  <data name="VideoPage_ImportProfile" xml:space="preserve">
+    <value>Import the profile</value>
+  </data>
+  <data name="VideoPage_ExportProfile" xml:space="preserve">
+    <value>Export profile</value>
+  </data>
+  <data name="VideoPage_DefaultProfileCardTitle" xml:space="preserve">
+    <value>Default Profile</value>
+  </data>
+  <data name="VideoPage_DefaultProfileCardDes" xml:space="preserve">
+    <value>Load default profile</value>
+  </data>
+  <data name="VideoPage_DefaultProfile" xml:space="preserve">
+    <value>Use default profile</value>
+  </data>
+  <data name="VideoPage_StartGenerateCardTitle" xml:space="preserve">
+    <value>Start Generate</value>
+  </data>
+  <data name="VideoPage_StartGenerateCardDes" xml:space="preserve">
+    <value>Generate the wave with above profile</value>
+  </data>
+  <data name="VideoPage_StartGenerate" xml:space="preserve">
+    <value>Start generate</value>
+  </data>
+  <data name="VideoPage_ProfileManageCardDes" xml:space="preserve">
+    <value>Import, export profile or restore default profile</value>
+  </data>
+  <data name="Global_AppName" xml:space="preserve">
+    <value>OscillographPlayer 3</value>
+  </data>
+  <data name="Global_AppVersion" xml:space="preserve">
+    <value>Version 1.0.0</value>
+  </data>
+  <data name="Global_AppLicense" xml:space="preserve">
+    <value>Copyright © 2026 FIPA, Licensed under the LGPL 3</value>
   </data>
 </root>
